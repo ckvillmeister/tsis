@@ -1,0 +1,79 @@
+CREATE TABLE tbl_users(
+record_id INT(5) AUTO_INCREMENT,
+username VARCHAR(50) NOT NULL,
+password VARCHAR(50) NOT NULL,
+firstname VARCHAR(50) NOT NULL,
+middlename VARCHAR(50),
+lastname VARCHAR(50) NOT NULL,
+suffix VARCHAR(10),
+role_type INT(2) NOT NULL,
+created_by INT(5) NOT NULL,
+date_created DATETIME NOT NULL,
+update_by INT(5),
+date_updated DATETIME,
+status INT(1) NOT NULL,
+PRIMARY KEY (record_id));
+
+CREATE TABLE tbl_barangay(
+record_id INT(2) AUTO_INCREMENT,
+barangay_name VARCHAR(50) NOT NULL,
+status INT(1) NOT NULL,
+PRIMARY KEY (record_id));
+
+CREATE TABLE tbl_voters_list(
+record_id INT(10) AUTO_INCREMENT,
+firstname VARCHAR(50) NOT NULL,
+middlename VARCHAR(50),
+lastname VARCHAR(50) NOT NULL,
+suffix VARCHAR(10),
+vin VARCHAR(50),
+voters_no VARCHAR(3),
+precinct_no VARCHAR(10),
+cluster_no VARCHAR(1),
+purok_no VARCHAR(1),
+barangay INT(1) NOT NULL,
+birthdate DATETIME,
+gender VARCHAR(6),
+record_year INT(4),
+status INT(1) NOT NULL,
+PRIMARY KEY (record_id));
+
+CREATE TABLE tbl_barangay_leader(
+record_id INT(10) AUTO_INCREMENT,
+voter_id INT(10) NOT NULL,
+barangay_id INT(2) NOT NULL,
+record_year INT(4),
+status INT(1) NOT NULL,
+PRIMARY KEY (record_id));
+
+CREATE TABLE tbl_purok_leader(
+record_id INT(10) AUTO_INCREMENT,
+voter_id INT(10) NOT NULL,
+barangay_id INT(2) NOT NULL,
+purok_no VARCHAR(1) NOT NULL,
+record_year INT(4),
+status INT(1) NOT NULL,
+PRIMARY KEY (record_id));
+
+CREATE TABLE tbl_ward_leader(
+record_id INT(10) AUTO_INCREMENT,
+voter_id INT(10) NOT NULL,
+barangay_id INT(2) NOT NULL,
+record_year INT(4),
+status INT(1) NOT NULL,
+PRIMARY KEY (record_id));
+
+CREATE TABLE tbl_ward_member(
+record_id INT(10) AUTO_INCREMENT,
+voter_id INT(10) NOT NULL,
+leader_id INT(10) NOT NULL,
+barangay_id INT(2) NOT NULL,
+record_year INT(4),
+status INT(1) NOT NULL,
+PRIMARY KEY (record_id));
+
+CREATE TABLE tbl_sys_settings(
+record_id INT(10) AUTO_INCREMENT,
+setting_name VARCHAR(50) NOT NULL,
+setting_desc VARCHAR(100) NOT NULL,
+PRIMARY KEY (record_id));
