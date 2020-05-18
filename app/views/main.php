@@ -87,6 +87,12 @@
   elseif ($link == 'report' & $link_2 == 'ward_list') {
     echo '<script src="'.ROOT.'public/js/report.js"></script>';
   }
+  elseif ($link == 'leader' & $link_2 == 'barangay_leader') {
+    echo '<script src="'.ROOT.'public/js/barangay_leader.js"></script>';
+  }
+  elseif ($link == 'leader' & $link_2 == 'purok_leader') {
+    echo '<script src="'.ROOT.'public/js/purok_leader.js"></script>';
+  }
 ?>
 </body>
 </html>

@@ -2,7 +2,7 @@
   $url = $_GET['url'];
   $arr_url = explode('/', rtrim($url, '/'));
   $link = rtrim($arr_url[0], '/');
-
+  $link_2 = ltrim($arr_url[1], '/');
   $firstname = $_SESSION['firstname'];
   $middlename = $_SESSION['middlename'];
   $lastname = $_SESSION['lastname'];
@@ -57,8 +57,8 @@
             </p>
           </a>
         </li>
-        <li class="nav-item has-treeview">
-          <a href="#" class="nav-link">
+        <li class="nav-item has-treeview <?php if ($link=='report'){ echo 'menu-open'; } ?>">
+          <a href="#" class="nav-link <?php if ($link=='report'){ echo 'active'; } ?>">
             <i class="nav-icon fas fa-file-alt"></i>
             <p>
               Report
@@ -67,27 +67,27 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="report/ward_list" class="nav-link ml-4">
+              <a href="<?php echo ROOT; ?>report/ward_list" class="nav-link ml-4 <?php echo ($link_2 == 'ward_list') ? 'active' : ''; ?>">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Ward List</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="report/voters_list" class="nav-link ml-4">
+              <a href="<?php echo ROOT; ?>report/voters_list" class="nav-link ml-4 <?php echo ($link_2 == 'voters_list') ? 'active' : ''; ?>">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Voters List</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="report/election_result" class="nav-link ml-4">
+              <a href="<?php echo ROOT; ?>report/election_result" class="nav-link ml-4 <?php echo ($link_2 == 'election_result') ? 'active' : ''; ?>">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Election Results</p>
               </a>
             </li>
           </ul>
         </li>
-        <li class="nav-item has-treeview">
-          <a href="#" class="nav-link">
+        <li class="nav-item has-treeview <?php if ($link=='leader'){ echo 'menu-open'; } ?>">
+          <a href="#" class="nav-link <?php if ($link=='leader'){ echo 'active'; } ?>">
             <i class="nav-icon fas fa-user-ninja"></i>
             <p>
               Manage Leaders
@@ -96,13 +96,13 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="ward/barangay_leader" class="nav-link ml-4">
+              <a href="<?php echo ROOT; ?>leader/barangay_leader" class="nav-link ml-4 <?php echo ($link_2 == 'barangay_leader') ? 'active' : ''; ?>">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Set Barangay Leader</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="ward/purok_leader" class="nav-link ml-4">
+              <a href="<?php echo ROOT; ?>leader/purok_leader" class="nav-link ml-4 <?php echo ($link_2 == 'purok_leader') ? 'active' : ''; ?>">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Set Purok Leader</p>
               </a>
