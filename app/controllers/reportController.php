@@ -8,11 +8,17 @@ class reportController extends controller{
 		$this->view()->render('main.php', array('content' => 'report/ward_list/index.php', 'barangay' => $barangay));
 	}
 
+	public function election_result(){
+		$this->view()->render('main.php');
+	}
+
 	public function get_ward_list(){
 		$barangay = $_POST['barangay'];
 		$reportObj = new reportModel();
 		$wardlist = $reportObj->get_ward_list(array('barangay' => $barangay));
 		$this->view()->render('report/ward_list/wardlist.php', array('wardlist' => $wardlist));
 	}
+
+
 }
 ?>

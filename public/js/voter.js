@@ -1,5 +1,5 @@
 
-setTimeout(function(){ get_voters_list(); }, 2000);
+setTimeout(function(){ get_voters_list(); }, 500);
 
 //Function: Get voters list 
 function get_voters_list(){

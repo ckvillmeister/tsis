@@ -3,17 +3,17 @@
     width: 100%;
     font-family: 'Bodoni MT';
     border-color: #807c7c;
-    border-width: 2px;
+    border-width: 1px;
   }
   .tbl_report thead tr td{
     text-align: center;
     border-color: #807c7c;
-    border-width: 2px;
+    border-width: 1px;
   }
   .tbl_report tbody tr td{
    	padding-left: 10px;
    	border-color: #807c7c;
-   	border-width: 2px;
+   	border-width: 1px;
   }
   .tbl_report tbody .leader{
   	background-color: #fff83b;
