@@ -1,11 +1,18 @@
-
+<style>
+  table thead tr th{
+    text-align: center;
+  }
+  .center_text{
+    text-align: center;
+  }
+</style>
 <div class="card">
   <div class="card-body">
     <table class="table table-bordered">
         <thead>
           <tr>
             <th width="20px">#</th>
-            <th width="400px">Barangay Name</th>
+            <th width="250px">Barangay Name</th>
             <th>Leader</th>
             <th width="180px">Control</th>
           </tr>
