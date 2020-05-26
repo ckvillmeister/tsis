@@ -18,8 +18,10 @@
      <!--<img src="<?php //echo ROOT.'public/image/Trinidad_Logo.png'; ?>" alt="Municipality of Trinidad Logo" class="brand-image img-circle elevation-4" style="opacity: .8">-->
     </div>
     <div class="text-center">
-      <strong>TRINIDAD</strong>
-      <span class="brand-text font-weight-light"><br><h6>Supporters Information System</h6></span>
+      <span class="brand-text font-weight-light">
+        <strong>DR. GARAY</strong>
+        <h6>Patient Information System</h6>
+      </span>
     </div>
   </a>
 

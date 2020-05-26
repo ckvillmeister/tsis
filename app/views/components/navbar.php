@@ -35,37 +35,28 @@
     <!-- Notifications Dropdown Menu -->
     <li class="nav-item dropdown">
       <a class="nav-link" data-toggle="dropdown" href="#">
-        <!--<i class="far fa-bell"></i>
-        <span class="badge badge-warning navbar-badge">15</span>-->
-        <?php echo strtoupper($firstname.' '.$lastname); ?>
+        <img class="img-circle elevation-1" src="public/image/avatar25x25.jpg">
+        <b></b>
       </a>
       <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-        <span class="dropdown-item dropdown-header">Accounts</span>
-        <div class="dropdown-divider"></div>
-        <!--<a href="#" class="dropdown-item">
-          <i class="fas fa-envelope mr-5"></i> 4 new messages
-          <span class="float-right text-muted text-sm">3 mins</span>
-        </a>
-        <div class="dropdown-divider"></div>
-        <a href="#" class="dropdown-item">
-          <i class="fas fa-users mr-5"></i> 8 friend requests
-          <span class="float-right text-muted text-sm">12 hours</span>
-        </a>
-        <div class="dropdown-divider"></div>
-        <a href="#" class="dropdown-item">
-          <i class="fas fa-file mr-5"></i> 3 new reports
-          <span class="float-right text-muted text-sm">2 days</span>
-        </a>-->
-        <div class="dropdown-divider"></div>
-        <a href="#" class="dropdown-item">
-          <i class="fas fa-file ml-3 mr-3"></i> Account Settings
-        </a>
-        <a href="#" class="dropdown-item">
-          <i class="fas fa-file ml-3 mr-3"></i> Change Password
-        </a>
-        <a href="main/logout" class="dropdown-item">
-          <i class="fas fa-file ml-3 mr-3"></i> Logout
-        </a>
+        <div class="card-outline">
+          <div class="card-body box-profile">
+            <div class="text-center">
+              <img class="profile-user-img img-fluid img-circle" src="public/image/avatar100x100.jpg">
+            </div>
+            <h3 class="profile-username text-center"><?php echo strtoupper($firstname.' '.$lastname); ?></h3>
+          </div>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">
+            <i class="fas fa-file ml-3 mr-3"></i> Account Settings
+          </a>
+          <a href="#" class="dropdown-item">
+            <i class="fas fa-file ml-3 mr-3"></i> Change Password
+          </a>
+          <a href="main/logout" class="dropdown-item">
+            <i class="fas fa-file ml-3 mr-3"></i> Logout
+          </a>
+        </div>
       </div>
     </li>
     <li class="nav-item">
