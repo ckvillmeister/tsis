@@ -7,8 +7,8 @@ class mainController extends controller{
 	}
 
 	public function logout(){
-		session_destroy();
 		$this->view()->render('login/login.php');
+		session_destroy();
 	}
 }
 ?>

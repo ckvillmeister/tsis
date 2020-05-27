@@ -67,7 +67,11 @@
   $url = $_GET['url'];
   $arr_url = explode('/', rtrim($url, '/'));
   $link = rtrim($arr_url[0], '/');
-  $link_2 = rtrim($arr_url[1], '/');
+  $link_2;
+
+  if (count($arr_url) > 1){
+    $link_2 = rtrim($arr_url[1], '/');
+  }
 
   if ($link == 'accessrole'){
     echo '<script src="public/js/access_role.js"></script>';
