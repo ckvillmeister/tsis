@@ -8,7 +8,7 @@
 </style>
 <div class="card">
   <div class="card-body">
-    <table class="table table-bordered">
+    <table class="table table-sm table-bordered table-striped">
         <thead>
           <tr>
             <th width="20px">#</th>
@@ -40,16 +40,16 @@
                   }
                 ?>
               </td>
-              <td>
+              <td class="text-center">
                 <?php 
                   if ($voter == 0){
                 ?>
-                  <button class="btn btn-primary" id="btn_set_leader" value="<?php echo $purok; ?>"><icon class="fas fa-edit"></icon>&nbsp;Set Leader</button>
+                  <button class="btn btn-sm btn-primary" id="btn_set_leader" value="<?php echo $purok; ?>"><icon class="fas fa-edit mr-2"></icon>Set Leader</button>
                 <?php
                   }
                   else{
                 ?>
-                  <button class="btn btn-warning" id="btn_edit_leader" value="<?php echo $purok; ?>"><icon class="fas fa-edit""></icon>&nbsp;Edit Leader</button>
+                  <button class="btn btn-sm btn-warning" id="btn_edit_leader" value="<?php echo $purok; ?>"><icon class="fas fa-edit mr-2"></icon>Edit Leader</button>
                 <?php
                   }
                 ?>

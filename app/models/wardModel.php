@@ -16,7 +16,7 @@ class wardModel extends model{
 
 		foreach ($settings as $key => $value) {
 			$data = (object) $value;
-			if ($data->name == 'Active Year'){
+			if ($data->name == 'Active Election Year'){
 				return $data->desc;
 			}
 		}
@@ -211,7 +211,7 @@ class wardModel extends model{
 		$year = $this->get_year();
 		$wardid = $param['wardid'];
 		
-		$query = 'SELECT twm.voter_id,  tvl.firstname, tvl.middlename, tvl.lastname, tvl.suffix
+		$query = 'SELECT twm.voter_id,  tvl.firstname, tvl.middlename, tvl.lastname, tvl.suffix, tvl.image_url
 					FROM tbl_ward_member AS twm
 					INNER JOIN tbl_voters_list AS tvl ON tvl.record_id = twm.voter_id
 					WHERE twm.ward_id = '.$wardid.' AND twm.record_year = '.$year.' AND twm.status = 1
@@ -219,16 +219,17 @@ class wardModel extends model{
 
 		$stmt = $this->con->prepare($query);
 		$stmt->execute();
-		$stmt->bind_result($id, $firstname, $middlename, $lastname, $suffix);
+		$stmt->bind_result($id, $firstname, $middlename, $lastname, $suffix, $imgurl);
 		$ctr=0;
 		$members = array();
 
 		while ($stmt->fetch()) {
 			$members[$ctr++] = array('id' => $id, 
-							'firstname' => utf8_encode($firstname), 
-							'middlename' => utf8_encode($middlename),
-							'lastname' => utf8_encode($lastname),
-							'suffix' => $suffix);
+							'firstname' => $firstname, 
+							'middlename' => $middlename,
+							'lastname' => $lastname,
+							'suffix' => $suffix,
+							'imgurl' => $imgurl);
 		}
 		
 		$stmt->close();
@@ -254,9 +255,9 @@ class wardModel extends model{
 		while ($stmt->fetch()) {
 			$leaders[$ctr++] = array('wardid' => $wardid,
 							'id' => $id, 
-							'firstname' => utf8_encode($firstname), 
-							'middlename' => utf8_encode($middlename),
-							'lastname' => utf8_encode($lastname),
+							'firstname' => $firstname, 
+							'middlename' => $middlename,
+							'lastname' => $lastname,
 							'suffix' => $suffix);
 		}
 		$stmt->close();
@@ -297,5 +298,97 @@ class wardModel extends model{
 		$stmt->close();
 		$this->con->close();
 		return $ward_info;
+	}
+
+	public function retrieve_matched_supporter_names($supporter_name){
+		$year = $this->get_year();
+		$supporter_name = '%'.$supporter_name.'%';
+
+		$query = 'SELECT tvl.firstname, tvl.middlename, tvl.lastname, tvl.suffix, tb.barangay_name, twl.record_id, tvl.record_id, tvl.image_url
+					FROM tbl_voters_list AS tvl
+					INNER JOIN tbl_ward_leader AS twl ON twl.voter_id = tvl.record_id
+					INNER JOIN tbl_barangay AS tb ON tb.record_id = tvl.barangay
+					WHERE (tvl.firstname LIKE ? OR tvl.middlename LIKE ? OR tvl.lastname LIKE ? OR 
+					CONCAT(TRIM(tvl.firstname), " ", TRIM(tvl.lastname)) LIKE ?) AND tvl.record_year = ? 
+					ORDER BY tvl.lastname ASC, tvl.firstname ASC, tvl.middlename ASC';
+		
+		$stmt = $this->con->prepare($query);
+		$stmt->bind_param("sssss", $supporter_name, $supporter_name, $supporter_name, $supporter_name, $year);
+		$stmt->execute();
+		$stmt->bind_result($firstname, $middlename, $lastname, $suffix, $barangay, $wardid, $voter_sys_id, $imgurl);
+		$ctr=0;
+		$result = array();
+
+		while ($stmt->fetch()) {
+			$result[$ctr++] = array('firstname' => $firstname, 
+							'middlename' => $middlename,
+							'lastname' => $lastname,
+							'suffix' => $suffix,
+							'barangay' => $barangay,
+							'rank' => 'Leader',
+							'wardid' => $wardid,
+							'voter_sys_id' => $voter_sys_id,
+							'imgurl' => $imgurl);
+		}
+
+		$stmt->close();
+
+		$query = 'SELECT tvl.firstname, tvl.middlename, tvl.lastname, tvl.suffix, tb.barangay_name, twm.ward_id, tvl.record_id, tvl.image_url
+					FROM tbl_voters_list AS tvl
+					INNER JOIN tbl_ward_member AS twm ON twm.voter_id = tvl.record_id
+					INNER JOIN tbl_barangay AS tb ON tb.record_id = tvl.barangay
+					WHERE (tvl.firstname LIKE ? OR tvl.middlename LIKE ? OR tvl.lastname LIKE ? OR 
+					CONCAT(TRIM(tvl.firstname), " ", TRIM(tvl.lastname)) LIKE ?) AND tvl.record_year = ? 
+					ORDER BY tb.record_id ASC, tvl.lastname ASC, tvl.firstname ASC, tvl.middlename ASC';
+
+		$stmt2 = $this->con->prepare($query);
+		$stmt2->bind_param("sssss", $supporter_name, $supporter_name, $supporter_name, $supporter_name, $year);
+		$stmt2->execute();
+		$stmt2->bind_result($firstname, $middlename, $lastname, $suffix, $barangay, $wardid, $voter_sys_id, $imgurl);
+
+		while ($stmt2->fetch()) {
+			$result[$ctr++] = array('firstname' => $firstname, 
+							'middlename' => $middlename,
+							'lastname' => $lastname,
+							'suffix' => $suffix,
+							'barangay' => $barangay,
+							'rank' => 'Member',
+							'wardid' => $wardid,
+							'voter_sys_id' => $voter_sys_id,
+							'imgurl' => $imgurl);
+		}
+		$stmt2->close();
+		$this->con->close();
+		return $result;
+	}
+
+	public function get_leader($wardid){
+		$year = $this->get_year();
+		$query = 'SELECT  tvl.firstname, tvl.middlename, tvl.lastname, tvl.suffix, tb.barangay_name, twl.record_id, tvl.purok_no, tvl.image_url
+					FROM tbl_voters_list AS tvl
+					INNER JOIN tbl_ward_leader AS twl ON twl.voter_id = tvl.record_id
+					INNER JOIN tbl_barangay AS tb ON tb.record_id = tvl.barangay
+					WHERE twl.record_id = ? AND tvl.record_year = ?';
+		
+		$db = new database();
+		$this->con = $db->connection();
+		$stmt = $this->con->prepare($query);
+		$stmt->bind_param("ss", $wardid, $year);
+		$stmt->execute();
+		$data = $stmt->get_result()->fetch_assoc();
+		
+		$leader = array('firstname' => $data['firstname'], 
+							'middlename' => $data['middlename'],
+							'lastname' => $data['lastname'],
+							'suffix' => $data['suffix'],
+							'barangay' => $data['barangay_name'],
+							'wardid' =>$data['record_id'],
+							'purok' =>$data['purok_no'],
+							'imgurl' => $data['image_url']);
+		
+				
+		$stmt->close();
+		$this->con->close();
+		return $leader;
 	}
 }

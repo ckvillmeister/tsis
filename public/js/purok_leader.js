@@ -12,8 +12,8 @@ $('body').on('click', '#btn_set_leader', function(){
   	var barangay_id = $('#cbo_barangay').val();
   	if (barangay_id != '0'){
   		purok_no = $(this).val();
-		get_voters_list(barangay_id);
- 		$('#modal_set_purok_leader').modal('show');
+		$('#modal_set_purok_leader').modal('show');
+    get_voters_list(barangay_id);
 	}
 });
 
@@ -21,8 +21,8 @@ $('body').on('click', '#btn_edit_leader', function(){
   	var barangay_id = $('#cbo_barangay').val();
   	if (barangay_id != '0'){
   		purok_no = $(this).val();
-		get_voters_list(barangay_id);
- 		$('#modal_set_purok_leader').modal('show');
+		$('#modal_set_purok_leader').modal('show');
+    get_voters_list(barangay_id);
 	}
 });
 
@@ -57,6 +57,15 @@ function get_voters_list(barangay_id){
     method: 'POST',
     data: {barangay: barangay_id, level: 'purok'},
     dataType: 'html',
+    beforeSend: function() {
+        $('.overlay-wrapper').html('<div class="overlay">' +
+                  '<i class="fas fa-3x fa-sync-alt fa-spin"></i>' +
+                  '<div class="text-bold pt-2">Loading...</div>' +
+                      '</div>');
+    },
+    complete: function(){
+        $('.overlay-wrapper').html('');
+    },
     success: function(result) {
       $('#voters_list').html(result);
     },

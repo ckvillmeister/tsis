@@ -3,9 +3,27 @@
 class wardController extends controller{
 
 	public function index(){
-		$settingsObj = new settingsModel();
-		$barangay = $settingsObj->get_barangay();
-		$this->view()->render('main.php', array('content' => 'ward/index.php', 'barangay' => $barangay));
+		if ($this->is_session_empty()){
+			header('location:'.ROOT);
+		}
+		else{
+			$settingsObj = new settingsModel();
+			$system_name = $settingsObj->get_system_name();
+			$barangay = $settingsObj->get_barangays(1);
+			
+			$accessrole_model = new accessroleModel();
+			$accessroles = $accessrole_model->get_access_roles(1);
+			$accounts_model = new accountsModel();
+ 			$userinfo = $accounts_model->get_user_info($_SESSION['user_id']);
+   			$role = $userinfo['role'];
+			
+			if ($accessrole_model->check_access($role, 'warding')){
+				$this->view()->render('ward/index.php', array('system_name' => $system_name, 'barangay' => $barangay));
+			}
+			else{
+				$this->view()->render('error/forbidden.php', array('system_name' => $system_name));
+			}
+		}
 	}
 
 	public function get_voters_list(){
@@ -80,5 +98,24 @@ class wardController extends controller{
 		$id = $_POST['id'];
 		$wardObj->remove_ward_member(array('id' => $id));
 	}
+
+	public function view_ward(){
+		if ($this->is_session_empty()){
+			header('location:'.ROOT);
+		}
+		else{
+			$wardObj = new wardModel();
+			$wardid = $_GET['wardid'];
+
+			$members = $wardObj->get_wardmembers(array('wardid' => $wardid));
+			$leader = $wardObj->get_leader($wardid);
+
+			$settings_model = new settingsModel();
+			$system_name = $settings_model->get_system_name();
+			
+			$this->view()->render('ward/ward.php', array('leader_info' => $leader, 'members_info' => $members, 'system_name' => $system_name));
+		}
+	}
+
 }
 ?>

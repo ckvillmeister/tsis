@@ -14,10 +14,10 @@ class route
 		$class = rtrim($arr_url[0], '/').'Controller';
 
 		if($arr_url[0] == ""){
-			$filename = 'loginController.php';
-			$class = 'loginController';
+			$filename = 'authenticationController.php';
+			$class = 'authenticationController';
 		}
-		
+
 		if (file_exists(PATH_CONTROLLER.$filename))
 		{
 			require PATH_CONTROLLER.$filename;
@@ -25,11 +25,27 @@ class route
 
 			if (isset($arr_url[1]) != ""){
 				$function = $arr_url[1];
+
+				if (method_exists($controller, $function)){
+					$controller->$function();
+				}
+				else{
+					require PATH_CONTROLLER.'errorController.php';
+					$controller = new errorController();
+					$controller->index();
+				}
 				
-				$controller->$function();
 			}
 			else{
-				$controller->index();
+
+				if (method_exists($controller, 'index')){
+					$controller->index();
+				}
+				else{
+					require PATH_CONTROLLER.'errorController.php';
+					$controller = new errorController();
+					$controller->index();
+				}
 			}
 		} 
 		else{
@@ -37,6 +53,7 @@ class route
 			$controller = new errorController();
 			$controller->index();
 		}
+		
 	}
 
 }

@@ -3,13 +3,50 @@
 class leaderController extends controller{
 
 	public function barangay_leader(){
-		$this->view()->render('main.php', array('content' => 'leader/barangay_leader/index.php'));
+		if ($this->is_session_empty()){
+			header('location:'.ROOT);
+		}
+		else{
+			$settings_model = new settingsModel();
+			$system_name = $settings_model->get_system_name();
+
+			$accessrole_model = new accessroleModel();
+			$accessroles = $accessrole_model->get_access_roles(1);
+			$accounts_model = new accountsModel();
+ 			$userinfo = $accounts_model->get_user_info($_SESSION['user_id']);
+   			$role = $userinfo['role'];
+			
+			if ($accessrole_model->check_access($role, 'brgyleader')){
+				$this->view()->render('leader/barangay_leader/index.php', array('system_name' => $system_name));
+			}
+			else{
+				$this->view()->render('error/forbidden.php', array('system_name' => $system_name));
+			}
+		}
 	}
 
 	public function purok_leader(){
-		$settingsObj = new settingsModel();
-		$barangay = $settingsObj->get_barangay();
-		$this->view()->render('main.php', array('content' => 'leader/purok_leader/index.php', 'barangay' => $barangay));
+		if ($this->is_session_empty()){
+			header('location:'.ROOT);
+		}
+		else{
+			$settingsObj = new settingsModel();
+			$barangay = $settingsObj->get_barangays(1);
+			$system_name = $settingsObj->get_system_name();
+
+			$accessrole_model = new accessroleModel();
+			$accessroles = $accessrole_model->get_access_roles(1);
+			$accounts_model = new accountsModel();
+ 			$userinfo = $accounts_model->get_user_info($_SESSION['user_id']);
+   			$role = $userinfo['role'];
+			
+			if ($accessrole_model->check_access($role, 'purokleader')){
+				$this->view()->render('leader/purok_leader/index.php', array('barangay' => $barangay, 'system_name' => $system_name));
+			}
+			else{
+				$this->view()->render('error/forbidden.php', array('system_name' => $system_name));
+			}
+		}
 	}
 
 	public function get_barangay_leaders(){
