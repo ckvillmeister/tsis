@@ -40,6 +40,15 @@ function get_voters_list(barangay_id){
     method: 'POST',
     data: {barangay: barangay_id, level: 'barangay'},
     dataType: 'html',
+    beforeSend: function() {
+        $('.overlay-wrapper').html('<div class="overlay">' +
+                  '<i class="fas fa-3x fa-sync-alt fa-spin"></i>' +
+                  '<div class="text-bold pt-2">Loading...</div>' +
+                      '</div>');
+    },
+    complete: function(){
+        $('.overlay-wrapper').html('');
+    }, 
     success: function(result) {
       $('#voters_list').html(result);
     },

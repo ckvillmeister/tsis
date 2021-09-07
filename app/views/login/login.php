@@ -1,96 +1,77 @@
+<?php
+  $settings_model = new SettingsModel();
+  $imgurl = $settings_model->get_sys_info('System Image');
+  $imgurl = ($imgurl) ? $imgurl : '';
+  $bgimg = $settings_model->get_sys_info('Login Background Image');
+  $bgimg = ($bgimg) ? $bgimg : '';
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>TSIS</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <link rel="stylesheet" href="<?php echo ROOT.BOOTSTRAP; ?>plugins/fontawesome-free/css/all.min.css">
-  <!--<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">-->
-  <link rel="stylesheet" href="<?php echo ROOT.BOOTSTRAP; ?>plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <link rel="stylesheet" href="<?php echo ROOT.BOOTSTRAP; ?>dist/css/adminlte.min.css">
-  <!--<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">-->
+  <?php require 'app/views/components/header.php'; ?>
+  <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .imgbox {
+            display: grid;
+            height: 100%;
+        }
+        .center-fit {
+            max-width: 100%;
+            max-height: 100vh;
+            margin: auto;
+        }
+    </style>
 </head>
-<body class="hold-transition login-page">
-<div class="login-box">
-  <div class="login-logo">
-    <a href="../../index2.html"><b>TRINIDAD</b><br/>Supporters Information System</a>
-  </div>
-  <!-- /.login-logo -->
-  <div class="card">
-    <div class="card-body login-card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
 
-        <div class="input-group mb-3">
-          <input type="email" class="form-control" id="text_username" placeholder="Email">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
-            </div>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          <input type="password" class="form-control" id="text_password" placeholder="Password">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-8">
-            <div class="icheck-primary">
-              <input type="checkbox" id="remember">
-              <label for="remember">
-                Remember Me
-              </label>
-            </div>
-          </div>
-          <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block" id="btn_login"  data-toggle="modal" data-target="#modal_message_box">Sign In</button>
-          </div>
-        </div>
+<body class="hold-transition layout-top-nav">
+<div class="wrapper">
+  <nav class="main-header navbar navbar-expand-md navbar-light navbar-light" style="background-color: #196751">
+    <div class="container">
       
-      <div class="social-auth-links text-center mb-3">
-        <p>- OR -</p>
-        <a href="#" class="btn btn-block btn-primary">
-          <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
-        </a>
-        <a href="#" class="btn btn-block btn-danger">
-          <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
-        </a>
-      </div>
-
-      <p class="mb-1">
-        <a href="forgot-password.html">I forgot my password</a>
-      </p>
-      <p class="mb-0">
-        <a href="register.html" class="text-center">Register a new membership</a>
-      </p>
+      <a href="<?php echo ROOT; ?>" class="navbar-brand">
+        <img src="<?php echo $imgurl['desc']; ?>" alt="TSIS Logo" class="brand-image img-circle elevation-3"
+             style="opacity: .8">
+        <span class="brand-text font-weight-light" style="color:white"><?php echo ($data['system_name']) ? $data['system_name'] : "" ; ?></span>
+      </a>
+      
+      <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+        <li class="mr-3">
+          <input class="form-control form-control-navbar" type="text" id="text_username" placeholder="Username" aria-label="Search">
+        </li>
+        <li class="mr-3">
+          <input class="form-control form-control-navbar" type="password" id="text_password" placeholder="Password" aria-label="Search">
+        </li>
+        <li>
+           <button class="btn btn-navbar" type="submit" id="btn_login"><i class="fas fa-sign-in-alt"></i></button>
+        </li>
+      </ul>
     </div>
+  </nav>
+  <div class="imgbox">
+    <img class="center-fit" src="<?php echo $bgimg['desc']; ?>">
   </div>
-</div>
+</div>  
 
-<div class="modal fade" id="modal_message_box" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<!-- Modal Message -->
+<div class="modal fade" id="modal_message" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modal_title"></h5>
+      <div class="message_modal_header modal-header bg-success">
+        <h5><i class="message_icon icon fas fa-check"></i><span class="ml-2" id="modal_body_header"></span></h5>
       </div>
       <div class="modal-body">
-        <h6 class="modal-body" id="modal_body"></h5>
-      </div>
-      <div class="modal-footer">
-    
+        <span id="modal_body_message"></span>
       </div>
     </div>
   </div>
 </div>
 
-<script src="<?php echo ROOT.BOOTSTRAP; ?>plugins/jquery/jquery.min.js"></script>
-<script src="<?php echo ROOT.BOOTSTRAP; ?>plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="<?php echo ROOT.BOOTSTRAP; ?>dist/js/adminlte.min.js"></script>
+<?php require 'app/views/components/footer.php'; ?>
 <script src="<?php echo ROOT; ?>public/js/login.js"></script>
 </body>
+
 </html>

@@ -1,6 +1,6 @@
 
-$('#btn_view_leaders').fadeOut();
-$('#btn_delete_ward').fadeOut();
+//$('#btn_view_leaders').fadeOut();
+//$('#btn_delete_ward').fadeOut();
 //Variable for Member Count
 var member_counter = 0;
 //Variable indicator if save or update
@@ -29,14 +29,15 @@ $('#cbo_barangay').on('change', function() {
 	var barangay = $('#cbo_barangay').val();
 
 	if (barangay != 0) {
-		$('#btn_view_leaders').fadeIn();
-	}
-
-	if (barangay != 0) {
+		$('#btn_view_leaders').removeClass('invisible');
 		get_voters(barangay);
 		get_ward_leaders(barangay);
 		clear();
 	}
+	else{
+		$('#btn_view_leaders').addClass('invisible');
+	}
+	
 });
 
 //Hide Add Member Control
@@ -127,7 +128,7 @@ $('body').on('click', '#btn_add_member', function(){
 										'<td>'+firstname+'</td>'+
 										'<td>'+middlename+'</td>'+
 										'<td>'+lastname+'</td>'+
-										'<td><button type="button" value="' + id + '" class="btn btn-danger" id="btn_remove_member" data-toggle="tooltip" data-placement="top" title="Remove Member"><i class="fas fa-trash"> Remove</i></button></td></tr>');
+										'<td><button type="button" value="' + id + '" class="btn btn-sm btn-danger" id="btn_remove_member" data-toggle="tooltip" data-placement="top" title="Remove Member"><i class="fas fa-trash mr-2"></i>Remove</button></td></tr>');
 	}
 	
 });
@@ -216,7 +217,8 @@ $('#btn_submit').click(function(){
 
 //Button View Ward
 $('body').on('click', '#btn_view_ward', function(){
-	$('#btn_delete_ward').fadeIn();
+	//$('#btn_delete_ward').fadeIn();
+	$('#btn_delete_ward').removeClass('invisible');
 	var fullname = $(this).closest("tr").find('td:eq(1)').text() + ' ' + $(this).closest("tr").find('td:eq(2)').text() + ' ' + $(this).closest("tr").find('td:eq(3)').text();
 	var leaderid = $(this).val();
 	var wardid = $(this).closest("tr").find('td:eq(4)').text();
@@ -275,8 +277,8 @@ function get_voters(barangay){
 
 	        $.each(data, function(index, arr) {
 	        	dt_voterslist.row.add( [ ++ctr, arr['firstname'] + ' ' + arr['suffix'], arr['middlename'], arr['lastname'], 
-	        		'<button type="button" value="' + arr['id'] + '" class="btn btn-primary" id="btn_select_leader" data-toggle="tooltip" data-placement="top" title="Select Leader"><i class="fas fa-check"> Select</i></button>',
-	        		'<button type="button" value="' + arr['id'] + '" class="btn btn-success" id="btn_add_member" data-toggle="tooltip" data-placement="top" title="Add Member"><i class="fas fa-plus"> Add</i></button>'
+	        		'<button type="button" value="' + arr['id'] + '" class="btn btn-sm btn-primary" id="btn_select_leader" data-toggle="tooltip" data-placement="top" title="Select Leader"><i class="fas fa-check mr-2"></i>Select</button>',
+	        		'<button type="button" value="' + arr['id'] + '" class="btn btn-sm btn-success" id="btn_add_member" data-toggle="tooltip" data-placement="top" title="Add Member"><i class="fas fa-plus mr-2"></i>Add</button>'
 	        	] ).draw();
 	        });
 
@@ -310,7 +312,7 @@ function get_ward_leaders(barangay){
 
 	        $.each(data, function(index, arr) {
 	        	dt_leaderslist.row.add( [ ++ctr, arr['firstname'] + ' ' + arr['suffix'], arr['middlename'], arr['lastname'], arr['wardid'],
-	        		'<button type="button" value="' + arr['id'] + '" class="btn btn-primary" id="btn_view_ward" data-toggle="tooltip" data-placement="top" title="Select Leader"><i class="fas fa-eye"> View</i></button>'
+	        		'<button type="button" value="' + arr['id'] + '" class="btn btn-sm btn-primary" id="btn_view_ward" data-toggle="tooltip" data-placement="top" title="Select Leader"><i class="fas fa-eye mr-2"></i>View</button>'
 	        	] ).draw();
 	        });
 
@@ -448,16 +450,16 @@ function get_wardmembers(wardid){
 		data: {wardid: wardid},
 		dataType: 'html',																																	
 		success: function(result) {
-			var ctr = 0;
+			member_counter = 0;
 			var data = JSON.parse(result);
 			$('#table_member_list tbody').html('');
 	        $.each(data, function(index, arr) {
 	        	$('#table_member_list tbody').append('<tr><td style="display:none">'+arr['id']+'</td>' + 
-										'<td>'+ ++ctr +'</td>'+
+										'<td>'+ ++member_counter +'</td>'+
 										'<td>'+arr['firstname']+' '+arr['suffix']+'</td>'+
 										'<td>'+arr['middlename']+'</td>'+
 										'<td>'+arr['lastname']+'</td>'+
-										'<td><button type="button" value="' + arr['id'] + '" class="btn btn-danger" id="btn_remove_member" data-toggle="tooltip" data-placement="top" title="Remove Member"><i class="fas fa-trash"> Remove</i></button></td></tr>');
+										'<td><button type="button" value="' + arr['id'] + '" class="btn btn-sm btn-danger" id="btn_remove_member" data-toggle="tooltip" data-placement="top" title="Remove Member"><i class="fas fa-trash mr-2"></i>Remove</button></td></tr>');
 	        });
 		},
 		error: function(obj, err, ex){
@@ -487,7 +489,8 @@ function clear(){
 	$('#text_ward_leader_id').val('');
 	$('#text_ward_leader_name').val('');
 	$('#table_member_list tbody').html('');
-	$('#btn_delete_ward').fadeOut();
+	//$('#btn_delete_ward').fadeOut();
+	$('#btn_delete_ward').addClass('invisible');
 	submit = "save";
 	member_counter = 0;
 }

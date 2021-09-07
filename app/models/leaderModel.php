@@ -15,7 +15,7 @@ class leaderModel extends model{
 
 		foreach ($settings as $key => $value) {
 			$data = (object) $value;
-			if ($data->name == 'Active Year'){
+			if ($data->name == 'Active Election Year'){
 				return $data->desc;
 			}
 		}
