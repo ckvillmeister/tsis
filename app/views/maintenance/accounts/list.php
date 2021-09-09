@@ -1,12 +1,23 @@
-<table class="table table-sm table-bordered table-striped display nowrap bg-white" id="table_access_role_list">
+<style>
+  #tbl_accounts_list{
+    font-size: 10pt
+  }
+
+  .col-header {
+    font-size: 10pt
+  }
+
+</style>
+
+<table class="table table-sm table-bordered table-striped display bg-white" style="width: 100%" id="tbl_accounts_list">
   <thead>
     <tr>
-      <th class="text-center">#</th>
-      <th class="text-center">User Fullname</th>
-      <th class="text-center">Account Username</th>
-      <th class="text-center">Role</th>
-      <th class="text-center">Created By</th>
-      <th class="text-center">Controls</th>
+      <th class="text-center col-header">No</th>
+      <th class="text-center col-header">User Fullname</th>
+      <th class="text-center col-header">Account Username</th>
+      <th class="text-center col-header">Role</th>
+      <th class="text-center col-header">Created By</th>
+      <th class="text-center col-header">Controls</th>
     </tr>
   </thead>
   <tbody>
@@ -44,3 +55,16 @@
 	?>    
   </tbody>
 </table>
+
+<script type="text/javascript">
+  $('#tbl_accounts_list').DataTable({
+    "scrollX": true,
+    "ordering": false,
+    lengthMenu: [[10, 25, 50, 100, 200, -1], [10, 25, 50, 100, 200, "All"]],
+    styles: {
+      tableHeader: {
+        fontSize: 8
+      }
+    }
+  });
+</script>

@@ -71,7 +71,11 @@ function get_ward_list(barangay){
 			$('#report').html(result);
 		},
 		error: function(obj, err, ex){
-			
+			$.alert({
+	            title: "Error",
+	            type: "red",
+	            content: msg + ": " + obj.status + " " + exception
+	          })
 		}
 	})
 }
@@ -95,7 +99,11 @@ function get_election_result(year){
 			$('#report').html(result);
 		},
 		error: function(obj, err, ex){
-			
+			$.alert({
+	            title: "Error",
+	            type: "red",
+	            content: msg + ": " + obj.status + " " + exception
+	          })
 		}
 	})
 }
@@ -119,7 +127,11 @@ function get_comparison(position){
 			$('#report').html(result);
 		},
 		error: function(obj, err, ex){
-			
+			$.alert({
+	            title: "Error",
+	            type: "red",
+	            content: msg + ": " + obj.status + " " + exception
+	          })
 		}
 	})
 }
@@ -143,7 +155,11 @@ function get_supporters_list(supporter_type, barangay){
 			$('#report').html(result);
 		},
 		error: function(obj, err, ex){
-			
+			$.alert({
+	            title: "Error",
+	            type: "red",
+	            content: msg + ": " + obj.status + " " + exception
+	        })
 		}
 	})
 }
@@ -167,7 +183,11 @@ function get_search_list(barangay, purok, precinct, name){
 			$('#report').html(result);
 		},
 		error: function(obj, err, ex){
-			
+			$.alert({
+	            title: "Error",
+	            type: "red",
+	            content: msg + ": " + obj.status + " " + exception
+	        })
 		}
 	})
 }

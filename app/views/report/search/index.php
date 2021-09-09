@@ -47,7 +47,7 @@
               </div>
               <div class="col-lg-3">
                 <select class="form-control form-control-sm" id="cbo_barangay">
-                  <option value="0"></option>
+                  <option value="0"> Select Barangay </option>
                     <?php 
                       $barangays = $data['barangay'];
                       foreach ($barangays as $key => $barangay) {
@@ -66,7 +66,7 @@
               </div>
               <div class="col-lg-3">
                 <select class="form-control form-control-sm" id="cbo_purok">
-                  <option value="0"></option>
+                  <option value="0"> Select Purok </option>
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
@@ -84,7 +84,7 @@
                 Name:
               </div>
               <div class="col-lg-3">
-                <input type="text" class="form-control form-control-sm" id="txt_name">
+                <input type="text" class="form-control form-control-sm" id="txt_name" style="padding-left:20px" placeholder="Supporter's Name">
               </div>
             </div>
 
@@ -94,7 +94,7 @@
               </div>
               <div class="col-lg-3">
                 <select id="cbo_precinct" class="form-control form-control-sm" style="width: 100%;">
-                  <option value=""></option>
+                  <option value=""> Select Precinct Number </option>
                     <?php 
                       $precincts = $data['precincts'];
                       foreach ($precincts as $key => $precinct) {

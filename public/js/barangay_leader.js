@@ -30,6 +30,11 @@ function get_barangay_leaders(){
         $('#barangay_leaders').html(result);
       },
       error: function(obj, err, ex){
+        $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
       }
   })
 }
@@ -53,7 +58,11 @@ function get_voters_list(barangay_id){
       $('#voters_list').html(result);
     },
     error: function(obj, err, ex){
-    
+      $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 }
@@ -68,7 +77,11 @@ function set_barangay_leader(voters_id, barangay_id){
       $('#barangay_leaders').html(result);
     },
     error: function(obj, err, ex){
-    
+      $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 }

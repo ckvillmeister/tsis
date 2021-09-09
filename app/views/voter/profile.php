@@ -12,7 +12,7 @@
   <?php require 'app/views/components/sidebar.php'; ?>
 
     <?php
-      $profile = $data['profile'][0];
+      $profile = $data['profile'];
       $imgurl = ($profile['imgurl']) ? ROOT.$profile['imgurl'] : ROOT."public/image/avatar.png";
     ?>
 
@@ -78,114 +78,122 @@
                       <br><br>
                       <div class="card-body mt-5">
 
-                        <div class="row mt-5">
-                          <div class="col-sm-4">
-                            <div class="form-group">
-                              <input type="text" class="form-control form-control-sm" id="text_firstname" placeholder="Firstname" value="<?php echo $profile['firstname'] ?>">
-                            </div>
-                          </div>
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                              <input type="text" class="form-control form-control-sm" id="text_middlename" placeholder="Middlename" value="<?php echo $profile['middlename'] ?>">
-                            </div>
-                          </div>
-                          <div class="col-sm-4">
-                            <div class="form-group">
-                              <input type="text" class="form-control form-control-sm" id="text_lastname" placeholder="Lastname" value="<?php echo $profile['lastname'] ?>">
-                            </div>
-                          </div>
-                          <div class="col-sm-1">
-                            <div class="form-group">
-                              <select id="cbo_extension" class="form-control form-control-sm">
-                                <option value=""></option>
-                                <option value="JR." <?php echo ($profile['suffix'] == "JR.") ? "Selected" : ""; ?>>JR.</option>
-                                <option value="SR." <?php echo ($profile['suffix'] == "SR.") ? "Selected" : ""; ?>>SR.</option>
-                                <option value="I" <?php echo ($profile['suffix'] == "I") ? "Selected" : ""; ?>>I</option>
-                                <option value="II" <?php echo ($profile['suffix'] == "II") ? "Selected" : ""; ?>>II</option>
-                                <option value="III" <?php echo ($profile['suffix'] == "III") ? "Selected" : ""; ?>>III</option>
-                                <option value="IV" <?php echo ($profile['suffix'] == "IV") ? "Selected" : ""; ?>>IV</option>
-                                <option value="V" <?php echo ($profile['suffix'] == "V") ? "Selected" : ""; ?>>V</option>
-                              </select>
-                            </div>
-                          </div>
-                        </div>
+                        <form id="frm">
 
-                        <div class="row">
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                              <select class="form-control form-control-sm" id="cbo_barangay">
-                                <option value=""> [ Barangay ] </option>
-                                <?php 
-                                  foreach ($data['barangay'] as $key => $barangay) {
-                                ?>
-                                    <option value="<?php echo $barangay['id']; ?>" <?php echo ($profile['barangayid'] == $barangay['id']) ? "Selected" : ""; ?>><?php echo $barangay['name'] ?></option>
-                                <?php
-                                  }
-                                ?>
-                              </select>
-                            </div>
-                          </div>
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                              <select class="form-control form-control-sm" id="cbo_purok">
-                                <option value=""> [ Purok ] </option>
-                                <option value="1" <?php echo ($profile['purokno'] == "1") ? "Selected" : ""; ?>> 1 </option>
-                                <option value="2" <?php echo ($profile['purokno'] == "2") ? "Selected" : ""; ?>> 2 </option>
-                                <option value="3" <?php echo ($profile['purokno'] == "3") ? "Selected" : ""; ?>> 3 </option>
-                                <option value="4" <?php echo ($profile['purokno'] == "4") ? "Selected" : ""; ?>> 4 </option>
-                                <option value="5" <?php echo ($profile['purokno'] == "5") ? "Selected" : ""; ?>> 5 </option>
-                                <option value="6" <?php echo ($profile['purokno'] == "6") ? "Selected" : ""; ?>> 6 </option>
-                                <option value="7" <?php echo ($profile['purokno'] == "7") ? "Selected" : ""; ?>> 7 </option>
-                              </select>
-                            </div>
-                          </div>
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                              <input type="date" class="form-control form-control-sm" id="text_birthdate" value="<?php echo $profile['birthdate'] ?>">
-                            </div>
-                          </div>
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                              <select class="form-control form-control-sm" id="cbo_sex">
-                                <option value=""> [ Sex ] </option>
-                                <option value="MALE" <?php echo ($profile['gender'] == "MALE") ? "Selected" : ""; ?>>MALE</option>
-                                <option value="FEMALE" <?php echo ($profile['gender'] == "FEMALE") ? "Selected" : ""; ?>>FEMALE</option>
-                              </select>
-                            </div>
-                          </div>
-                        </div>
+                          <input type="hidden" id="voters_sys_id" name="voters_sys_id" value="<?php echo isset($_GET['voterid']) ? $_GET['voterid'] : ''; ?>">
 
-                        <div class="row">
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                              <input type="text" class="form-control form-control-sm" id="ctext_vin" placeholder="Voter's Identification Number" value="<?php echo $profile['vin'] ?>">
+                          <div class="row mt-5">
+                            <div class="col-sm-4">
+                              <div class="form-group">
+                                <input type="text" class="form-control form-control-sm" id="firstname" name="firstname" placeholder="Firstname" value="<?php echo $profile['firstname'] ?>">
+                              </div>
+                            </div>
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <input type="text" class="form-control form-control-sm" id="middlename" name="middlename" placeholder="Middlename" value="<?php echo $profile['middlename'] ?>">
+                              </div>
+                            </div>
+                            <div class="col-sm-4">
+                              <div class="form-group">
+                                <input type="text" class="form-control form-control-sm" id="lastname" name="lastname" placeholder="Lastname" value="<?php echo $profile['lastname'] ?>">
+                              </div>
+                            </div>
+                            <div class="col-sm-1">
+                              <div class="form-group">
+                                <select id="suffix" name="suffix" class="form-control form-control-sm">
+                                  <option value=""></option>
+                                  <option value="JR." <?php echo ($profile['suffix'] == "JR.") ? "Selected" : ""; ?>>JR.</option>
+                                  <option value="SR." <?php echo ($profile['suffix'] == "SR.") ? "Selected" : ""; ?>>SR.</option>
+                                  <option value="I" <?php echo ($profile['suffix'] == "I") ? "Selected" : ""; ?>>I</option>
+                                  <option value="II" <?php echo ($profile['suffix'] == "II") ? "Selected" : ""; ?>>II</option>
+                                  <option value="III" <?php echo ($profile['suffix'] == "III") ? "Selected" : ""; ?>>III</option>
+                                  <option value="IV" <?php echo ($profile['suffix'] == "IV") ? "Selected" : ""; ?>>IV</option>
+                                  <option value="V" <?php echo ($profile['suffix'] == "V") ? "Selected" : ""; ?>>V</option>
+                                </select>
+                              </div>
                             </div>
                           </div>
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                              <input type="text" class="form-control form-control-sm" id="text_vno" placeholder="Voter's Sequence Number" value="<?php echo $profile['votersno'] ?>">
+
+                          <div class="row">
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <select class="form-control form-control-sm" id="barangay" name="barangay">
+                                  <option value=""> [ Barangay ] </option>
+                                  <?php 
+                                    foreach ($data['barangay'] as $key => $barangay) {
+                                  ?>
+                                      <option value="<?php echo $barangay['id']; ?>" <?php echo ($profile['barangayid'] == $barangay['id']) ? "Selected" : ""; ?>><?php echo ucwords(strtolower($barangay['name'])) ?></option>
+                                  <?php
+                                    }
+                                  ?>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <select class="form-control form-control-sm" id="purok_no" name="purok_no">
+                                  <option value=""> [ Purok ] </option>
+                                  <option value="1" <?php echo ($profile['purokno'] == "1") ? "Selected" : ""; ?>> 1 </option>
+                                  <option value="2" <?php echo ($profile['purokno'] == "2") ? "Selected" : ""; ?>> 2 </option>
+                                  <option value="3" <?php echo ($profile['purokno'] == "3") ? "Selected" : ""; ?>> 3 </option>
+                                  <option value="4" <?php echo ($profile['purokno'] == "4") ? "Selected" : ""; ?>> 4 </option>
+                                  <option value="5" <?php echo ($profile['purokno'] == "5") ? "Selected" : ""; ?>> 5 </option>
+                                  <option value="6" <?php echo ($profile['purokno'] == "6") ? "Selected" : ""; ?>> 6 </option>
+                                  <option value="7" <?php echo ($profile['purokno'] == "7") ? "Selected" : ""; ?>> 7 </option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <input type="date" class="form-control form-control-sm" id="birthdate" name="birthdate" value="<?php echo $profile['birthdate'] ?>">
+                              </div>
+                            </div>
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <select class="form-control form-control-sm" id="gender" name="gender">
+                                  <option value=""> [ Sex ] </option>
+                                  <option value="Male" <?php echo ($profile['gender'] == "Male") ? "Selected" : ""; ?>>Male</option>
+                                  <option value="Female" <?php echo ($profile['gender'] == "Female") ? "Selected" : ""; ?>>Female</option>
+                                </select>
+                              </div>
                             </div>
                           </div>
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                              <input type="text" class="form-control form-control-sm" id="text_precinctno" placeholder="Precinct Number" value="<?php echo $profile['precinctno'] ?>">
+
+                          <div class="row">
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <input type="text" class="form-control form-control-sm" id="vin" name="vin" placeholder="Voter's Identification Number" value="<?php echo $profile['vin'] ?>">
+                              </div>
+                            </div>
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <input type="text" class="form-control form-control-sm" id="vno" name="vno" placeholder="Voter's Sequence Number" value="<?php echo $profile['votersno'] ?>">
+                              </div>
+                            </div>
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <input type="text" class="form-control form-control-sm" id="precinct_no" name="precinct_no" placeholder="Precinct Number" value="<?php echo $profile['precinctno'] ?>">
+                              </div>
+                            </div>
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <input type="text" class="form-control form-control-sm" id="cluster_no" name="cluster_no" placeholder="Cluster Number" value="<?php echo $profile['clusterno'] ?>">
+                              </div>
                             </div>
                           </div>
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                              <input type="text" class="form-control form-control-sm" id="text_clusterno" placeholder="Cluster Number" value="<?php echo $profile['clusterno'] ?>">
-                            </div>
+
+                          <div class="float-right">
+                            <?php if ($accessrole_model->check_access($role, 'saveprofile')): ?>
+                            <button class="btn btn-md btn-primary" id="" value=""><i class="fas fa-save mr-2"></i>Save</button>
+                            <?php endif; ?>
                           </div>
-                        </div>
+
+                        </form>
 
                       </div>
-                      <div class="card-footer">
-                        <div class="float-right">
-                          <?php if ($accessrole_model->check_access($role, 'saveprofile')): ?>
-                          <button class="btn btn-md btn-primary" id="btn_save" value="<?php echo isset($_GET['voterid']) ? $_GET['voterid'] : ''; ?>"><i class="fas fa-save mr-2"></i>Save</button>
-                          <?php endif; ?>
-                        </div>
-                      </div>
+                      <!-- <div class="card-footer">
+                        
+                      </div> -->
                   </div>
                 </div>
             </div>
@@ -198,24 +206,8 @@
    <?php require 'app/views/components/footer_banner.php'; ?>
 </div>
 
-<div class="modal fade" id="modal_message_box" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modal_title"></h5>
-      </div>
-      <div class="modal-body">
-        <h6 class="modal-body" id="modal_body"></h5>
-      </div>
-      <div class="modal-footer">
-      
-      </div>
-    </div>
-  </div>
-</div>
 </body>
 <?php require 'app/views/components/footer.php'; ?>
-<script type="text/javascript" src="<?php echo ROOT.'public/js/voter.js'; ?>"></script>
 <script type="text/javascript">
   
   function image_preview(input) {
@@ -228,6 +220,84 @@
       reader.readAsDataURL(input.files[0]);
     } 
   }
+
+  $('body').on('submit', '#frm', function(e){
+    e.preventDefault();
+
+    var fname = $('#firstname').val(),
+        lname = $('#lastname').val(),
+        barangay = $('#barangay').val();
+
+    if (fname === ''){
+      $.alert({
+        title: "Empty",
+        type: "red",
+        content: "Please provide voter's firstname!"
+      })
+    }
+    else if (lname === ''){
+      $.alert({
+        title: "Empty",
+        type: "red",
+        content: "Please provide voter's lastname!"
+      })
+    }
+    else if (barangay === 0){
+      $.alert({
+        title: "Empty",
+        type: "red",
+        content: "Please select barangay!"
+      })
+    }
+    else{
+      $.ajax({
+        url: 'save_voter_profile',
+        method: 'POST',
+        data: $(this).serialize(),
+        dataType: 'html',
+        beforeSend: function() {
+            $('.overlay-wrapper').html('<div class="overlay">' +
+                      '<i class="fas fa-3x fa-sync-alt fa-spin"></i>' +
+                      '<div class="text-bold pt-2">Loading...</div>' +
+                          '</div>');
+        },
+        complete: function(){
+            $('.overlay-wrapper').html('');
+        },
+        success: function(result) {
+          if (result == 1){
+            $.alert({
+              title: "Saved",
+              type: "green",
+              content: "Voter's information successfully saved!"
+            })
+          }
+          else if (result == 2){
+            $.alert({
+              title: "Updated",
+              type: "green",
+              content: "Voter's information successfully updated!"
+            })
+          }
+          else{
+            $.alert({
+              title: "Error",
+              type: "red",
+              content: "Error during processing..."
+            })
+          }
+          
+        },
+        error: function(obj, err, ex){
+          $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
+        }
+      })
+    }
+  });
 
 </script>
 </html>

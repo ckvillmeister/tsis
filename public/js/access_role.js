@@ -20,12 +20,6 @@ $('#btn_trash').click(function(e){
    get_access_roles(0);
 });
 
-$('.btn_yes').click(function(e){
-  toggle_role(role_id, 0);
-  $('#modal_confirm').modal('hide');
-  get_access_roles(1);
-});
-
 $('body').on('click', '#btn_edit_role', function(e){
   role_id = $(this).val();
   get_access_role_info(role_id);
@@ -34,16 +28,40 @@ $('body').on('click', '#btn_edit_role', function(e){
 
 $('body').on('click', '#btn_delete_role', function(e){
   role_id = $(this).val();
-  $('#modal_confirm #modal_title').html("Confirm");
-  $('#modal_confirm #modal_body').html("Are you sure you want to delete this role?");
-  $('#modal_confirm').modal('show');
+
+  $.confirm({
+      title: 'Confirm',
+      type: 'blue',
+      content: "Are you sure you want to delete this role?",
+      buttons: {
+          ok: function () {
+              toggle_role(role_id, 0);
+              get_access_roles(1);
+          },
+          cancel: function () {
+              
+          }
+      }
+  });
 });
 
 $('body').on('click', '#btn_activate_role', function(e){
   role_id = $(this).val();
-  toggle_role(role_id, 1);
-  $('#modal_confirm').modal('hide');
-  get_access_roles(0);
+
+  $.confirm({
+      title: 'Confirm',
+      type: 'blue',
+      content: "Are you sure you want to re-activate this role?",
+      buttons: {
+          ok: function () {
+              toggle_role(role_id, 1);
+              get_access_roles(0);
+          },
+          cancel: function () {
+              
+          }
+      }
+  });
 });
 
 function process_access_role(id){
@@ -56,31 +74,33 @@ function process_access_role(id){
         },
       success: function(result) {
         if (result == 1){
-          $('#modal_message_box #modal_title').html("New Role");
-          $('#modal_message_box #modal_body').html("New role created!");
-          $('#modal_message_box').modal('show');
-          
-          setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
-          setTimeout(function(){ $('#modal_role_form').modal('hide'); }, 3000);
+          $.alert({
+            title: "Saved",
+            type: "green",
+            content: "New role created!"
+          })
         }
         else if (result == 2){
-          $('#modal_message_box #modal_title').html("Role Updated");
-          $('#modal_message_box #modal_body').html("Access role updated!");
-          $('#modal_message_box').modal('show');
-
-          setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
-          setTimeout(function(){ $('#modal_role_form').modal('hide'); }, 3000);
+          $.alert({
+            title: "Updated",
+            type: "green",
+            content: "Access role updated!"
+          })
         }
         else{
-          $('#modal_message_box #modal_title').html("Error");
-          $('#modal_message_box #modal_body').html("Error during submission. . .");
-          $('#modal_message_box').modal('show');
+          $.alert({
+            title: "Error",
+            type: "blue",
+            content: "Error during processing!"
+          })
         }
       },
       error: function(obj, err, ex){
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 }
@@ -95,9 +115,11 @@ function get_access_roles(status){
         $('#role_list').html(result);
       },
       error: function(obj, err, ex){
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 }
@@ -113,9 +135,11 @@ function get_access_role_info(id){
         $('#text_description').val(result['description']);
       },
       error: function(obj, err, ex){
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 }
@@ -130,9 +154,11 @@ function toggle_role(id, status){
         
       },
       error: function(obj, err, ex){
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 }
@@ -161,21 +187,26 @@ function save_access_rights(id, accs_rights){
         dataType: 'html',
       success: function(result) {
         if (result == 1){
-          $('#modal_message_box #modal_title').html("Access Rights");
-          $('#modal_message_box #modal_body').html("Access rights has been updated!");
-          $('#modal_message_box').modal('show');
+          $.alert({
+            title: "Success",
+            type: "green",
+            content: "Access rights has been updated!"
+          })
         }
         else{
-          $('#modal_message_box #modal_title').html("Error");
-          $('#modal_message_box #modal_body').html("Error during processing!");
-          $('#modal_message_box').modal('show');
+          $.alert({
+            title: "Error",
+            type: "red",
+            content: "Error during processing!"
+          })
         }
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
       },
       error: function(obj, err, ex){
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 }

@@ -11,6 +11,7 @@ class voterController extends controller{
 		else{
 			$settings_model = new settingsModel();
 			$system_name = $settings_model->get_system_name();
+			$barangays = $settings_model->get_barangays(1);
 
 			$accessrole_model = new accessroleModel();
 			$accessroles = $accessrole_model->get_access_roles(1);
@@ -19,7 +20,7 @@ class voterController extends controller{
    			$role = $userinfo['role'];
 			
 			if ($accessrole_model->check_access($role, 'voters')){
-				$this->view()->render('voter/index.php', array('system_name' => $system_name));
+				$this->view()->render('voter/index.php', array('system_name' => $system_name, 'barangays' => $barangays));
 			}
 			else{
 				$this->view()->render('error/forbidden.php', array('system_name' => $system_name));
@@ -56,6 +57,14 @@ class voterController extends controller{
 		}
 	}
 
+	public function get_voter_info(){
+		$id = isset($_POST['id']) ? $_POST['id'] : '';
+
+		$voter_model = new voterModel();
+		$profile = $voter_model->get_voter_profile($id);
+		echo json_encode($profile);
+	}
+
 	public function get_voters_list(){
 		//$content = file_get_contents(PATH_VIEW.'/voter/table.php');
 		//echo $content;
@@ -65,18 +74,23 @@ class voterController extends controller{
 	}
 
 	public function save_voter_profile(){
-		$voter_sys_id = isset($_POST['id']) ? $_POST['id'] : '';
-		$fname = isset($_POST['fname']) ? $_POST['fname'] : '';
-		$mname = isset($_POST['mname']) ? $_POST['mname'] : '';
-		$lname = isset($_POST['lname']) ? $_POST['lname'] : '';
-		$ext = isset($_POST['ext']) ? $_POST['ext'] : '';
-		$barangay = isset($_POST['barangay']) ? $_POST['barangay'] : '';
-		$purok = isset($_POST['purok']) ? $_POST['purok'] : '';
-		$sex = isset($_POST['sex']) ? $_POST['sex'] : '';
+		$voter_sys_id = isset($_POST['voters_sys_id']) ? $_POST['voters_sys_id'] : '';
+		$fname = isset($_POST['firstname']) ? $_POST['firstname'] : '';
+		$mname = isset($_POST['middlename']) ? $_POST['middlename'] : '';
+		$lname = isset($_POST['lastname']) ? $_POST['lastname'] : '';
+		$ext = isset($_POST['suffix']) ? $_POST['suffix'] : '';
 		$vin = isset($_POST['vin']) ? $_POST['vin'] : '';
 		$vno = isset($_POST['vno']) ? $_POST['vno'] : '';
-		$precinctno = isset($_POST['precinctno']) ? $_POST['precinctno'] : '';
-		$clusterno = isset($_POST['clusterno']) ? $_POST['clusterno'] : '';
+		$precinctno = isset($_POST['precinct_no']) ? $_POST['precinct_no'] : '';
+		$clusterno = isset($_POST['cluster_no']) ? $_POST['cluster_no'] : '';
+		$purok = isset($_POST['purok_no']) ? $_POST['purok_no'] : '';
+		$barangay = isset($_POST['barangay']) ? $_POST['barangay'] : '';
+		$birthdate = isset($_POST['birthdate']) ? $_POST['birthdate'] : '';
+		$sex = isset($_POST['gender']) ? $_POST['gender'] : '';
+
+		$this->voterObj = new voterModel();
+		$res = $this->voterObj->save_voter_profile($voter_sys_id, $fname, $mname, $lname, $ext, $vin, $vno, $precinctno, $clusterno, $purok, $barangay, $birthdate, $sex);
+		echo $res;
 	}
 
 	public function save_image(){

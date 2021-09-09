@@ -76,14 +76,14 @@ class voterModel extends model{
 							INNER JOIN tbl_barangay AS tb ON tb.record_id = tvl.barangay
 							WHERE tvl.record_id = '.$voterid;
 
-
+		
 		$stmt = $this->con->prepare($query);
 		$stmt->execute();
 		$stmt->bind_result($id, $firstname, $middlename, $lastname, $suffix, $vin, $votersno, $precinctno, $clusterno, $purokno, $barangay, $birthdate, $gender, $barangayid, $imgurl);
 		$profile = array();
 
 		while ($stmt->fetch()) {
-			$profile[] = array('id' => $id, 
+			$profile = array('id' => $id, 
 							'firstname' => $firstname, 
 							'middlename' => $middlename,
 							'lastname' => $lastname,
@@ -116,5 +116,49 @@ class voterModel extends model{
 		$stmt->close();
 		$this->con->close();
 		return 1;
+	}
+
+	public function save_voter_profile($id, $fname, $mname, $lname, $ext, $vin, $vno, $precinctno, $clusterno, $purok, $barangay, $birthdate, $sex){
+
+		$status = 1;
+		$result = 0;
+		$year = $this->get_year();
+
+		if ($id == 0){
+			$stmt = $this->con->prepare("INSERT INTO tbl_voters_list (firstname, middlename, lastname, suffix, vin, voters_no, precinct_no, cluster_no, purok_no, barangay, birthdate, gender, record_year, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)");
+			$stmt->bind_param("sssssssssssss", $fname, $mname, $lname, $ext, $vin, $vno, $precinctno, $clusterno, $purok, $barangay, $birthdate, $sex, $year);
+			$stmt->execute();
+			$result = 1;
+		}
+		else{
+			$query_role = "SELECT * FROM tbl_voters_list WHERE record_id = ".$id;
+
+			if (mysqli_num_rows(mysqli_query($this->con, $query_role)) >= 1){
+				$stmt = $this->con->prepare("UPDATE tbl_voters_list 
+													SET 
+													firstname = ?, 
+													middlename = ? ,
+													lastname = ?, 
+													suffix = ? ,
+													vin = ?, 
+													voters_no = ? ,
+													precinct_no = ?, 
+													cluster_no = ? ,
+													purok_no = ?, 
+													barangay = ? ,
+													birthdate = ?, 
+													gender = ? ,
+													record_year = ?
+													WHERE record_id = ?");
+				$stmt->bind_param("ssssssssssssss", $fname, $mname, $lname, $ext, $vin, $vno, $precinctno, $clusterno, $purok, $barangay, $birthdate, $sex, $year, $id);
+				$stmt->execute();
+				$result = 2;
+			}
+		}
+
+		$stmt->close();
+		$this->con->close();
+		return $result;
+		
 	}
 }
