@@ -8,6 +8,11 @@
   <!--<link rel="stylesheet" href="<?php echo ROOT.BOOTSTRAP; ?>plugins/buttons/css/bootstrap.css">
   <link rel="stylesheet" href="<?php echo ROOT.BOOTSTRAP; ?>plugins/buttons/css/buttons.bootstrap4.min.css">
   <link rel="stylesheet" href="<?php echo ROOT.BOOTSTRAP; ?>plugins/buttons/css/dataTables.bootstrap4.min.css">-->
+  <style>
+    .font{
+      font-size: 10pt;
+    }
+  </style>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
@@ -88,7 +93,7 @@
               </div>
             </div>
 
-            <div class="row shadow-none m-3 rounded">
+            <div class="row shadow-none mt-3 mr-3 ml-3 rounded">
               <div class="col-lg-2 align-self-center" style="vertical-align: middle;">
                 Precinct:
               </div>
@@ -104,6 +109,20 @@
                       }
                     ?>
                   </select>
+              </div>
+            </div>
+
+            <div class="row shadow-none m-3 rounded">
+              <div class="col-lg-2 align-self-center" style="vertical-align: middle;">
+                Age Bracket:
+              </div>
+              <div class="col-lg-3">
+                <select id="age_bracket" class="form-control form-control-sm" style="width: 100%;">
+                  <option value=""> Age Bracket </option>
+                  <option value="1"> 15 - 25 </option>
+                  <option value="2"> 26 - 40 </option>
+                  <option value="3"> 41 Above </option>
+                </select>
               </div>
             </div>
 
@@ -159,6 +178,11 @@
   $('#cbo_barangay').select2();
   $('#cbo_purok').select2();
   $('#cbo_precinct').select2();
+  $('#age_bracket').select2();
+  $('#cbo_barangay').select2({dropdownCssClass: "font"});
+  $('#cbo_purok').select2({dropdownCssClass: "font"});
+  $('#cbo_precinct').select2({dropdownCssClass: "font"});
+  $('#age_bracket').select2({dropdownCssClass: "font"});
 
   $('#btn_clear').click(function(){
     $('#cbo_barangay').val('').trigger('change'); 
