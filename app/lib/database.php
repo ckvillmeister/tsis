@@ -18,7 +18,7 @@ class database{
 			mysqli_select_db($this->conn, $this->database_name);
 			$this->conn = new mysqli($this->hostname, $this->username, $this->password, $this->database_name);
 			//$this->conn->set_charset("ISO-8859-1");
-			$this->conn->set_charset("UTF8");
+			$this->conn->set_charset("utf8_mb4");
 			return $this->conn;
 		}
 	}
