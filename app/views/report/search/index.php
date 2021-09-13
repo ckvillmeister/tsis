@@ -119,8 +119,8 @@
               <div class="col-lg-3">
                 <select id="age_bracket" class="form-control form-control-sm" style="width: 100%;">
                   <option value=""> Age Bracket </option>
-                  <option value="1"> 15 - 25 </option>
-                  <option value="2"> 26 - 40 </option>
+                  <option value="1"> 15 - 24 </option>
+                  <option value="2"> 25 - 40 </option>
                   <option value="3"> 41 Above </option>
                 </select>
               </div>

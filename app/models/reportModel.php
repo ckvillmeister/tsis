@@ -396,7 +396,7 @@ class reportModel extends model{
 			if ($age){
 				if (intval($birthdate)){
 					if ($age == 1){
-						if ($voters_age >= 15 | $voters_age <= 25){
+						if ($voters_age >= 15 | $voters_age <= 24){
 							$search_list[$ctr++] = array('firstname' => $firstname, 
 								'middlename' => $middlename,
 								'lastname' => $lastname,
@@ -408,7 +408,7 @@ class reportModel extends model{
 						}
 					}
 					elseif ($age == 2){
-						if ($voters_age >= 26 | $voters_age <= 40){
+						if ($voters_age >= 25 | $voters_age <= 40){
 							$search_list[$ctr++] = array('firstname' => $firstname, 
 								'middlename' => $middlename,
 								'lastname' => $lastname,
