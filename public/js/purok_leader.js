@@ -37,16 +37,20 @@ $('#btn_yes').click(function(){
 
 function get_purok_leaders(barangay_id){
   	$.ajax({
-		url: 'get_purok_leaders',
-		method: 'POST',
-		data: {barangay_id: barangay_id},
-		dataType: 'html',
-		success: function(result) {
-			$('#purok_leaders').html('');
-			$('#purok_leaders').html(result);
-		},
-		error: function(obj, err, ex){
-		
+  		url: 'get_purok_leaders',
+  		method: 'POST',
+  		data: {barangay_id: barangay_id},
+  		dataType: 'html',
+  		success: function(result) {
+  			$('#purok_leaders').html('');
+  			$('#purok_leaders').html(result);
+  		},
+  		error: function(obj, err, ex){
+  		  $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     	}
   	})
 }
@@ -70,7 +74,11 @@ function get_voters_list(barangay_id){
       $('#voters_list').html(result);
     },
     error: function(obj, err, ex){
-    
+      $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 }
@@ -85,7 +93,11 @@ function set_purok_leader(voters_id, barangay_id, purok_no){
       $('#purok_leaders').html(result);
     },
     error: function(obj, err, ex){
-    
+      $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 }

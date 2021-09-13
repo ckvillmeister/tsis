@@ -356,10 +356,10 @@ class reportModel extends model{
 		return $precincts;
 	}
 
-	public function get_search_list($barangay, $purok, $precinct, $name){
+	public function get_search_list($barangay, $purok, $precinct, $name, $age){
 		$year = $this->get_year();
 		$query = 'SELECT firstname, middlename, lastname, suffix, voters_no, 
-					precinct_no, purok_no, cluster_no
+					precinct_no, purok_no, cluster_no, YEAR(CURDATE()) - YEAR(birthdate) AS age, YEAR(birthdate)
 					FROM tbl_voters_list
 					WHERE record_year = ?'; 
 
@@ -386,13 +386,55 @@ class reportModel extends model{
 		$stmt = $connection->prepare($query);
 		$stmt->bind_param('s', $year);
 		$stmt->execute();
-		$stmt->bind_result($firstname, $middlename, $lastname, $suffix, $votersno, $precinctno, $purokno, $clusterno);
+		$stmt->bind_result($firstname, $middlename, $lastname, $suffix, $votersno, $precinctno, $purokno, $clusterno, $voters_age, $birthdate);
 		$member = array();
 		$search_list = array();
 		$ctr = 0;
 
 		while ($stmt->fetch()) {
-			$search_list[$ctr++] = array('firstname' => $firstname, 
+
+			if ($age){
+				if (intval($birthdate)){
+					if ($age == 1){
+						if ($voters_age >= 15 | $voters_age <= 25){
+							$search_list[$ctr++] = array('firstname' => $firstname, 
+								'middlename' => $middlename,
+								'lastname' => $lastname,
+								'suffix' => $suffix,
+								'votersno' => $votersno,
+								'precinctno' => $precinctno,
+								'purokno' => $purokno,
+								'clusterno' => $clusterno);
+						}
+					}
+					elseif ($age == 2){
+						if ($voters_age >= 26 | $voters_age <= 40){
+							$search_list[$ctr++] = array('firstname' => $firstname, 
+								'middlename' => $middlename,
+								'lastname' => $lastname,
+								'suffix' => $suffix,
+								'votersno' => $votersno,
+								'precinctno' => $precinctno,
+								'purokno' => $purokno,
+								'clusterno' => $clusterno);
+						}
+					}
+					elseif ($age == 3){
+						if ($voters_age >= 41){
+							$search_list[$ctr++] = array('firstname' => $firstname, 
+								'middlename' => $middlename,
+								'lastname' => $lastname,
+								'suffix' => $suffix,
+								'votersno' => $votersno,
+								'precinctno' => $precinctno,
+								'purokno' => $purokno,
+								'clusterno' => $clusterno);
+						}
+					}
+				}
+			}
+			else{
+				$search_list[$ctr++] = array('firstname' => $firstname, 
 							'middlename' => $middlename,
 							'lastname' => $lastname,
 							'suffix' => $suffix,
@@ -400,7 +442,7 @@ class reportModel extends model{
 							'precinctno' => $precinctno,
 							'purokno' => $purokno,
 							'clusterno' => $clusterno);
-
+			}
 		}
 
 		$stmt->close();

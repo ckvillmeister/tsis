@@ -12,10 +12,18 @@
   <?php require 'app/views/components/sidebar.php'; ?>
 
     <style>
-    #btn_view_leaders, #btn_search_leader, #btn_search_member, #btn_submit, #btn_delete_ward {
-      width:160px;
-      border-radius: 5px;
-    }
+      #btn_view_leaders, #btn_search_leader, #btn_search_member, #btn_submit, #btn_delete_ward {
+        width:160px;
+        border-radius: 5px;
+      }
+
+      #table_member_list{
+        font-size: 10pt
+      }
+
+      .col-header {
+        font-size: 10pt
+      }
     </style>
 
     <div class="content-wrapper">
@@ -92,15 +100,15 @@
               <br><br>
               <div class="row mt-3">
                 <div class="col-sm-12">
-                  <table class="table table-sm table-head-fixed table-striped bg-white p-2" id="table_member_list" style="width:100%">
+                  <table class="table table-sm table-bordered table-striped display bg-white" id="table_member_list" style="width:100%">
                     <thead>
                       <tr>
-                        <th style="display: none"></th>
-                        <th style="width: 20px">No.</th>
-                        <th>First Name</th>
-                        <th>Middle Name</th>
-                        <th>Last Name</th>
-                        <th style="width:150px">Control</th>
+                        <th class="text-center" style="display: none"></th>
+                        <th class="text-center" style="width: 20px">No.</th>
+                        <th class="text-center" >First Name</th>
+                        <th class="text-center" >Middle Name</th>
+                        <th class="text-center" >Last Name</th>
+                        <th class="text-center" style="width:150px">Control</th>
                       </tr>
                     </thead>
                     <tbody>

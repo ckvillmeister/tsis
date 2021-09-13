@@ -39,9 +39,10 @@ $('#btn_search_result').click(function() {
 	var purok = $('#cbo_purok').val();
 	var name = $('#txt_name').val();
 	var precinct = $('#cbo_precinct').val();
+	var age = $('#age_bracket').val();
 
 	if (barangay != 0) {
-		get_search_list(barangay, purok, precinct, name);
+		get_search_list(barangay, purok, precinct, name, age);
 		$('#btn_clear').removeClass('invisible');
 	}
 });
@@ -71,7 +72,11 @@ function get_ward_list(barangay){
 			$('#report').html(result);
 		},
 		error: function(obj, err, ex){
-			
+			$.alert({
+	            title: "Error",
+	            type: "red",
+	            content: msg + ": " + obj.status + " " + exception
+	          })
 		}
 	})
 }
@@ -95,7 +100,11 @@ function get_election_result(year){
 			$('#report').html(result);
 		},
 		error: function(obj, err, ex){
-			
+			$.alert({
+	            title: "Error",
+	            type: "red",
+	            content: msg + ": " + obj.status + " " + exception
+	          })
 		}
 	})
 }
@@ -119,7 +128,11 @@ function get_comparison(position){
 			$('#report').html(result);
 		},
 		error: function(obj, err, ex){
-			
+			$.alert({
+	            title: "Error",
+	            type: "red",
+	            content: msg + ": " + obj.status + " " + exception
+	          })
 		}
 	})
 }
@@ -143,16 +156,20 @@ function get_supporters_list(supporter_type, barangay){
 			$('#report').html(result);
 		},
 		error: function(obj, err, ex){
-			
+			$.alert({
+	            title: "Error",
+	            type: "red",
+	            content: msg + ": " + obj.status + " " + exception
+	        })
 		}
 	})
 }
 
-function get_search_list(barangay, purok, precinct, name){
+function get_search_list(barangay, purok, precinct, name, age){
 	$.ajax({
 		url: 'get_search_list',
 		method: 'POST',
-		data: {barangay: barangay, purok: purok, precinct: precinct, name: name},
+		data: {barangay: barangay, purok: purok, precinct: precinct, name: name, age: age},
 		dataType: 'html',
 		beforeSend: function() {
 		    $('.overlay-wrapper').html('<div class="overlay">' +
@@ -167,7 +184,11 @@ function get_search_list(barangay, purok, precinct, name){
 			$('#report').html(result);
 		},
 		error: function(obj, err, ex){
-			
+			$.alert({
+	            title: "Error",
+	            type: "red",
+	            content: msg + ": " + obj.status + " " + exception
+	        })
 		}
 	})
 }

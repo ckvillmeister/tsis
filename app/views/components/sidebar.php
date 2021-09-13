@@ -32,7 +32,7 @@
   <div class="sidebar">
 
     <nav class="mt-2">
-      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+      <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
 
         <?php if ($accessrole_model->check_access($role, 'dashboard')): ?>
         <li class="nav-item">

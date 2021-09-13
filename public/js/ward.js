@@ -60,23 +60,29 @@ $('body').on('click', '#btn_select_leader', function(){
 	var id = $(this).val();
 
 	if (isMemberExist(id)){
-		$('#modal_message_box #modal_title').html("Warning!");
-		$('#modal_message_box #modal_body').html(fullname + ' is already added in the member list!');
-		$('#modal_message_box').modal('show');
+		$.alert({
+            title: "Warning",
+            type: "red",
+            content: fullname + ' is already added in the member list!'
+        })
 	}
 	else{
 		if (isSupporter(id, fullname, 'leader')){
-			$('#modal_message_box #modal_title').html("Warning!");
-			$('#modal_message_box #modal_body').html(fullname + ' is already a ward leader!');
-			$('#modal_message_box').modal('show');
+			$.alert({
+	            title: "Warning",
+	            type: "red",
+	            content: fullname + ' is already a ward leader!'
+	        })
 			return;
 		}
 
 		if (isSupporter(id, fullname, 'member')){
 			var name = get_wardleader(id);
-			$('#modal_message_box #modal_title').html("Warning!");
-			$('#modal_message_box #modal_body').html(fullname + ' is already member of '+name+'!');
-			$('#modal_message_box').modal('show');
+			$.alert({
+	            title: "Warning",
+	            type: "red",
+	            content: fullname + ' is already member of '+name+'!'
+	        })
 			return;
 		}
 		
@@ -98,28 +104,36 @@ $('body').on('click', '#btn_add_member', function(){
 		fullname = firstname + ' ' + middlename + ' ' + lastname;
 
 	if (leader_id == id){
-		$('#modal_message_box #modal_title').html("Warning!");
-		$('#modal_message_box #modal_body').html(fullname + ' is already selected as ward leader!');
-		$('#modal_message_box').modal('show');
+		$.alert({
+            title: "Warning",
+            type: "red",
+            content: fullname + ' is already selected as ward leader!'
+        })
 	}
 	else if (isMemberExist(id)){
-		$('#modal_message_box #modal_title').html("Warning!");
-		$('#modal_message_box #modal_body').html(fullname + ' is already in the list!');
-		$('#modal_message_box').modal('show');
+		$.alert({
+            title: "Warning",
+            type: "red",
+            content: fullname + ' is already in the list!'
+        })
 	}
 	else{
 		if (isSupporter(id, fullname, 'leader')){
-			$('#modal_message_box #modal_title').html("Warning!");
-			$('#modal_message_box #modal_body').html(fullname + ' is already a ward leader!');
-			$('#modal_message_box').modal('show');
+			$.alert({
+	            title: "Warning",
+	            type: "red",
+	            content: fullname + ' is already a ward leader!'
+	        })
 			return;
 		}
 
 		if (isSupporter(id, fullname, 'member')){
 			var name = get_wardleader(id);
-			$('#modal_message_box #modal_title').html("Warning!");
-			$('#modal_message_box #modal_body').html(fullname + ' is already member of '+name+'!');
-			$('#modal_message_box').modal('show');
+			$.alert({
+	            title: "Warning",
+	            type: "red",
+	            content: fullname + ' is already member of '+name+'!'
+	        })
 			return;
 		}
 
@@ -135,7 +149,6 @@ $('body').on('click', '#btn_add_member', function(){
 
 //Modal Remove Confirmation
 $('body').on('click', '#btn_remove_member', function(){
-	$('#modal_remove_confirm').modal('show');
 	member_id = $(this).val();
 	var firstname = $(this).closest("tr").find('td:eq(2)').text(),
 		middlename = $(this).closest("tr").find('td:eq(3)').text(),
@@ -143,15 +156,39 @@ $('body').on('click', '#btn_remove_member', function(){
 		fullname = firstname + ' ' + middlename + ' ' + lastname;
 
 	if (isSupporter(member_id, fullname, 'member')){
-		$('#modal_body_message').html('This is an irreversible action. Are you sure you want to remove ' + fullname + ' as a member?');
+		$.confirm({
+			title: 'Confirm',
+			type: 'blue',
+			content: "This is an irreversible action. Are you sure you want to remove " + fullname + " as a member?",
+			buttons: {
+				ok: function () {
+					removeMember();
+				},
+				cancel: function () {
+				  
+				}
+			}
+		});
 	}
 	else{
-		$('#modal_body_message').html('Are you sure you want to remove ' + fullname + ' as a member?');
+		$.confirm({
+			title: 'Confirm',
+			type: 'blue',
+			content: "Are you sure you want to remove " + fullname + " as a member?",
+			buttons: {
+				ok: function () {
+					removeMember();
+				},
+				cancel: function () {
+				  
+				}
+			}
+		});
 	}
 });
 
-//Remove Button
-$('#btn_confirm').click(function(e){
+//Remove Member
+function removeMember(){
 	var i = 0;
 	$('#table_member_list tbody').find('tr').each(function(){
 		var col = $(this).closest("tr").find('td:eq(0)').text();
@@ -174,8 +211,7 @@ $('#btn_confirm').click(function(e){
         no++;
     });
     member_counter--;
-    $('#modal_remove_confirm').modal('toggle');
-});
+}
 
 //Button Submit
 $('#btn_submit').click(function(){
@@ -187,14 +223,18 @@ $('#btn_submit').click(function(){
     var wardid = $('#text_ward_id').val();
 
     if (leader == ''){
-    	$('#modal_message_box #modal_title').html("Error!");
-		$('#modal_message_box #modal_body').html('Please select a ward leader first!');
-		$('#modal_message_box').modal('show');
+    	$.alert({
+            title: "Error",
+            type: "red",
+            content: "Please select a ward leader first!"
+        })
     }
     else if (rows == 0){
-    	$('#modal_message_box #modal_title').html("Error!");
-		$('#modal_message_box #modal_body').html('Please select at least one member!');
-		$('#modal_message_box').modal('show');
+    	$.alert({
+            title: "Error",
+            type: "red",
+            content: "Please select at least one member!"
+        })
     }
     else{
 	    $('#table_member_list tbody').find('tr').each(function(){
@@ -235,23 +275,31 @@ $('body').on('click', '#btn_view_ward', function(){
 $('#btn_delete_ward').click(function(){
 	var wardid = $('#text_ward_id').val();
 	if (wardid == ''){
-		$('#modal_message_box #modal_title').html("Warning!");
-		$('#modal_message_box #modal_body').html('Nothing to remove. Please select and view a ward to remove!');
-		$('#modal_message_box').modal('show');
+		$.alert({
+            title: "Warning!",
+            type: "red",
+            content: "Nothing to remove. Please select and view a ward to remove!"
+        })
 	}
 	else{
-		$('#modal_remove_ward_body_message').html("This is an irreversible action. Are you sure you want to delete this ward?");
-		$('#modal_remove_ward_confirm').modal('show');
+		$.confirm({
+			title: 'Confirm',
+			type: 'blue',
+			content: "This is an irreversible action. Are you sure you want to delete this ward?",
+			buttons: {
+				ok: function () {
+					var wardid = $('#text_ward_id').val();
+					var barangay = $('#cbo_barangay').val();
+					delete_ward(wardid);
+					get_ward_leaders(barangay);
+					clear();
+				},
+				cancel: function () {
+				  
+				}
+			}
+		});
 	}
-})
-
-$('#btn_delete_ward_confirm').click(function(){
-	var wardid = $('#text_ward_id').val();
-	var barangay = $('#cbo_barangay').val();
-	delete_ward(wardid);
-	get_ward_leaders(barangay);
-	clear();
-	$('#modal_remove_ward_confirm').modal('toggle');
 })
 
 //Function: Retrieve Voters By Barangay
@@ -284,7 +332,11 @@ function get_voters(barangay){
 
 		},
 		error: function(obj, err, ex){
-		
+			$.alert({
+	            title: "Error",
+	            type: "red",
+	            content: msg + ": " + obj.status + " " + exception
+	          })
 		}
 	})
 }
@@ -328,7 +380,11 @@ function get_ward_leaders(barangay){
 
 		},
 		error: function(obj, err, ex){
-		
+			$.alert({
+	            title: "Error",
+	            type: "red",
+	            content: msg + ": " + obj.status + " " + exception
+	        })
 		}
 	})
 }
@@ -366,7 +422,11 @@ function isSupporter(id, name, position){
 			flag = result;
 		},
 		error: function(obj, err, ex){
-		
+			$.alert({
+	            title: "Error",
+	            type: "red",
+	            content: msg + ": " + obj.status + " " + exception
+	        })
 		}
 	})
 
@@ -382,18 +442,26 @@ function save_ward(leader, members, barangay){
 		dataType: 'html',
 		success: function(result) {
 			if (result == 1){
-				$('#modal_message_box #modal_title').html("Success!");
-				$('#modal_message_box #modal_body').html('Ward successfully saved!');
-				$('#modal_message_box').modal('show');
+				$.alert({
+		            title: "Saved",
+		            type: "green",
+		            content: "Ward sucessfully saved!"
+		        })
 			}
 			else {
-				$('#modal_message_box #modal_title').html("Error!");
-				$('#modal_message_box #modal_body').html('Error during saving!');
-				$('#modal_message_box').modal('show');
+				$.alert({
+		            title: "Error",
+		            type: "red",
+		            content: "Error during saving!"
+		        })
 			}
 		},
 		error: function(obj, err, ex){
-		
+			$.alert({
+	            title: "Error",
+	            type: "red",
+	            content: msg + ": " + obj.status + " " + exception
+	        })
 		}
 	})
 }
@@ -407,18 +475,26 @@ function update_ward(wardid, leader, members, barangay){
 		dataType: 'html',
 		success: function(result) {
 			if (result == 1){
-				$('#modal_message_box #modal_title').html("Success!");
-				$('#modal_message_box #modal_body').html('Ward successfully updated!');
-				$('#modal_message_box').modal('show');
+				$.alert({
+		            title: "Updated",
+		            type: "green",
+		            content: "Ward sucessfully updated!"
+		        })
 			}
 			else {
-				$('#modal_message_box #modal_title').html("Error!");
-				$('#modal_message_box #modal_body').html('Error during updating!');
-				$('#modal_message_box').modal('show');
+				$.alert({
+		            title: "Error",
+		            type: "red",
+		            content: "Error during updating!"
+		        })
 			}
 		},
 		error: function(obj, err, ex){
-		
+			$.alert({
+	            title: "Error",
+	            type: "red",
+	            content: msg + ": " + obj.status + " " + exception
+	        })
 		}
 	})
 }
@@ -436,7 +512,11 @@ function get_wardleader(id){
 			name = result['firstname']+' '+result['middlename']+' '+result['lastname']+' '+result['suffix'];
 		},
 		error: function(obj, err, ex){
-		
+			$.alert({
+	            title: "Error",
+	            type: "red",
+	            content: msg + ": " + obj.status + " " + exception
+	        })
 		}
 	})
 	return name;
@@ -463,7 +543,11 @@ function get_wardmembers(wardid){
 	        });
 		},
 		error: function(obj, err, ex){
-		
+			$.alert({
+	            title: "Error",
+	            type: "red",
+	            content: msg + ": " + obj.status + " " + exception
+	        })
 		}
 	})
 }
@@ -479,7 +563,11 @@ function remove_ward_member(id){
 			
 		},
 		error: function(obj, err, ex){
-		
+			$.alert({
+	            title: "Error",
+	            type: "red",
+	            content: msg + ": " + obj.status + " " + exception
+	        })
 		}
 	})
 }
@@ -504,18 +592,26 @@ function delete_ward(wardid){
 		dataType: 'html',
 		success: function(result) {
 			if (result == 1){
-				$('#modal_message_box #modal_title').html("Success!");
-				$('#modal_message_box #modal_body').html('Ward successfully removed!');
-				$('#modal_message_box').modal('show');
+				$.alert({
+		            title: "Success",
+		            type: "green",
+		            content: "Ward successfully removed!"
+		        })
 			}
 			else {
-				$('#modal_message_box #modal_title').html("Error!");
-				$('#modal_message_box #modal_body').html('Error during deleting!');
-				$('#modal_message_box').modal('show');
+				$.alert({
+		            title: "Error",
+		            type: "red",
+		            content: "Error during deleting!"
+		        })
 			}
 		},
 		error: function(obj, err, ex){
-		
+			$.alert({
+	            title: "Error",
+	            type: "red",
+	            content: msg + ": " + obj.status + " " + exception
+	        })
 		}
 	})
 }

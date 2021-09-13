@@ -163,9 +163,10 @@ class reportController extends controller{
 		$purok = $_POST['purok'];
 		$precinct = $_POST['precinct'];
 		$name = $_POST['name'];
+		$age = $_POST['age'];
 
 		$reportObj = new reportModel();
-		$searchlist = $reportObj->get_search_list($barangay, $purok, $precinct, $name);
+		$searchlist = $reportObj->get_search_list($barangay, $purok, $precinct, $name, $age);
 		$this->view()->render('report/search/searchlist.php', array('searchlist' => $searchlist));
 	}
 

@@ -11,22 +11,26 @@ function save_settings(systemname, electionyear){
       method: 'POST',
       success: function(result) {
         if (result == 1){
-          $('#modal_message_box').modal('show');
-          $('#modal_message_box #modal_title').html("Saved");
-          $('#modal_message_box #modal_body').html("Your new settings has been saved!");
-          setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+          $.alert({
+            title: "Saved",
+            type: "green",
+            content: "Your new settings has been saved!"
+          })
         }
         else{
-          $('#modal_message_box #modal_title').html("Error");
-          $('#modal_message_box #modal_body').html("Error during saving!");
-          setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+          $.alert({
+            title: "Error",
+            type: "red",
+            content: "Error during saving!"
+          })
         }
       },
       error: function(obj, err, ex){
-        $('#modal_message_box').modal('show');
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+                title: "Error",
+                type: "red",
+                content: msg + ": " + obj.status + " " + exception
+              })
     }
   })
 }
@@ -37,22 +41,26 @@ $('#btn_backup').click(function(e){
       method: 'POST',
       success: function(result) {
         if (result == 1){
-          $('#modal_message_box').modal('show');
-          $('#modal_message_box #modal_title').html("Backed-up");
-          $('#modal_message_box #modal_body').html("Your database has been backed-up!");
-          setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+          $.alert({
+            title: "Successful",
+            type: "green",
+            content: "Your database has been backed-up!"
+          })
         }
         else{
-          $('#modal_message_box #modal_title').html("Error");
-          $('#modal_message_box #modal_body').html("Error during processing!");
-          setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+          $.alert({
+            title: "Error",
+            type: "red",
+            content: "Error during processing!"
+          })
         }
       },
       error: function(obj, err, ex){
-        $('#modal_message_box').modal('show');
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+                title: "Error",
+                type: "red",
+                content: msg + ": " + obj.status + " " + exception
+              })
     }
   })
 });
@@ -74,22 +82,26 @@ $('#btn_save_logo').click(function(e){
       data: form_data,
       success: function(result) {
         if (result == 1){
-          $('#modal_message_box').modal('show');
-          $('#modal_message_box #modal_title').html("Image");
-          $('#modal_message_box #modal_body').html("Image has been saved!");
-          setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+          $.alert({
+            title: "Saved",
+            type: "green",
+            content: "System logo has been set!"
+          })
         }
         else{
-          $('#modal_message_box #modal_title').html("Error");
-          $('#modal_message_box #modal_body').html("Error during saving image!");
-          setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+          $.alert({
+            title: "Error",
+            type: "red",
+            content: "Error during saving!"
+          })
         }
       },
       error: function(obj, err, ex){
-        $('#modal_message_box').modal('show');
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+                title: "Error",
+                type: "red",
+                content: msg + ": " + obj.status + " " + exception
+              })
     }
   })
 });
@@ -111,22 +123,26 @@ $('#btn_save_bg_image').click(function(e){
       data: form_data,
       success: function(result) {
         if (result == 1){
-          $('#modal_message_box').modal('show');
-          $('#modal_message_box #modal_title').html("Image");
-          $('#modal_message_box #modal_body').html("Image has been saved!");
-          setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+          $.alert({
+            title: "Saved",
+            type: "green",
+            content: "Login background image has been set!"
+          })
         }
         else{
-          $('#modal_message_box #modal_title').html("Error");
-          $('#modal_message_box #modal_body').html("Error during saving image!");
-          setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+          $.alert({
+            title: "Error",
+            type: "red",
+            content: "Error during saving!"
+          })
         }
       },
       error: function(obj, err, ex){
-        $('#modal_message_box').modal('show');
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+                title: "Error",
+                type: "red",
+                content: msg + ": " + obj.status + " " + exception
+              })
     }
   })
 });

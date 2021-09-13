@@ -39,6 +39,69 @@ $('#btn_save').click(function(){
     })
 });
 
+$('body').on('click', '#add', function(){
+  $('#voters_sys_id').val('');
+  $('#vin').val('');
+  $('#vno').val('');
+  $('#firstname').val('');
+  $('#middlename').val('');
+  $('#lastname').val('');
+  $('#suffix').val('');
+  $('#precinct_no').val('');
+  $('#cluster_no').val('');
+  $('#purok_no').val('');
+  $('#barangay').val('');
+  $('#birthdate').val('');
+  $('#gender').val('');
+
+  $('#modal_voters_form').modal({
+      backdrop: 'static',
+      keyboard: true, 
+      show: true
+  });
+});
+
+$('body').on('click', '#edit', function(){
+  var id = $(this).val();
+  $('#voters_sys_id').val(id);
+
+  $.ajax({
+    url: 'voter/get_voter_info',
+    method: 'POST',
+    data: { id: id },
+    dataType: 'JSON',
+    success: function(result) {
+      $('#vin').val(result['vin']);
+      $('#vno').val(result['votersno']);
+      $('#firstname').val(result['firstname']);
+      $('#middlename').val(result['middlename']);
+      $('#lastname').val(result['lastname']);
+      $('#suffix').val(result['suffix']);
+      $('#precinct_no').val(result['precinctno']);
+      $('#cluster_no').val(result['clusterno']);
+      $('#purok_no').val(result['purokno']);
+      $('#barangay').val(result['barangayid']);
+      $('#birthdate').val(result['birthdate']);
+      $('#gender').val(result['gender']);
+
+      $('#modal_voters_form').modal({
+        backdrop: 'static',
+        keyboard: true, 
+        show: true
+      });
+
+
+    },
+    error: function(obj, err, ex){
+      $.alert({
+          title: "Error",
+          type: "red",
+          content: msg + ": " + obj.status + " " + exception
+        })
+    }
+  })
+});
+
 $('#btn_save_image').click(function(e) {
 	e.preventDefault();
 
@@ -56,14 +119,18 @@ $('#btn_save_image').click(function(e) {
       data: form_data,
       success: function(result) {
       	if (result == 1){
-      		$('#modal_message_box #modal_title').html("Info");
-			$('#modal_message_box #modal_body').html("Image has been saved!");
-			$('#modal_message_box').modal('show');
+          $.alert({
+            title: "Saved",
+            type: "green",
+            content: "Image has been saved!"
+          })
       	}
       	else{
-      		$('#modal_message_box #modal_title').html("Error");
-			$('#modal_message_box #modal_body').html("Error during saving. . .");
-			$('#modal_message_box').modal('show');
+          $.alert({
+            title: "Error",
+            type: "red",
+            content: "Error during processing!"
+          })
       	}
         
       },
@@ -96,4 +163,85 @@ function get_voters_list(){
 		}
 	})
 }
+
+$('body').on('submit', '#frm', function(e){
+    e.preventDefault();
+
+    var fname = $('#firstname').val(),
+        lname = $('#lastname').val(),
+        barangay = $('#barangay').val();
+
+    if (fname === ''){
+      $.alert({
+        title: "Empty",
+        type: "red",
+        content: "Please provide voter's firstname!"
+      })
+    }
+    else if (lname === ''){
+      $.alert({
+        title: "Empty",
+        type: "red",
+        content: "Please provide voter's lastname!"
+      })
+    }
+    else if (barangay === 0){
+      $.alert({
+        title: "Empty",
+        type: "red",
+        content: "Please select barangay!"
+      })
+    }
+    else{
+      $.ajax({
+        url: 'voter/save_voter_profile',
+        method: 'POST',
+        data: $(this).serialize(),
+        dataType: 'html',
+        beforeSend: function() {
+            $('.overlay-wrapper').html('<div class="overlay">' +
+                      '<i class="fas fa-3x fa-sync-alt fa-spin"></i>' +
+                      '<div class="text-bold pt-2">Loading...</div>' +
+                          '</div>');
+        },
+        complete: function(){
+            $('.overlay-wrapper').html('');
+        },
+        success: function(result) {
+          if (result == 1){
+            $.alert({
+              title: "Saved",
+              type: "green",
+              content: "Voter's information successfully saved!"
+            })
+
+            get_voters_list(1);
+          }
+          else if (result == 2){
+            $.alert({
+              title: "Updated",
+              type: "green",
+              content: "Voter's information successfully updated!"
+            })
+          }
+          else{
+            $.alert({
+              title: "Error",
+              type: "red",
+              content: "Error during processing!"
+            })
+          }
+          
+        },
+        error: function(obj, err, ex){
+          $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
+        }
+      })
+    }
+
+});
 

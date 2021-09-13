@@ -21,12 +21,6 @@ $('#btn_trash').click(function(e){
    get_barangays(0);
 });
 
-$('.btn_yes').click(function(e){
-  toggle_barangay(barangay_id, 0);
-  $('#modal_confirm').modal('hide');
-  get_barangays(1);
-});
-
 $('body').on('click', '#btn_edit_brgy', function(e){
   barangay_id = $(this).val();
   get_barangay_info(barangay_id);
@@ -35,16 +29,38 @@ $('body').on('click', '#btn_edit_brgy', function(e){
 
 $('body').on('click', '#btn_delete_brgy', function(e){
   barangay_id = $(this).val();
-  $('#modal_confirm #modal_title').html("Confirm");
-  $('#modal_confirm #modal_body').html("Are you sure you want to delete this barangay?");
-  $('#modal_confirm').modal('show');
+  $.confirm({
+      title: 'Confirm',
+      type: 'blue',
+      content: "Are you sure you want to delete this barangay?",
+      buttons: {
+          ok: function () {
+            toggle_barangay(barangay_id, 0);
+            get_barangays(1);
+          },
+          cancel: function () {
+              
+          }
+      }
+  });
 });
 
 $('body').on('click', '#btn_activate_brgy', function(e){
   barangay_id = $(this).val();
-  toggle_barangay(barangay_id, 1);
-  $('#modal_confirm').modal('hide');
-  get_barangays(0);
+  $.confirm({
+      title: 'Confirm',
+      type: 'blue',
+      content: "Are you sure you want to re-activate this barangay?",
+      buttons: {
+          ok: function () {
+            toggle_barangay(barangay_id, 1);
+            get_barangays(0);
+          },
+          cancel: function () {
+              
+          }
+      }
+  });
 });
 
 function process_barangay(id){
@@ -56,31 +72,33 @@ function process_barangay(id){
         },
       success: function(result) {
         if (result == 1){
-          $('#modal_message_box #modal_title').html("New Barangay");
-          $('#modal_message_box #modal_body').html("New barangay added!");
-          $('#modal_message_box').modal('show');
-          
-          setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
-          setTimeout(function(){ $('#modal_barangay_form').modal('hide'); }, 3000);
+          $.alert({
+            title: "Saved",
+            type: "green",
+            content: "New barangay successfully saved!"
+          })
         }
         else if (result == 2){
-          $('#modal_message_box #modal_title').html("Barangay Updated");
-          $('#modal_message_box #modal_body').html("Barangay info updated!");
-          $('#modal_message_box').modal('show');
-
-          setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
-          setTimeout(function(){ $('#modal_barangay_form').modal('hide'); }, 3000);
+          $.alert({
+            title: "Updated",
+            type: "green",
+            content: "Barangay info successfully updated!"
+          })
         }
         else{
-          $('#modal_message_box #modal_title').html("Error");
-          $('#modal_message_box #modal_body').html("Error during submission. . .");
-          $('#modal_message_box').modal('show');
+          $.alert({
+            title: "Error",
+            type: "blue",
+            content: "Error during processing!"
+          })
         }
       },
       error: function(obj, err, ex){
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 }
@@ -95,9 +113,11 @@ function get_barangays(status){
         $('#barangay_list').html(result);
       },
       error: function(obj, err, ex){
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 }
@@ -112,9 +132,11 @@ function get_barangay_info(id){
         $('#text_barangay').val(result['name']);
       },
       error: function(obj, err, ex){
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 }
@@ -129,9 +151,11 @@ function toggle_barangay(id, status){
         
       },
       error: function(obj, err, ex){
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 }

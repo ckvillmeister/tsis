@@ -35,16 +35,40 @@ $('body').on('click', '#btn_edit_candidate', function(e){
 
 $('body').on('click', '#btn_delete_candidate', function(e){
   candidate_id = $(this).val();
-  $('#modal_confirm #modal_title').html("Confirm");
-  $('#modal_confirm #modal_body').html("Are you sure you want to delete this candidate?");
-  $('#modal_confirm').modal('show');
+
+  $.confirm({
+      title: 'Confirm',
+      type: 'blue',
+      content: "Are you sure you want to delete this candidate?",
+      buttons: {
+          ok: function () {
+            toggle_candidate(candidate_id, 0);
+            get_candidates(1);
+          },
+          cancel: function () {
+              
+          }
+      }
+  });
 });
 
 $('body').on('click', '#btn_activate_candidate', function(e){
   candidate_id = $(this).val();
-  toggle_candidate(candidate_id, 1);
-  $('#modal_confirm').modal('hide');
-  get_candidates(0);
+
+  $.confirm({
+      title: 'Confirm',
+      type: 'blue',
+      content: "Are you sure you want to re-activate this candidate?",
+      buttons: {
+          ok: function () {
+            toggle_candidate(candidate_id, 1);
+            get_candidates(0);
+          },
+          cancel: function () {
+              
+          }
+      }
+  });
 });
 
 function process_candidate(id){
@@ -59,31 +83,33 @@ function process_candidate(id){
         },
       success: function(result) {
         if (result == 1){
-          $('#modal_message_box #modal_title').html("New candidate");
-          $('#modal_message_box #modal_body').html("New candidate added!");
-          $('#modal_message_box').modal('show');
-          
-          setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
-          setTimeout(function(){ $('#modal_candidate_form').modal('hide'); }, 3000);
+          $.alert({
+            title: "Saved",
+            type: "green",
+            content: "New candidate added successfully!"
+          })
         }
         else if (result == 2){
-          $('#modal_message_box #modal_title').html("Candidate Updated");
-          $('#modal_message_box #modal_body').html("Candidate information updated!");
-          $('#modal_message_box').modal('show');
-
-          setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
-          setTimeout(function(){ $('#modal_candidate_form').modal('hide'); }, 3000);
+          $.alert({
+            title: "Updated",
+            type: "green",
+            content: "Candidate information updated successfully!"
+          })
         }
         else{
-          $('#modal_message_box #modal_title').html("Error");
-          $('#modal_message_box #modal_body').html("Error during submission. . .");
-          $('#modal_message_box').modal('show');
+          $.alert({
+            title: "Error",
+            type: "blue",
+            content: "Error during processing!"
+          })
         }
       },
       error: function(obj, err, ex){
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 }
@@ -98,9 +124,11 @@ function get_candidates(status){
         $('#candidates_list').html(result);
       },
       error: function(obj, err, ex){
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 }
@@ -118,9 +146,11 @@ function get_candidate_info(id){
         $('#cbo_isallied').val(result['isallied']);
       },
       error: function(obj, err, ex){
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 }
@@ -135,9 +165,11 @@ function toggle_candidate(id, status){
         
       },
       error: function(obj, err, ex){
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 }
@@ -163,41 +195,40 @@ $('#btn_add_vote_record').click(function(e){
         dataType: 'html',
       success: function(result) {
         if (result == 1){
-          $('#modal_message_box #modal_title').html("New Election Result");
-          $('#modal_message_box #modal_body').html("New election result added!");
-          $('#modal_message_box').modal('show');
-          
-          setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
-          setTimeout(function(){ $('#modal_candidate_form').modal('hide'); }, 3000);
-          setTimeout(function(){ location.reload(); }, 4000);
+          $.alert({
+            title: "Election Result",
+            type: "green",
+            content: "New election result added!"
+          })
         }
         else if (result == 2){
-          $('#modal_message_box #modal_title').html("Election Result Updated");
-          $('#modal_message_box #modal_body').html("Election result updated!");
-          $('#modal_message_box').modal('show');
-
-          setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
-          setTimeout(function(){ $('#modal_candidate_form').modal('hide'); }, 3000);
-          setTimeout(function(){ location.reload(); }, 4000);
+          $.alert({
+            title: "Election Result Update",
+            type: "green",
+            content: "Election result updated!"
+          })
         }
         else if (result == 3){
-          $('#modal_message_box #modal_title').html("Error");
-          $('#modal_message_box #modal_body').html("Election result already exist!");
-          $('#modal_message_box').modal('show');
-
-          setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
-          setTimeout(function(){ $('#modal_candidate_form').modal('hide'); }, 3000);
+          $.alert({
+            title: "Error",
+            type: "green",
+            content: "Election result already exist!"
+          })
         }
         else{
-          $('#modal_message_box #modal_title').html("Error");
-          $('#modal_message_box #modal_body').html("Error during submission. . .");
-          $('#modal_message_box').modal('show');
+          $.alert({
+            title: "Error",
+            type: "blue",
+            content: "Error during processing!"
+          })
         }
       },
       error: function(obj, err, ex){
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 });
@@ -217,9 +248,11 @@ $('body #tbl_result_list').on('click', '#btn_edit_result', function(e){
         $('#modal_election_result_add').modal('show');
       },
       error: function(obj, err, ex){
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 
@@ -227,17 +260,38 @@ $('body #tbl_result_list').on('click', '#btn_edit_result', function(e){
 
 $('body').on('click', '#btn_delete_result', function(e){
   candidate_record_id = $(this).val();
-  $('#modal_confirm #modal_title').html("Confirm");
-  $('#modal_confirm #modal_body').html("Are you sure you want to delete this record?");
-  $('#modal_confirm').modal('show');
+
+  $.confirm({
+      title: 'Confirm',
+      type: 'blue',
+      content: "Are you sure you want to delete this record?",
+      buttons: {
+          ok: function () {
+            toggle_election_result_record(candidate_record_id, 0);
+          },
+          cancel: function () {
+              
+          }
+      }
+  });
 });
 
 $('body').on('click', '#btn_activate_result', function(e){
-  toggle_election_result_record($(this).val(), 1);
-});
+  candidate_record_id = $(this).val();
 
-$('.btn_yes').click(function(e){
-  toggle_election_result_record(candidate_record_id, 0);
+  $.confirm({
+      title: 'Confirm',
+      type: 'blue',
+      content: "Are you sure you want to re-activate this record?",
+      buttons: {
+          ok: function () {
+            toggle_election_result_record(candidate_record_id, 1);
+          },
+          cancel: function () {
+              
+          }
+      }
+  });
 });
 
 function toggle_election_result_record(id, status){
@@ -250,9 +304,11 @@ function toggle_election_result_record(id, status){
         setTimeout(function(){ location.reload(); }, 2000);
       },
       error: function(obj, err, ex){
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 }

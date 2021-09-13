@@ -29,16 +29,19 @@ $('#btn_submit').click(function(e){
   if ($('#text_username').val().trim() == '' | $('#text_password').val().trim() == '' 
     | $('#text_firstname').val().trim() == '' | $('#text_lastname').val().trim() == ''
     | $('#cbo_role').val().trim() == ''){
-    $('#modal_message_box #modal_title').html("Error");
-    $('#modal_message_box #modal_body').html("Please provided all required fields!");
-    $('#modal_message_box').modal('show');
-    
-    setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+
+    $.alert({
+        title: "Error",
+        type: "red",
+        content: "Please provided all required fields!"
+      })
   }
   else if ($('#text_password').val().trim() != $('#text_cpassword').val().trim()){
-    $('#modal_message_box #modal_title').html("Error");
-    $('#modal_message_box #modal_body').html("Password does not match!");
-    $('#modal_message_box').modal('show');
+    $.alert({
+        title: "Error",
+        type: "red",
+        content: "Password does not match!"
+      })
   }
   else{
     process_user_account(userid);
@@ -70,12 +73,6 @@ $('#btn_trash').click(function(e){
    get_user_accounts(0);
 });
 
-$('.btn_yes').click(function(e){
-  toggle_user(userid, 0);
-  $('#modal_confirm').modal('hide');
-  get_user_accounts(1);
-});
-
 $('body').on('click', '#btn_reset_password', function(e){
   $("#text_newpassword").val('');
   $("#text_cnewpassword").val('');
@@ -85,16 +82,18 @@ $('body').on('click', '#btn_reset_password', function(e){
 
 $('.btn_submit_reset_password').click(function(e){
   if ($('#text_newpassword').val().trim() == '' | $('#text_cnewpassword').val().trim() == ''){
-    $('#modal_message_box #modal_title').html("Error");
-    $('#modal_message_box #modal_body').html("Please provide new password!");
-    $('#modal_message_box').modal('show');
-    
-    setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+    $.alert({
+        title: "Error",
+        type: "red",
+        content: "Please provided new password!"
+      })
   }
   else if ($('#text_newpassword').val().trim() != $('#text_cnewpassword').val().trim()){
-    $('#modal_message_box #modal_title').html("Error");
-    $('#modal_message_box #modal_body').html("Password does not match!");
-    $('#modal_message_box').modal('show');
+    $.alert({
+        title: "Error",
+        type: "red",
+        content: "Password does not match!"
+      })
   }
   else{
     reset_password($(this).val(), $('#text_newpassword').val().trim());
@@ -112,16 +111,40 @@ $('body').on('click', '#btn_edit_user', function(e){
 
 $('body').on('click', '#btn_delete_user', function(e){
   userid = $(this).val();
-  $('#modal_confirm #modal_title').html("Confirm");
-  $('#modal_confirm #modal_body').html("Are you sure you want to delete this user?");
-  $('#modal_confirm').modal('show');
+
+  $.confirm({
+      title: 'Confirm',
+      type: 'blue',
+      content: "Are you sure you want to delete this user?",
+      buttons: {
+          ok: function () {
+            toggle_user(userid, 0);
+            get_user_accounts(1);
+          },
+          cancel: function () {
+              
+          }
+      }
+  });
 });
 
 $('body').on('click', '#btn_activate_user', function(e){
   userid = $(this).val();
-  toggle_user(userid, 1);
-  $('#modal_confirm').modal('hide');
-  get_user_accounts(0);
+
+  $.confirm({
+      title: 'Confirm',
+      type: 'blue',
+      content: "Are you sure you want to re-activate this user?",
+      buttons: {
+          ok: function () {
+            toggle_user(userid, 1);
+            get_user_accounts(0);
+          },
+          cancel: function () {
+              
+          }
+      }
+  });
 });
 
 function process_user_account(id){
@@ -139,31 +162,33 @@ function process_user_account(id){
         },
       success: function(result) {
         if (result == 1){
-          $('#modal_message_box #modal_title').html("New User");
-          $('#modal_message_box #modal_body').html("New user account created!");
-          $('#modal_message_box').modal('show');
-          
-          setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
-          setTimeout(function(){ $('#modal_user_account_form').modal('hide'); }, 3000);
+          $.alert({
+            title: "Saved",
+            type: "green",
+            content: "New user account created!"
+          })
         }
         else if (result == 2){
-          $('#modal_message_box #modal_title').html("User Updated");
-          $('#modal_message_box #modal_body').html("User account updated!");
-          $('#modal_message_box').modal('show');
-
-          setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
-          setTimeout(function(){ $('#modal_user_account_form').modal('hide'); }, 3000);
+          $.alert({
+            title: "Updated",
+            type: "green",
+            content: "User account updated!"
+          })
         }
         else{
-          $('#modal_message_box #modal_title').html("Error");
-          $('#modal_message_box #modal_body').html("Error during submission. . .");
-          $('#modal_message_box').modal('show');
+          $.alert({
+            title: "Error",
+            type: "red",
+            content: "Error during processing!"
+          })
         }
       },
       error: function(obj, err, ex){
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 }
@@ -178,9 +203,11 @@ function get_user_accounts(status){
         $('#user_list').html(result);
       },
       error: function(obj, err, ex){
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 }
@@ -202,9 +229,11 @@ function get_user_account_info(id){
         $('#cbo_role').val(result['role']);
       },
       error: function(obj, err, ex){
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 }
@@ -219,9 +248,11 @@ function toggle_user(id, status){
         
       },
       error: function(obj, err, ex){
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 }
@@ -234,23 +265,26 @@ function reset_password(id, password){
         dataType: 'html',
       success: function(result) {
         if (result == 1){
-          $('#modal_message_box #modal_title').html("Password Reset");
-          $('#modal_message_box #modal_body').html("Password reset!");
-          $('#modal_message_box').modal('show');
-
-          setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
-          setTimeout(function(){ $('#modal_reset_password').modal('hide'); }, 3000);
+          $.alert({
+            title: "Reset Password",
+            type: "green",
+            content: "Password reset!"
+          })
         }
         else{
-          $('#modal_message_box #modal_title').html("Error");
-          $('#modal_message_box #modal_body').html("Error during reset. . .");
-          $('#modal_message_box').modal('show');
+          $.alert({
+            title: "Error",
+            type: "red",
+            content: "Error while resetting password!"
+          })
         }
       },
       error: function(obj, err, ex){
-        $('#modal_message_box #modal_title').html("Error");
-        $('#modal_message_box #modal_body').html(err + ": " + obj.toString() + " " + ex);
-        setTimeout(function(){ $('#modal_message_box').modal('hide'); }, 3000);
+        $.alert({
+            title: "Error",
+            type: "red",
+            content: msg + ": " + obj.status + " " + exception
+          })
     }
   })
 }
