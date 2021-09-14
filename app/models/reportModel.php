@@ -64,7 +64,7 @@ class reportModel extends model{
 					tvl.precinct_no, tvl.purok_no, tvl.cluster_no
 					FROM tbl_ward_member AS twm
 					INNER JOIN tbl_voters_list AS tvl ON tvl.record_id = twm.voter_id
-					WHERE twm.ward_id = ? AND twm.record_year = ? ORDER BY tvl.lastname ASC';
+					WHERE twm.ward_id = ? AND twm.record_year = ? AND twm.status = 1 ORDER BY tvl.lastname ASC';
 		
 		$db = new database();
 		$connection = $db->connection();
@@ -132,7 +132,7 @@ class reportModel extends model{
 		
 		$db = new database();
 		$connection = $db->connection();
-		$query = 'SELECT COUNT(*) AS total_supporters FROM tbl_ward_leader WHERE record_year = ?';
+		$query = 'SELECT COUNT(*) AS total_supporters FROM tbl_ward_leader WHERE record_year = ? AND status = 1';
 		$stmt = $connection->prepare($query);
 		$stmt->bind_param('s', $year);
 		$stmt->execute();
@@ -141,7 +141,7 @@ class reportModel extends model{
 
 		$db = new database();
 		$connection = $db->connection();
-		$query = 'SELECT COUNT(*) AS total_supporters FROM tbl_ward_member WHERE record_year = ?';
+		$query = 'SELECT COUNT(*) AS total_supporters FROM tbl_ward_member WHERE record_year = ? AND status = 1';
 		$stmt = $connection->prepare($query);
 		$stmt->bind_param('s', $year);
 		$stmt->execute();
@@ -156,7 +156,7 @@ class reportModel extends model{
 		
 		$db = new database();
 		$connection = $db->connection();
-		$query = 'SELECT COUNT(*) AS total_voters FROM tbl_voters_list WHERE record_year = ?';
+		$query = 'SELECT COUNT(*) AS total_voters FROM tbl_voters_list WHERE record_year = ? AND status = 1';
 		$stmt = $connection->prepare($query);
 		$stmt->bind_param('s', $year);
 		$stmt->execute();
@@ -177,7 +177,7 @@ class reportModel extends model{
 								FROM tbl_barangay_leader tbl
 								INNER JOIN tbl_voters_list tvl ON tvl.record_id = tbl.voter_id
 								INNER JOIN tbl_barangay tb ON tb.record_id = tbl.barangay_id
-								WHERE tbl.record_year = '.$year;
+								WHERE tbl.status = 1 AND tbl.record_year = '.$year;
 
 			if ($barangay){
 				$query .= ' AND tbl.barangay_id ='.$barangay;
@@ -192,7 +192,7 @@ class reportModel extends model{
 								FROM tbl_purok_leader tpl
 								INNER JOIN tbl_voters_list tvl ON tvl.record_id = tpl.voter_id
 								INNER JOIN tbl_barangay tb ON tb.record_id = tpl.barangay_id
-								WHERE tpl.record_year = '.$year;
+								WHERE tpl.status = 1 AND tpl.record_year = '.$year;
 
 			if ($barangay){
 				$query .= ' AND tpl.barangay_id ='.$barangay;
@@ -207,7 +207,7 @@ class reportModel extends model{
 								FROM tbl_ward_leader twl
 								INNER JOIN tbl_voters_list tvl ON tvl.record_id = twl.voter_id
 								INNER JOIN tbl_barangay tb ON tb.record_id = twl.barangay_id
-								WHERE twl.record_year = '.$year;
+								WHERE twl.status = 1 AND twl.record_year = '.$year;
 
 			if ($barangay){
 				$query .= ' AND twl.barangay_id ='.$barangay;
@@ -222,7 +222,7 @@ class reportModel extends model{
 								FROM tbl_ward_member twm
 								INNER JOIN tbl_voters_list tvl ON tvl.record_id = twm.voter_id
 								INNER JOIN tbl_barangay tb ON tb.record_id = twm.barangay_id
-								WHERE twm.record_year = '.$year;
+								WHERE twm.status = 1 AND twm.record_year = '.$year;
 
 			if ($barangay){
 				$query .= ' AND twm.barangay_id ='.$barangay;
@@ -361,7 +361,7 @@ class reportModel extends model{
 		$query = 'SELECT firstname, middlename, lastname, suffix, voters_no, 
 					precinct_no, purok_no, cluster_no, YEAR(CURDATE()) - YEAR(birthdate) AS age, YEAR(birthdate)
 					FROM tbl_voters_list
-					WHERE record_year = ?'; 
+					WHERE status = 1 AND record_year = ?'; 
 
 		if ($barangay){
 			$query .= ' AND barangay = '.$barangay;
@@ -460,7 +460,7 @@ class reportModel extends model{
 
 		foreach ($barangays as $key => $barangay) {
 
-			$query = 'SELECT COUNT(*) AS total_supporters FROM tbl_ward_leader WHERE record_year = ? AND barangay_id = ?';
+			$query = 'SELECT COUNT(*) AS total_supporters FROM tbl_ward_leader WHERE status = 1 AND record_year = ? AND barangay_id = ?';
 			
 			$stmt = $connection->prepare($query);
 			$stmt->bind_param('ss', $year, $barangay['id']);
@@ -468,7 +468,7 @@ class reportModel extends model{
 			$data = $stmt->get_result()->fetch_assoc();
 			$leaders = ($data['total_supporters']) ? $data['total_supporters'] : 0 ;
 			
-			$query = 'SELECT COUNT(*) AS total_supporters FROM tbl_ward_member WHERE record_year = ? AND barangay_id = ?';
+			$query = 'SELECT COUNT(*) AS total_supporters FROM tbl_ward_member WHERE status = 1 AND record_year = ? AND barangay_id = ?';
 			$stmt = $connection->prepare($query);
 			$stmt->bind_param('ss', $year, $barangay['id']);
 			$stmt->execute();
@@ -506,6 +506,53 @@ class reportModel extends model{
 
 		$stmt->close();
 		return $voters_per_brgy;
+	}
+
+	public function retrieve_summary($year){
+		$settings_model = new settingsModel();
+		$barangays = $settings_model->get_barangays(1);
+
+		$db = new database();
+		$connection = $db->connection();
+		$summary = [];
+
+		foreach ($barangays as $key => $barangay) {
+
+			$info['barangay'] = $barangay['name'];
+
+			$query = 'SELECT COUNT(*) AS total_supporters FROM tbl_ward_leader WHERE status = 1 AND record_year = ? AND barangay_id = ?';
+			
+			$stmt = $connection->prepare($query);
+			$stmt->bind_param('ss', $year, $barangay['id']);
+			$stmt->execute();
+			$data = $stmt->get_result()->fetch_assoc();
+			$leaders = ($data['total_supporters']) ? $data['total_supporters'] : 0 ;
+
+			$info['leaders'] = $leaders;
+			
+			$query = 'SELECT COUNT(*) AS total_supporters FROM tbl_ward_member WHERE status = 1 AND record_year = ? AND barangay_id = ?';
+			$stmt = $connection->prepare($query);
+			$stmt->bind_param('ss', $year, $barangay['id']);
+			$stmt->execute();
+			$data = $stmt->get_result()->fetch_assoc();
+			$members = ($data['total_supporters']) ? $data['total_supporters'] : 0 ;
+
+			$info['members'] = $members;
+
+			$query = 'SELECT COUNT(*) AS total_voters FROM tbl_voters_list WHERE status = 1 AND record_year = ? AND barangay = ?';
+			$stmt = $connection->prepare($query);
+			$stmt->bind_param('ss', $year, $barangay['id']);
+			$stmt->execute();
+			$data = $stmt->get_result()->fetch_assoc();
+			$total_voters = ($data['total_voters']) ? $data['total_voters'] : 0 ;
+
+			$info['voters'] = $total_voters;
+			
+			$summary[] = $info;
+		}
+
+		$stmt->close();
+		return $summary;
 	}
 	
 }
