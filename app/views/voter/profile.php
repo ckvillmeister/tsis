@@ -77,28 +77,51 @@
                       </div>
                       <br><br>
                       <div class="card-body mt-5">
-
+                        <br>
                         <form id="frm">
 
                           <input type="hidden" id="voters_sys_id" name="voters_sys_id" value="<?php echo isset($_GET['voterid']) ? $_GET['voterid'] : ''; ?>">
 
+                          <hr><strong>Voter's Basic Information</strong><hr>
+
                           <div class="row mt-5">
+                            <div class="col-sm-2 align-self-center">
+                                First Name:
+                            </div>
                             <div class="col-sm-4">
                               <div class="form-group">
                                 <input type="text" class="form-control form-control-sm" id="firstname" name="firstname" placeholder="Firstname" value="<?php echo $profile['firstname'] ?>">
                               </div>
                             </div>
-                            <div class="col-sm-3">
+                          </div>
+
+                          <div class="row">
+                            <div class="col-sm-2 align-self-center">
+                                Middle Name:
+                            </div>
+                            <div class="col-sm-4">
                               <div class="form-group">
                                 <input type="text" class="form-control form-control-sm" id="middlename" name="middlename" placeholder="Middlename" value="<?php echo $profile['middlename'] ?>">
                               </div>
+                            </div>
+                          </div>
+
+                          <div class="row">
+                            <div class="col-sm-2 align-self-center">
+                                Last Name:
                             </div>
                             <div class="col-sm-4">
                               <div class="form-group">
                                 <input type="text" class="form-control form-control-sm" id="lastname" name="lastname" placeholder="Lastname" value="<?php echo $profile['lastname'] ?>">
                               </div>
                             </div>
-                            <div class="col-sm-1">
+                          </div>
+
+                          <div class="row">
+                            <div class="col-sm-2 align-self-center">
+                                Name Extension:
+                            </div>
+                            <div class="col-sm-2">
                               <div class="form-group">
                                 <select id="suffix" name="suffix" class="form-control form-control-sm">
                                   <option value=""></option>
@@ -115,7 +138,10 @@
                           </div>
 
                           <div class="row">
-                            <div class="col-sm-3">
+                            <div class="col-sm-2 align-self-center">
+                                Barangay & Purok:
+                            </div>
+                            <div class="col-sm-2">
                               <div class="form-group">
                                 <select class="form-control form-control-sm" id="barangay" name="barangay">
                                   <option value=""> [ Barangay ] </option>
@@ -129,7 +155,7 @@
                                 </select>
                               </div>
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-2">
                               <div class="form-group">
                                 <select class="form-control form-control-sm" id="purok_no" name="purok_no">
                                   <option value=""> [ Purok ] </option>
@@ -143,12 +169,24 @@
                                 </select>
                               </div>
                             </div>
-                            <div class="col-sm-3">
+                          </div>
+
+                          <div class="row">
+                            <div class="col-sm-2 align-self-center">
+                                Birthdate:
+                            </div>
+                            <div class="col-sm-2">
                               <div class="form-group">
                                 <input type="date" class="form-control form-control-sm" id="birthdate" name="birthdate" value="<?php echo $profile['birthdate'] ?>">
                               </div>
                             </div>
-                            <div class="col-sm-3">
+                          </div>
+
+                          <div class="row">
+                            <div class="col-sm-2 align-self-center">
+                              Sex:
+                            </div>
+                            <div class="col-sm-2">
                               <div class="form-group">
                                 <select class="form-control form-control-sm" id="gender" name="gender">
                                   <option value=""> [ Sex ] </option>
@@ -160,25 +198,115 @@
                           </div>
 
                           <div class="row">
-                            <div class="col-sm-3">
+                            <div class="col-sm-2 align-self-center">
+                                Contact Number:
+                            </div>
+                            <div class="col-sm-2">
+                              <div class="form-group">
+                                <input type="text" class="form-control form-control-sm" id="contact" name="contact" value="<?php echo $profile['contact'] ?>">
+                              </div>
+                            </div>
+                          </div>
+
+                          <hr><strong>COMELEC-Related Information</strong><hr>
+
+                          <div class="row">
+                            <div class="col-sm-2 align-self-center">
+                                VIN:
+                            </div>
+                            <div class="col-sm-2">
                               <div class="form-group">
                                 <input type="text" class="form-control form-control-sm" id="vin" name="vin" placeholder="Voter's Identification Number" value="<?php echo $profile['vin'] ?>">
                               </div>
                             </div>
-                            <div class="col-sm-3">
+                          </div>
+
+                          <div class="row">
+                            <div class="col-sm-2 align-self-center">
+                                Voter's Number:
+                            </div>
+                            <div class="col-sm-2">
                               <div class="form-group">
                                 <input type="text" class="form-control form-control-sm" id="vno" name="vno" placeholder="Voter's Sequence Number" value="<?php echo $profile['votersno'] ?>">
                               </div>
                             </div>
-                            <div class="col-sm-3">
+                          </div>
+
+                          <div class="row">
+                            <div class="col-sm-2 align-self-center">
+                                Precinct Number:
+                            </div>
+                            <div class="col-sm-2">
                               <div class="form-group">
                                 <input type="text" class="form-control form-control-sm" id="precinct_no" name="precinct_no" placeholder="Precinct Number" value="<?php echo $profile['precinctno'] ?>">
                               </div>
                             </div>
-                            <div class="col-sm-3">
+                          </div>
+
+                          <div class="row">
+                            <div class="col-sm-2 align-self-center">
+                                Cluster Number:
+                            </div>
+                            <div class="col-sm-2">
                               <div class="form-group">
                                 <input type="text" class="form-control form-control-sm" id="cluster_no" name="cluster_no" placeholder="Cluster Number" value="<?php echo $profile['clusterno'] ?>">
                               </div>
+                            </div>
+                          </div>
+
+                          <hr><strong>Other Information</strong><hr>
+
+                          <div class="row">
+                            <div class="col-sm-2 align-self-center">
+                                Current Work:
+                            </div>
+                            <div class="col-sm-4">
+                              <div class="form-group">
+                                <input type="text" class="form-control form-control-sm" id="work" name="work" value="<?php echo $profile['work'] ?>">
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="row">
+                            <div class="col-sm-2 align-self-center">
+                                Organization:
+                            </div>
+                            <div class="col-sm-10">
+                              <div class="form-group">
+                                <input type="text" class="form-control form-control-sm" id="organization" name="organization" value="<?php echo $profile['org'] ?>">
+                              </div>
+                            </div>
+                          </div>
+
+                          <br>
+
+                          <div class="row mt-3">
+                            <div class="col-sm-2">
+
+                            </div>
+                            <div class="col-sm-3">
+                              <input type="checkbox" id="senior" name="senior" class="mr-2" <?php echo ($profile['senior']) ? 'checked="checked"' : ''; ?>>Is Senior Citizen? 
+                            </div>
+                            <div class="col-sm-3">
+                              <input type="checkbox" id="pensioner" name="pensioner" class="mr-2" <?php echo ($profile['pensioner']) ? 'checked="checked"' : ''; ?>>Is Social Pensioner? 
+                            </div>
+                            <div class="col-sm-3">
+                              <input type="checkbox" id="uct" name="uct" class="mr-2" <?php echo ($profile['uct']) ? 'checked="checked"' : ''; ?>>Is UCT Member? 
+                            </div>
+                          </div>
+
+                          <div class="row mt-3">
+                            <div class="col-sm-2">
+
+                            </div>
+                            <div class="col-sm-3">
+                              <input type="checkbox" id="nhts" name="nhts" class="mr-2" <?php echo ($profile['nhts']) ? 'checked="checked"' : ''; ?>>Is NHTS? 
+                            </div>
+                            <div class="col-sm-3">
+                              <input type="checkbox" id="pwd" name="pwd" class="mr-2" <?php echo ($profile['pwd']) ? 'checked="checked"' : ''; ?>>Is PWD? 
+                            </div>
+                            <div class="col-sm-3">
+                              <input type="checkbox" id="fourps" name="fourps" class="mr-2" <?php echo ($profile['fourps']) ? 'checked="checked"' : ''; ?>>Is 4Ps? 
                             </div>
                           </div>
 

@@ -16,6 +16,19 @@
       width:160px;
       border-radius: 10px;
     }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    .zoom {
+    }
+
+    .zoom:hover {
+      -ms-transform: scale(3); /* IE 9 */
+      -webkit-transform: scale(3); /* Safari 3-8 */
+      transform: scale(3); 
+    }
     </style>
 
     <div class="content-wrapper">
@@ -76,18 +89,18 @@
     			          		<h6><?php echo $supporter['firstname'].' '.trim($supporter['middlename']).' '.$supporter['lastname'].' '.trim($supporter['suffix']); ?></h6>
     			          		<?php echo $supporter['rank'].' - '.$supporter['barangay'] ?>
     			          	</div>
-    			          	<div class="widget-user-image">
+    			          	<div class="widget-user-image zoom">
     			          		<img class="img-circle elevation-2" src="<?php echo $imgurl; ?>">
     			          	</div>
                       <br>
     			          	<div class="card-footer">
     			          		<div class="row">
-                          <div class="col-sm-4">
-                            <a class="btn btn-sm btn-success" style="color:white; width: 100px" href="<?php echo ROOT ?>ward/view_ward?wardid=<?php echo $supporter['wardid']; ?>">View Ward</a>
+                          <div class="col-sm-6">
+                            <a class="btn btn-sm btn-success form form-control" style="padding-top: 7px" href="<?php echo ROOT ?>ward/view_ward?wardid=<?php echo $supporter['wardid']; ?>">View Ward</a>
                           </div>
-    			          			<div class="col-sm-4 ml-1">
+    			          			<div class="col-sm-6">
                             <?php if ($accessrole_model->check_access($role, 'viewsupporterprofile')): ?>
-                              <a class="btn btn-sm btn-primary" style="color:white; width: 100px" href="<?php echo ROOT ?>voter/profile?voterid=<?php echo $supporter['voter_sys_id']; ?>">Profile
+                              <a class="btn btn-sm btn-primary form form-control" style="padding-top: 7px" href="<?php echo ROOT ?>voter/profile?voterid=<?php echo $supporter['voter_sys_id']; ?>">Profile
                               </a>
                             <?php endif; ?>
                           </div>

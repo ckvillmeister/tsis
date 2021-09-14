@@ -117,6 +117,15 @@
             </li>
             <?php endif; ?>
 
+            <?php if ($accessrole_model->check_access($role, 'summary')): ?>
+            <li class="nav-item">
+              <a href="<?php echo ROOT; ?>report/summary" class="nav-link <?php echo ($link_2 == 'summary') ? 'active' : ''; ?>">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Summary</p>
+              </a>
+            </li>
+            <?php endif; ?>
+
           </ul>
         </li>
         <?php endif; ?>

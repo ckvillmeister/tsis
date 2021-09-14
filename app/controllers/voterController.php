@@ -88,8 +88,18 @@ class voterController extends controller{
 		$birthdate = isset($_POST['birthdate']) ? $_POST['birthdate'] : '';
 		$sex = isset($_POST['gender']) ? $_POST['gender'] : '';
 
+		$contact = isset($_POST['contact']) ? $_POST['contact'] : '';
+		$work = isset($_POST['work']) ? $_POST['work'] : '';
+		$organization = isset($_POST['organization']) ? $_POST['organization'] : '';
+		$senior = isset($_POST['senior']) ? 1 : 0;
+		$pensioner = isset($_POST['pensioner']) ? 1 : 0;
+		$uct = isset($_POST['uct']) ? 1 : 0;
+		$nhts = isset($_POST['nhts']) ? 1 : 0;
+		$pwd = isset($_POST['pwd']) ? 1 : 0;
+		$fourps = isset($_POST['fourps']) ? 1 : 0;
+
 		$this->voterObj = new voterModel();
-		$res = $this->voterObj->save_voter_profile($voter_sys_id, $fname, $mname, $lname, $ext, $vin, $vno, $precinctno, $clusterno, $purok, $barangay, $birthdate, $sex);
+		$res = $this->voterObj->save_voter_profile($voter_sys_id, $fname, $mname, $lname, $ext, $vin, $vno, $precinctno, $clusterno, $purok, $barangay, $birthdate, $sex, $contact, $work, $organization, $senior, $pensioner, $uct, $nhts, $pwd, $fourps);
 		echo $res;
 	}
 

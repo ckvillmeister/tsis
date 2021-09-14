@@ -64,6 +64,12 @@ $('body').on('click', '#add', function(){
 $('body').on('click', '#edit', function(){
   var id = $(this).val();
   $('#voters_sys_id').val(id);
+  $('#senior').prop('checked', false);
+  $('#pensioner').prop('checked', false);
+  $('#uct').prop('checked', false);
+  $('#nhts').prop('checked', false);
+  $('#pwd').prop('checked', false);
+  $('#fourps').prop('checked', false);
 
   $.ajax({
     url: 'voter/get_voter_info',
@@ -83,6 +89,33 @@ $('body').on('click', '#edit', function(){
       $('#barangay').val(result['barangayid']);
       $('#birthdate').val(result['birthdate']);
       $('#gender').val(result['gender']);
+      $('#contact').val(result['contact']);
+      $('#work').val(result['work']);
+      $('#organization').val(result['org']);
+
+      if(result['senior']){
+        $('#senior').prop('checked', true);
+      }
+
+      if(result['pensioner']){
+        $('#pensioner').prop('checked', true);
+      }
+
+      if(result['uct']){
+        $('#uct').prop('checked', true);
+      }
+
+      if(result['nhts']){
+        $('#nhts').prop('checked', true);
+      }
+
+      if(result['pwd']){
+        $('#pwd').prop('checked', true);
+      }
+
+      if(result['fourps']){
+        $('#fourps').prop('checked', true);
+      } 
 
       $('#modal_voters_form').modal({
         backdrop: 'static',

@@ -52,7 +52,7 @@
     </div>
 
     <div class="modal fade" id="modal_voters_form" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="modal_title">Voter's Information</h5>
@@ -68,17 +68,17 @@
                 <input type="hidden" id="voters_sys_id" name="voters_sys_id">
 
                 <div class="col-lg-2 align-self-center">
-                    VIN:
-                </div>
-                <div class="col-lg-4">
-                    <input type="text" class="form-control form-control-sm" id="vin" name="vin">
-                </div>
-                <div class="col-lg-2 align-self-center">
-                    Voter's No:
-                </div>
-                <div class="col-lg-4">
-                    <input type="text" class="form-control form-control-sm" id="vno" name="vno">
-                </div>
+                      VIN:
+                  </div>
+                  <div class="col-lg-4">
+                      <input type="text" class="form-control form-control-sm" id="vin" name="vin">
+                  </div>
+                  <div class="col-lg-2 align-self-center">
+                      Voter's No:
+                  </div>
+                  <div class="col-lg-4">
+                      <input type="text" class="form-control form-control-sm" id="vno" name="vno">
+                  </div>
               </div>
 
               <div class="row mt-3">
@@ -185,7 +185,69 @@
                     </select>
                 </div>
               </div>
-            
+
+              <hr>
+
+              Other Information
+
+              <hr>
+
+              <div class="row">
+                <div class="col-lg-2 align-self-center">
+                    Contact Number:
+                </div>
+                <div class="col-lg-4">
+                    <input type="text" class="form-control form-control-sm" id="contact" name="contact">
+                </div>
+                <div class="col-lg-2 align-self-center">
+                    Current Work:
+                </div>
+                <div class="col-lg-4">
+                    <input type="text" class="form-control form-control-sm" id="work" name="work">
+                </div>
+              </div>
+
+              <div class="row mt-3">
+                <div class="col-lg-2 align-self-center">
+                    Organization:
+                </div>
+                <div class="col-lg-10">
+                    <input type="text" class="form-control form-control-sm" id="organization" name="organization">
+                </div>
+              </div>
+
+              <br>
+
+              <div class="row mt-3">
+                <div class="col-lg-2">
+
+                </div>
+                <div class="col-lg-3">
+                  <input type="checkbox" id="senior" name="senior" class="mr-2">Is Senior Citizen? 
+                </div>
+                <div class="col-lg-3">
+                  <input type="checkbox" id="pensioner" name="pensioner" class="mr-2">Is Social Pensioner? 
+                </div>
+                <div class="col-lg-3">
+                  <input type="checkbox" id="uct" name="uct" class="mr-2">Is UCT Member? 
+                </div>
+              </div>
+
+              <div class="row mt-3">
+                <div class="col-lg-2">
+
+                </div>
+                <div class="col-lg-3">
+                  <input type="checkbox" id="nhts" name="nhts" class="mr-2">Is NHTS? 
+                </div>
+                <div class="col-lg-3">
+                  <input type="checkbox" id="pwd" name="pwd" class="mr-2">Is PWD? 
+                </div>
+                <div class="col-lg-3">
+                  <input type="checkbox" id="fourps" name="fourps" class="mr-2">Is 4Ps? 
+                </div>
+              </div>
+
               <div class="row mt-3 mr-0 ml-0 p-2 bg-light rounded">
                 <div class="col-lg-8">
                   <span id="message"></span>
