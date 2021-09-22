@@ -111,7 +111,7 @@ class voterController extends controller{
 
 		$file = $_FILES['file']['tmp_name'];
 		$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
-		$votername = $profile[0]['firstname'].$profile[0]['middlename'].$profile[0]['lastname'].$profile[0]['suffix'];
+		$votername = $profile['firstname'].$profile['middlename'].$profile['lastname'].$profile['suffix'];
 
 		$path = 'public/supporters_image/'.$votername.'.'.$ext;
 		$dist = $_SERVER['DOCUMENT_ROOT'].ROOT.'public/supporters_image/'.$votername.'.'.$ext;
