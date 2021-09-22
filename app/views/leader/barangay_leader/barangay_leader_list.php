@@ -5,16 +5,24 @@
   .center_text{
     text-align: center;
   }
+
+  #barangay_leader_list{
+    font-size: 10pt
+  }
+
+  .col-header {
+    font-size: 10pt
+  }
 </style>
 <div class="card">
   <div class="card-body">
-    <table class="table table-sm table-bordered table-striped">
+    <table class="table table-sm table-bordered table-striped" id="barangay_leader_list">
         <thead>
           <tr>
-            <th width="20px">#</th>
-            <th width="250px">Barangay Name</th>
-            <th>Leader</th>
-            <th width="180px">Control</th>
+            <th class="col-header text-center" width="20px">#</th>
+            <th class="col-header" width="250px">Barangay Name</th>
+            <th class="col-header">Leader</th>
+            <th class="col-header" width="180px">Control</th>
           </tr>
         </thead>
         <tbody>
@@ -25,7 +33,7 @@
               $record_info = (object) $leader;
           ?>
             <tr>
-              <td><?php echo ++$ctr; ?></td>
+              <td class="text-center"><?php echo ++$ctr; ?></td>
               <td><?php echo $record_info->barangay_name; ?></td>
               <td><?php echo $record_info->fullname; ?></td>
               <td class="text-center">

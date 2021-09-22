@@ -5,16 +5,24 @@
   .center_text{
     text-align: center;
   }
+
+  #purok_leader_list{
+    font-size: 10pt
+  }
+
+  .col-header {
+    font-size: 10pt
+  }
 </style>
 <div class="card">
   <div class="card-body">
-    <table class="table table-sm table-bordered table-striped">
+    <table class="table table-sm table-bordered table-striped" id="purok_leader_list">
         <thead>
           <tr>
-            <th width="20px">#</th>
-            <th width="100px">Purok Number</th>
-            <th width="400px">Leader</th>
-            <th width="120px">Control</th>
+            <th class="col-header text-center" width="20px">#</th>
+            <th class="col-header text-center" width="100px">Purok Number</th>
+            <th class="col-header text-center" width="400px">Leader</th>
+            <th class="col-header text-center" width="120px">Control</th>
           </tr>
         </thead>
         <tbody>

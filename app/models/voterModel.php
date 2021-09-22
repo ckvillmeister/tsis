@@ -32,7 +32,7 @@ class voterModel extends model{
 							tb.barangay_name, tvl.birthdate, tvl.gender 
 							FROM tbl_voters_list AS tvl
 							INNER JOIN tbl_barangay AS tb ON tb.record_id = tvl.barangay
-							WHERE record_year = '.$year;
+							WHERE tvl.status = 1 AND tvl.record_year = '.$year;
 
 		if (count($param) >= 1){
 			$barangay = $param['barangay'];

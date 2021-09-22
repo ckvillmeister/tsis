@@ -23,7 +23,7 @@ class leaderModel extends model{
 
 	public function get_barangay_leaders(){
 		$year = $this->get_year();
-		$query = 'SELECT record_id, barangay_name FROM tbl_barangay';
+		$query = 'SELECT record_id, barangay_name FROM tbl_barangay WHERE status = 1';
 		$stmt = $this->con->prepare($query);
 		$stmt->execute();
 		$stmt->bind_result($id, $barangay_name);
@@ -72,7 +72,7 @@ class leaderModel extends model{
 	public function get_purok_leaders($params = array()){
 		$year = $this->get_year();
 		$barangay_id = $params['barangay_id'];
-		$query = 'SELECT purok_no, voter_id FROM tbl_purok_leader WHERE barangay_id = ?';
+		$query = 'SELECT purok_no, voter_id FROM tbl_purok_leader WHERE status = 1 AND barangay_id = ?';
 		$stmt = $this->con->prepare($query);
 		$stmt->bind_param("s", $barangay_id);
 		$stmt->execute();
