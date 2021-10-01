@@ -493,7 +493,7 @@ class reportModel extends model{
 
 		foreach ($barangays as $key => $barangay) {
 
-			$query = 'SELECT COUNT(*) AS total FROM tbl_voters_list WHERE record_year = ? AND barangay = ?';
+			$query = 'SELECT COUNT(*) AS total FROM tbl_voters_list WHERE record_year = ? AND barangay = ? AND status = 1';
 			
 			$stmt = $connection->prepare($query);
 			$stmt->bind_param('ss', $year, $barangay['id']);
