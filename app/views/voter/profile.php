@@ -312,7 +312,7 @@
 
                           <div class="float-right">
                             <?php if ($accessrole_model->check_access($role, 'saveprofile')): ?>
-                            <button class="btn btn-md btn-primary" id="" value=""><i class="fas fa-save mr-2"></i>Save</button>
+                            <button class="btn btn-md btn-primary" id="btn_save" value="<?php echo $_GET['voterid']; ?>"><i class="fas fa-save mr-2"></i>Save</button>
                             <?php endif; ?>
                           </div>
 
@@ -348,6 +348,44 @@
       reader.readAsDataURL(input.files[0]);
     } 
   }
+
+  $('#btn_save_image').click(function(e) {
+  e.preventDefault();
+
+  var file_data = $("#profile_pic")[0].files[0];   
+    var form_data = new FormData();
+    var voter_id = $('#btn_save').val();             
+    form_data.append('file', file_data);
+  
+  $.ajax({
+      url: 'save_image?id='+voter_id,
+      method: 'POST',
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: form_data,
+      success: function(result) {
+        if (result == 1){
+          $.alert({
+            title: "Saved",
+            type: "green",
+            content: "Image has been saved!"
+          })
+        }
+        else{
+          $.alert({
+            title: "Error",
+            type: "red",
+            content: "Error during processing!"
+          })
+        }
+        
+      },
+      error: function(obj, err, ex){
+        
+      }
+    })
+});
 
   $('body').on('submit', '#frm', function(e){
     e.preventDefault();
