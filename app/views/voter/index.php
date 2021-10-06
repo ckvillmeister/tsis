@@ -248,6 +248,16 @@
                 </div>
               </div>
 
+              <div class="row mt-3">
+                <div class="col-lg-2 align-self-center">
+                    Is New Voter?:
+                </div>
+                <div class="col-lg-3">
+                  <!-- <input type="checkbox" id="new_voter" name="new_voter" class="mr-2"> -->
+                  <input type="checkbox" id="new_voter" name="new_voter" data-bootstrap-switch data-on-text="YES" data-off-text="NO">
+                </div>
+              </div>
+
               <div class="row mt-3 mr-0 ml-0 p-2 bg-light rounded">
                 <div class="col-lg-8">
                   <span id="message"></span>
@@ -286,5 +296,11 @@
 </div>
 </body>
 <?php require 'app/views/components/footer.php'; ?>
+<script type="text/javascript" src="<?php echo ROOT.BOOTSTRAP.'plugins/bootstrap-switch/js/bootstrap-switch.min.js'; ?>"></script>
 <script type="text/javascript" src="<?php echo ROOT.'public/js/voter.js'; ?>"></script>
+<script type="text/javascript">
+  $("input[data-bootstrap-switch]").each(function(){
+      $(this).bootstrapSwitch('state', $(this).prop('checked'));
+    })
+</script>
 </html>

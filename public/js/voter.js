@@ -70,6 +70,7 @@ $('body').on('click', '#edit', function(){
   $('#nhts').prop('checked', false);
   $('#pwd').prop('checked', false);
   $('#fourps').prop('checked', false);
+  $("#new_voter").bootstrapSwitch('state', false);
 
   $.ajax({
     url: 'voter/get_voter_info',
@@ -115,6 +116,11 @@ $('body').on('click', '#edit', function(){
 
       if(result['fourps']){
         $('#fourps').prop('checked', true);
+      } 
+
+      if(result['new_voter']){
+        $("#new_voter").bootstrapSwitch('state', true);
+        // $('#new_voter').prop('checked', true);
       } 
 
       $('#modal_voters_form').modal({
