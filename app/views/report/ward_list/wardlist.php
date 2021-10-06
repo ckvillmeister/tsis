@@ -2,7 +2,7 @@
 	.tbl_report{ 
 		border-collapse: collapse !important;
 		width: 100% !important;
-		font-family: 'Bodoni MT' !important;
+		font-family: 'Calibri' !important;
 		border: 1px solid black !important;
 	}
 	.tbl_report thead tr td{
@@ -20,7 +20,7 @@
 		background-color: #fff83b !important;
 	}
 	.header{
-		font-family: 'Bodoni MT' !important;
+		font-family: 'Calibri' !important;
 		text-align: center !important;
 		font-size:18pt !important;
 		font-weight: bold !important;
@@ -30,7 +30,7 @@
 	  	.tbl_report {
 	  		border-collapse: collapse !important;
 		    width: 100% !important;
-			font-family: 'Bodoni MT' !important;
+			font-family: 'Calibri' !important;
 			border: 1px solid black !important;
 		    -webkit-print-color-adjust: exact;
 		}
@@ -71,7 +71,7 @@
 				<td rowspan="2">Voter's No</td>
 				<td rowspan="2">Precinct No</td>
 				<td rowspan="2">Purok No</td>
-				<td rowspan="2">Cluster No</td>
+				<td rowspan="2">Remarks</td>
 			</tr>
 			<tr>
 				<td>Last Name</td>
@@ -86,7 +86,7 @@
 				foreach ($wardlist as $key => $ward) {
 					$leader = $ward['leader'];
 					$leader_info = (object) $leader;
-					$imgurl = ($leader_info->imgurl) ? ROOT.$leader_info->imgurl : ROOT."public/image/avatar130x160.png";
+					$imgurl = (file_exists($leader_info->imgurl)) ? ROOT.$leader_info->imgurl : ROOT."public/image/avatar130x160.png";
 			?>
 				<tr>
 					<td class="leader text-center" ><?php echo ++$ctr; ?></td>
@@ -97,7 +97,7 @@
 					<td class="leader"><?php echo $leader_info->votersno; ?></td>
 					<td class="leader"><?php echo $leader_info->precinctno; ?></td>
 					<td class="leader"><?php echo $leader_info->purokno; ?></td>
-					<td class="leader"><?php echo $leader_info->clusterno; ?></td>
+					<td class="leader" style="text-align: center"><?php echo ($leader_info->new_voter) ? '<small class="badge badge-primary">New Voter</small>' : ''; ?></td>
 				</tr>
 			<?php
 					if(array_key_exists($leader['wardid'], $ward['members'])){
@@ -113,7 +113,7 @@
 								<td><?php echo $member_info->votersno; ?></td>
 								<td><?php echo $member_info->precinctno; ?></td>
 								<td><?php echo $member_info->purokno; ?></td>
-								<td><?php echo $member_info->clusterno; ?></td>
+								<td style="text-align: center"><?php echo ($member_info->new_voter) ? '<small class="badge badge-primary">New Voter</small>' : ''; ?></td>
 							</tr>
 			<?php
 						}

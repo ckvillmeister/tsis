@@ -97,9 +97,10 @@ class voterController extends controller{
 		$nhts = isset($_POST['nhts']) ? 1 : 0;
 		$pwd = isset($_POST['pwd']) ? 1 : 0;
 		$fourps = isset($_POST['fourps']) ? 1 : 0;
+		$new_voter = isset($_POST['new_voter']) ? 1 : 0;
 
 		$this->voterObj = new voterModel();
-		$res = $this->voterObj->save_voter_profile($voter_sys_id, $fname, $mname, $lname, $ext, $vin, $vno, $precinctno, $clusterno, $purok, $barangay, $birthdate, $sex, $contact, $work, $organization, $senior, $pensioner, $uct, $nhts, $pwd, $fourps);
+		$res = $this->voterObj->save_voter_profile($voter_sys_id, $fname, $mname, $lname, $ext, $vin, $vno, $precinctno, $clusterno, $purok, $barangay, $birthdate, $sex, $contact, $work, $organization, $senior, $pensioner, $uct, $nhts, $pwd, $fourps, $new_voter);
 		echo $res;
 	}
 

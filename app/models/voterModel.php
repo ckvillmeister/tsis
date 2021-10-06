@@ -29,7 +29,7 @@ class voterModel extends model{
 
 		$query = 'SELECT tvl.record_id, tvl.firstname, tvl.middlename, tvl.lastname, tvl.suffix, 
 							tvl.vin, tvl.voters_no, tvl.precinct_no, tvl.cluster_no, tvl.purok_no, 
-							tb.barangay_name, tvl.birthdate, tvl.gender 
+							tb.barangay_name, tvl.birthdate, tvl.gender, tvl.is_new_voter
 							FROM tbl_voters_list AS tvl
 							INNER JOIN tbl_barangay AS tb ON tb.record_id = tvl.barangay
 							WHERE tvl.status = 1 AND tvl.record_year = '.$year;
@@ -43,7 +43,7 @@ class voterModel extends model{
 
 		$stmt = $this->con->prepare($query);
 		$stmt->execute();
-		$stmt->bind_result($id, $firstname, $middlename, $lastname, $suffix, $vin, $votersno, $precinctno, $clusterno, $purokno, $barangay, $birthdate, $gender);
+		$stmt->bind_result($id, $firstname, $middlename, $lastname, $suffix, $vin, $votersno, $precinctno, $clusterno, $purokno, $barangay, $birthdate, $gender, $new_voter);
 		$ctr=0;
 		$voters = array();
 		while ($stmt->fetch()) {
@@ -59,7 +59,8 @@ class voterModel extends model{
 							'purokno' => $purokno,
 							'barangay' => $barangay,
 							'birthdate' => $birthdate,
-							'gender' => $gender);
+							'gender' => $gender,
+							'new_voter' => $new_voter);
 		}
 		$stmt->close();
 		$this->con->close();
@@ -73,7 +74,7 @@ class voterModel extends model{
 							tvl.vin, tvl.voters_no, tvl.precinct_no, tvl.cluster_no, tvl.purok_no, 
 							tb.barangay_name, tvl.birthdate, tvl.gender, tvl.barangay, tvl.image_url, 
 							tvl.contact_number, tvl.current_work, tvl.organization, tvl.is_social_pensioner, 
-							tvl.is_uct_member, tvl.is_nhts, tvl.is_pwd, tvl.is_4pcs, tvl.is_senior_citizen
+							tvl.is_uct_member, tvl.is_nhts, tvl.is_pwd, tvl.is_4pcs, tvl.is_senior_citizen, tvl.is_new_voter
 							FROM tbl_voters_list AS tvl
 							INNER JOIN tbl_barangay AS tb ON tb.record_id = tvl.barangay
 							WHERE tvl.record_id = '.$voterid;
@@ -81,7 +82,7 @@ class voterModel extends model{
 		
 		$stmt = $this->con->prepare($query);
 		$stmt->execute();
-		$stmt->bind_result($id, $firstname, $middlename, $lastname, $suffix, $vin, $votersno, $precinctno, $clusterno, $purokno, $barangay, $birthdate, $gender, $barangayid, $imgurl, $contact, $work, $org, $pensioner, $uct, $nhts, $pwd, $fourps, $senior);
+		$stmt->bind_result($id, $firstname, $middlename, $lastname, $suffix, $vin, $votersno, $precinctno, $clusterno, $purokno, $barangay, $birthdate, $gender, $barangayid, $imgurl, $contact, $work, $org, $pensioner, $uct, $nhts, $pwd, $fourps, $senior, $new_voter);
 		$profile = array();
 
 		while ($stmt->fetch()) {
@@ -108,7 +109,8 @@ class voterModel extends model{
 							'nhts' => $nhts,
 							'pwd' => $pwd,
 							'fourps' => $fourps,
-							'senior' => $senior
+							'senior' => $senior,
+							'new_voter' => $new_voter
 						);
 		}
 		$stmt->close();
@@ -130,15 +132,15 @@ class voterModel extends model{
 		return 1;
 	}
 
-	public function save_voter_profile($id, $fname, $mname, $lname, $ext, $vin, $vno, $precinctno, $clusterno, $purok, $barangay, $birthdate, $sex, $contact, $work, $organization, $senior, $pensioner, $uct, $nhts, $pwd, $fourps){
+	public function save_voter_profile($id, $fname, $mname, $lname, $ext, $vin, $vno, $precinctno, $clusterno, $purok, $barangay, $birthdate, $sex, $contact, $work, $organization, $senior, $pensioner, $uct, $nhts, $pwd, $fourps, $new_voter){
 
 		$status = 1;
 		$result = 0;
 		$year = $this->get_year();
 
 		if ($id == 0){
-			$stmt = $this->con->prepare("INSERT INTO tbl_voters_list (firstname, middlename, lastname, suffix, vin, voters_no, precinct_no, cluster_no, purok_no, barangay, birthdate, gender, contact_number, current_work, organization, is_senior_citizen, is_social_pensioner, is_uct_member, is_nhts, is_pwd, is_4pcs, record_year, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)");
-			$stmt->bind_param("ssssssssssssssssssssss", $fname, $mname, $lname, $ext, $vin, $vno, $precinctno, $clusterno, $purok, $barangay, $birthdate, $sex, $contact, $work, $organization, $senior, $pensioner, $uct, $nhts, $pwd, $fourps, $year);
+			$stmt = $this->con->prepare("INSERT INTO tbl_voters_list (firstname, middlename, lastname, suffix, vin, voters_no, precinct_no, cluster_no, purok_no, barangay, birthdate, gender, contact_number, current_work, organization, is_senior_citizen, is_social_pensioner, is_uct_member, is_nhts, is_pwd, is_4pcs, is_new_voter, record_year, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)");
+			$stmt->bind_param("sssssssssssssssssssssss", $fname, $mname, $lname, $ext, $vin, $vno, $precinctno, $clusterno, $purok, $barangay, $birthdate, $sex, $contact, $work, $organization, $senior, $pensioner, $uct, $nhts, $pwd, $fourps, $new_voter, $year);
 			$stmt->execute();
 			$result = 1;
 		}
@@ -169,9 +171,10 @@ class voterModel extends model{
 													is_nhts = ?, 
 													is_pwd = ?, 
 													is_4pcs = ?,
+													is_new_voter=?,
 													record_year = ?
 													WHERE record_id = ?");
-				$stmt->bind_param("sssssssssssssssssssssss", $fname, $mname, $lname, $ext, $vin, $vno, $precinctno, $clusterno, $purok, $barangay, $birthdate, $sex, $contact, $work, $organization, $senior, $pensioner, $uct, $nhts, $pwd, $fourps, $year, $id);
+				$stmt->bind_param("ssssssssssssssssssssssss", $fname, $mname, $lname, $ext, $vin, $vno, $precinctno, $clusterno, $purok, $barangay, $birthdate, $sex, $contact, $work, $organization, $senior, $pensioner, $uct, $nhts, $pwd, $fourps, $new_voter, $year, $id);
 				$stmt->execute();
 				$result = 2;
 			}

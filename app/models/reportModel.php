@@ -26,7 +26,7 @@ class reportModel extends model{
 		$barangay = $param['barangay'];
 		
 		$query = 'SELECT twl.record_id, tvl.firstname, tvl.middlename, tvl.lastname, tvl.suffix, tvl.voters_no, 
-					tvl.precinct_no, tvl.purok_no, tvl.cluster_no, tvl.image_url
+					tvl.precinct_no, tvl.purok_no, tvl.cluster_no, tvl.image_url, tvl.is_new_voter
 					FROM tbl_ward_leader AS twl
 					INNER JOIN tbl_voters_list AS tvl ON tvl.record_id = twl.voter_id
 					WHERE twl.barangay_id = ? AND twl.record_year = ? AND twl.status = 1';
@@ -34,7 +34,7 @@ class reportModel extends model{
 		$stmt = $this->con->prepare($query);
 		$stmt->bind_param('ss', $barangay, $year);
 		$stmt->execute();
-		$stmt->bind_result($wardid, $firstname, $middlename, $lastname, $suffix, $votersno, $precinctno, $purokno, $clusterno, $imgurl);
+		$stmt->bind_result($wardid, $firstname, $middlename, $lastname, $suffix, $votersno, $precinctno, $purokno, $clusterno, $imgurl, $new_voter);
 		$ward = array();
 		$wardlist = array();
 		$ctr = 0;
@@ -49,7 +49,8 @@ class reportModel extends model{
 							'precinctno' => $precinctno,
 							'purokno' => $purokno,
 							'clusterno' => $clusterno,
-							'imgurl' => $imgurl);
+							'imgurl' => $imgurl,
+							'new_voter' => $new_voter);
 			$ward['members'] = $this->get_ward_members($wardid, $year);
 			$wardlist[$ctr++] = $ward;		
 		}
@@ -61,7 +62,7 @@ class reportModel extends model{
 
 	public function get_ward_members($wardid, $year){
 		$query = 'SELECT tvl.firstname, tvl.middlename, tvl.lastname, tvl.suffix, tvl.voters_no, 
-					tvl.precinct_no, tvl.purok_no, tvl.cluster_no
+					tvl.precinct_no, tvl.purok_no, tvl.cluster_no, tvl.is_new_voter
 					FROM tbl_ward_member AS twm
 					INNER JOIN tbl_voters_list AS tvl ON tvl.record_id = twm.voter_id
 					WHERE twm.ward_id = ? AND twm.record_year = ? AND twm.status = 1 ORDER BY tvl.lastname ASC';
@@ -71,7 +72,7 @@ class reportModel extends model{
 		$stmt = $connection->prepare($query);
 		$stmt->bind_param('ss', $wardid, $year);
 		$stmt->execute();
-		$stmt->bind_result($firstname, $middlename, $lastname, $suffix, $votersno, $precinctno, $purokno, $clusterno);
+		$stmt->bind_result($firstname, $middlename, $lastname, $suffix, $votersno, $precinctno, $purokno, $clusterno, $new_voter);
 		$member = array();
 		$ward_members = array();
 		$ctr = 0;
@@ -84,7 +85,7 @@ class reportModel extends model{
 							'votersno' => $votersno,
 							'precinctno' => $precinctno,
 							'purokno' => $purokno,
-							'clusterno' => $clusterno);
+							'new_voter' => $new_voter);
 			$ward_members[$wardid] = $member;
 
 		}
