@@ -278,35 +278,76 @@
                             </div>
                           </div>
 
+                          <div class="row">
+                            <div class="col-sm-2 align-self-center">
+                                Remarks:
+                            </div>
+                            <div class="col-sm-10">
+                              <div class="form-group">
+                                <textarea class="form-control form-control-sm" id="remarks" name="remarks"><?php echo $profile['remarks'] ?></textarea>
+                              </div>
+                            </div>
+                          </div>
+
                           <br>
 
                           <div class="row mt-3">
-                            <div class="col-sm-2">
-
+                            <div class="col-lg-2 align-self-center">
+                                Is Senior Citizen?:
                             </div>
-                            <div class="col-sm-3">
-                              <input type="checkbox" id="senior" name="senior" class="mr-2" <?php echo ($profile['senior']) ? 'checked="checked"' : ''; ?>>Is Senior Citizen? 
-                            </div>
-                            <div class="col-sm-3">
-                              <input type="checkbox" id="pensioner" name="pensioner" class="mr-2" <?php echo ($profile['pensioner']) ? 'checked="checked"' : ''; ?>>Is Social Pensioner? 
-                            </div>
-                            <div class="col-sm-3">
-                              <input type="checkbox" id="uct" name="uct" class="mr-2" <?php echo ($profile['uct']) ? 'checked="checked"' : ''; ?>>Is UCT Member? 
+                            <div class="col-lg-3">
+                              <!-- <input type="checkbox" id="new_voter" name="new_voter" class="mr-2"> -->
+                              <input type="checkbox" id="senior" name="senior" <?php echo ($profile['senior']) ? 'checked' : ''; ?> data-bootstrap-switch data-on-text="YES" data-off-text="NO">
                             </div>
                           </div>
 
                           <div class="row mt-3">
-                            <div class="col-sm-2">
+                            <div class="col-lg-2 align-self-center">
+                                Is Social Pensioner? :
+                            </div>
+                            <div class="col-lg-3">
+                              <!-- <input type="checkbox" id="new_voter" name="new_voter" class="mr-2"> -->
+                              <input type="checkbox" id="pensioner" name="pensioner" <?php echo ($profile['pensioner']) ? 'checked' : ''; ?> data-bootstrap-switch data-on-text="YES" data-off-text="NO">
+                            </div>
+                          </div>
 
+                          <div class="row mt-3">
+                            <div class="col-lg-2 align-self-center">
+                                Is UCT Member?:
                             </div>
-                            <div class="col-sm-3">
-                              <input type="checkbox" id="nhts" name="nhts" class="mr-2" <?php echo ($profile['nhts']) ? 'checked="checked"' : ''; ?>>Is NHTS? 
+                            <div class="col-lg-3">
+                              <!-- <input type="checkbox" id="new_voter" name="new_voter" class="mr-2"> -->
+                              <input type="checkbox" id="uct" name="uct" <?php echo ($profile['uct']) ? 'checked' : ''; ?> data-bootstrap-switch data-on-text="YES" data-off-text="NO">
                             </div>
-                            <div class="col-sm-3">
-                              <input type="checkbox" id="pwd" name="pwd" class="mr-2" <?php echo ($profile['pwd']) ? 'checked="checked"' : ''; ?>>Is PWD? 
+                          </div>
+
+                          <div class="row mt-3">
+                            <div class="col-lg-2 align-self-center">
+                                Is NHTS?:
                             </div>
-                            <div class="col-sm-3">
-                              <input type="checkbox" id="fourps" name="fourps" class="mr-2" <?php echo ($profile['fourps']) ? 'checked="checked"' : ''; ?>>Is 4Ps? 
+                            <div class="col-lg-3">
+                              <!-- <input type="checkbox" id="new_voter" name="new_voter" class="mr-2"> -->
+                              <input type="checkbox" id="nhts" name="nhts" <?php echo ($profile['nhts']) ? 'checked' : ''; ?> data-bootstrap-switch data-on-text="YES" data-off-text="NO">
+                            </div>
+                          </div>
+
+                          <div class="row mt-3">
+                            <div class="col-lg-2 align-self-center">
+                              Is PWD?:
+                            </div>
+                            <div class="col-lg-3">
+                              <!-- <input type="checkbox" id="new_voter" name="new_voter" class="mr-2"> -->
+                              <input type="checkbox" id="pwd" name="pwd" <?php echo ($profile['pwd']) ? 'checked' : ''; ?> data-bootstrap-switch data-on-text="YES" data-off-text="NO">
+                            </div>
+                          </div>
+
+                          <div class="row mt-3">
+                            <div class="col-lg-2 align-self-center">
+                              Is 4Ps?:
+                            </div>
+                            <div class="col-lg-3">
+                              <!-- <input type="checkbox" id="new_voter" name="new_voter" class="mr-2"> -->
+                              <input type="checkbox" id="fourps" name="fourps" <?php echo ($profile['fourps']) ? 'checked' : ''; ?> data-bootstrap-switch data-on-text="YES" data-off-text="NO">
                             </div>
                           </div>
 
@@ -317,6 +358,16 @@
                             <div class="col-lg-3">
                               <!-- <input type="checkbox" id="new_voter" name="new_voter" class="mr-2"> -->
                               <input type="checkbox" id="new_voter" name="new_voter" <?php echo ($profile['new_voter']) ? 'checked' : ''; ?> data-bootstrap-switch data-on-text="YES" data-off-text="NO">
+                            </div>
+                          </div>
+
+                          <div class="row mt-3">
+                            <div class="col-lg-2 align-self-center">
+                                Is New Affiliation?:
+                            </div>
+                            <div class="col-lg-3">
+                              <!-- <input type="checkbox" id="new_voter" name="new_voter" class="mr-2"> -->
+                              <input type="checkbox" id="new_affiliation" name="new_affiliation" <?php echo ($profile['new_affiliation']) ? 'checked' : ''; ?> data-bootstrap-switch data-on-text="YES" data-off-text="NO">
                             </div>
                           </div>
 

@@ -13,7 +13,7 @@ class authenticationModel extends model{
 		$username = $param['username'];
 		$password = md5($param['password']);
 
-		$stmt = $this->con->prepare("SELECT record_id, username, firstname, middlename, lastname FROM tbl_users WHERE username = ? AND password = ?");
+		$stmt = $this->con->prepare("SELECT record_id, username, firstname, middlename, lastname FROM tbl_users WHERE username = ? AND password = ? AND status = 1");
 		$stmt->bind_param("ss", $username, $password);
 		$stmt->execute();
 		$stmt->bind_result($id, $username, $firstname, $middlename, $lastname);

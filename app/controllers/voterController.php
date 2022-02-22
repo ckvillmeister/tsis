@@ -91,6 +91,7 @@ class voterController extends controller{
 		$contact = isset($_POST['contact']) ? $_POST['contact'] : '';
 		$work = isset($_POST['work']) ? $_POST['work'] : '';
 		$organization = isset($_POST['organization']) ? $_POST['organization'] : '';
+		$remarks = isset($_POST['remarks']) ? $_POST['remarks'] : '';
 		$senior = isset($_POST['senior']) ? 1 : 0;
 		$pensioner = isset($_POST['pensioner']) ? 1 : 0;
 		$uct = isset($_POST['uct']) ? 1 : 0;
@@ -98,9 +99,10 @@ class voterController extends controller{
 		$pwd = isset($_POST['pwd']) ? 1 : 0;
 		$fourps = isset($_POST['fourps']) ? 1 : 0;
 		$new_voter = isset($_POST['new_voter']) ? 1 : 0;
+		$new_affiliation = isset($_POST['new_affiliation']) ? 1 : 0;
 
 		$this->voterObj = new voterModel();
-		$res = $this->voterObj->save_voter_profile($voter_sys_id, $fname, $mname, $lname, $ext, $vin, $vno, $precinctno, $clusterno, $purok, $barangay, $birthdate, $sex, $contact, $work, $organization, $senior, $pensioner, $uct, $nhts, $pwd, $fourps, $new_voter);
+		$res = $this->voterObj->save_voter_profile($voter_sys_id, $fname, $mname, $lname, $ext, $vin, $vno, $precinctno, $clusterno, $purok, $barangay, $birthdate, $sex, $contact, $work, $organization, $senior, $pensioner, $uct, $nhts, $pwd, $fourps, $new_voter, $remarks, $new_affiliation);
 		echo $res;
 	}
 
