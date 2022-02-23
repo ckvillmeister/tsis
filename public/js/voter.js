@@ -64,13 +64,14 @@ $('body').on('click', '#add', function(){
 $('body').on('click', '#edit', function(){
   var id = $(this).val();
   $('#voters_sys_id').val(id);
-  $('#senior').prop('checked', false);
-  $('#pensioner').prop('checked', false);
-  $('#uct').prop('checked', false);
-  $('#nhts').prop('checked', false);
-  $('#pwd').prop('checked', false);
-  $('#fourps').prop('checked', false);
+  $('#senior').bootstrapSwitch('state', false);
+  $('#pensioner').bootstrapSwitch('state', false);
+  $('#uct').bootstrapSwitch('state', false);
+  $('#nhts').bootstrapSwitch('state', false);
+  $('#pwd').bootstrapSwitch('state', false);
+  $('#fourps').bootstrapSwitch('state', false);
   $("#new_voter").bootstrapSwitch('state', false);
+  $('#new_affiliation').bootstrapSwitch('state', false);
 
   $.ajax({
     url: 'voter/get_voter_info',
@@ -93,33 +94,39 @@ $('body').on('click', '#edit', function(){
       $('#contact').val(result['contact']);
       $('#work').val(result['work']);
       $('#organization').val(result['org']);
+      $('#remarks').val(result['remarks']);
 
       if(result['senior']){
-        $('#senior').prop('checked', true);
+        $("#senior").bootstrapSwitch('state', true);
       }
 
       if(result['pensioner']){
-        $('#pensioner').prop('checked', true);
+        $("#pensioner").bootstrapSwitch('state', true);
       }
 
       if(result['uct']){
-        $('#uct').prop('checked', true);
+        $("#uct").bootstrapSwitch('state', true);
       }
 
       if(result['nhts']){
-        $('#nhts').prop('checked', true);
+        $("#nhts").bootstrapSwitch('state', true);
       }
 
       if(result['pwd']){
-        $('#pwd').prop('checked', true);
+        $("#pwd").bootstrapSwitch('state', true);
       }
 
       if(result['fourps']){
-        $('#fourps').prop('checked', true);
+        $("#fourps").bootstrapSwitch('state', true);
       } 
 
       if(result['new_voter']){
         $("#new_voter").bootstrapSwitch('state', true);
+        // $('#new_voter').prop('checked', true);
+      } 
+
+      if(result['new_affiliation']){
+        $("#new_affiliation").bootstrapSwitch('state', true);
         // $('#new_voter').prop('checked', true);
       } 
 

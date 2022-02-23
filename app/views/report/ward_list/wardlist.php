@@ -97,7 +97,11 @@
 					<td class="leader"><?php echo $leader_info->votersno; ?></td>
 					<td class="leader"><?php echo $leader_info->precinctno; ?></td>
 					<td class="leader"><?php echo $leader_info->purokno; ?></td>
-					<td class="leader" style="text-align: center"><?php echo ($leader_info->new_voter) ? '<small class="badge badge-primary">New Voter</small>' : ''; ?></td>
+					<td class="leader" style="text-align: center">
+						<?php echo ($leader_info->new_voter) ? '<small class="badge badge-primary">New Voter</small>' : ''; ?>
+						<?php echo ($leader_info->new_affiliation) ? '<small class="badge badge-secondary">New Affiliation</small>' : ''; ?>
+						<?php echo ($leader_info->remarks) ? '<small class="badge badge-warning">Remarks: '.$leader_info->remarks.'</small>' : '';  ?>
+					</td>
 				</tr>
 			<?php
 					if(array_key_exists($leader['wardid'], $ward['members'])){
@@ -113,7 +117,11 @@
 								<td><?php echo $member_info->votersno; ?></td>
 								<td><?php echo $member_info->precinctno; ?></td>
 								<td><?php echo $member_info->purokno; ?></td>
-								<td style="text-align: center"><?php echo ($member_info->new_voter) ? '<small class="badge badge-primary">New Voter</small>' : ''; ?></td>
+								<td style="text-align: center">
+									<?php echo ($member_info->new_voter) ? '<small class="badge badge-primary">New Voter</small>' : ''; ?>
+									<?php echo ($member_info->new_affiliation) ? '<small class="badge badge-secondary">New Affiliation</small>' : ''; ?>
+									<?php echo ($member_info->remarks) ? '<small class="badge badge-warning">Remarks: '.$member_info->remarks.'</small>' : '';  ?>
+								</td>
 							</tr>
 			<?php
 						}
