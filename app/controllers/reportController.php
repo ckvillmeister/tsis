@@ -191,13 +191,29 @@ class reportController extends controller{
 	public function get_search_list(){
 		$barangay = $_POST['barangay'];
 		$purok = $_POST['purok'];
+		$cluster = $_POST['cluster'];
 		$precinct = $_POST['precinct'];
 		$name = $_POST['name'];
 		$age = $_POST['age'];
 
 		$reportObj = new reportModel();
-		$searchlist = $reportObj->get_search_list($barangay, $purok, $precinct, $name, $age);
+		$searchlist = $reportObj->get_search_list($barangay, $purok, $cluster, $precinct, $name, $age);
 		$this->view()->render('report/search/searchlist.php', array('searchlist' => $searchlist));
+	}
+
+	public function get_barangay_clusters(){
+		$barangay = $_POST['barangay'];
+		$reportObj = new reportModel();
+		$clusters = $reportObj->get_barangay_clusters($barangay);
+		echo json_encode($clusters);
+	}
+
+	public function get_cluster_precincts(){
+		$barangay = $_POST['barangay'];
+		$cluster = $_POST['cluster'];
+		$reportObj = new reportModel();
+		$precincts = $reportObj->get_cluster_precincts($barangay, $cluster);
+		echo json_encode($precincts);
 	}
 
 }

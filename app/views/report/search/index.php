@@ -95,20 +95,23 @@
 
             <div class="row shadow-none mt-3 mr-3 ml-3 rounded">
               <div class="col-lg-2 align-self-center" style="vertical-align: middle;">
+                Cluster:
+              </div>
+              <div class="col-lg-3">
+                <select id="cbo_cluster" class="form-control form-control-sm" style="width: 100%;">
+                  <option value=""> Select Cluster Number </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row shadow-none mt-3 mr-3 ml-3 rounded">
+              <div class="col-lg-2 align-self-center" style="vertical-align: middle;">
                 Precinct:
               </div>
               <div class="col-lg-3">
                 <select id="cbo_precinct" class="form-control form-control-sm" style="width: 100%;">
                   <option value=""> Select Precinct Number </option>
-                    <?php 
-                      $precincts = $data['precincts'];
-                      foreach ($precincts as $key => $precinct) {
-                    ?>
-                    <option value="<?php echo $precinct; ?>"><?php echo $precinct; ?></option>
-                    <?php
-                      }
-                    ?>
-                  </select>
+                </select>
               </div>
             </div>
 
@@ -181,6 +184,7 @@
   $('#age_bracket').select2();
   $('#cbo_barangay').select2({dropdownCssClass: "font"});
   $('#cbo_purok').select2({dropdownCssClass: "font"});
+  $('#cbo_cluster').select2({dropdownCssClass: "font"});
   $('#cbo_precinct').select2({dropdownCssClass: "font"});
   $('#age_bracket').select2({dropdownCssClass: "font"});
 
@@ -190,5 +194,58 @@
     $('#cbo_precinct').val('').trigger('change'); 
     $('#txt_name').val('');
   });
+
+  $('#cbo_barangay').on('change', function(){
+    
+    $.ajax({
+      url: 'get_barangay_clusters',
+      method: 'POST',
+      data: {barangay: $('#cbo_barangay').val()},
+      dataType: 'JSON',
+      success: function(result) {
+        var ctr=0;
+
+        $('#cbo_cluster').empty();
+        $('#cbo_cluster').append('<option value="">Select Cluster Number</option>');
+        $.each(result, function(index, arr) {
+          var newOption = new Option(arr, arr, false, false);
+          $('#cbo_cluster').append(newOption);
+        });
+      },
+      error: function(obj, err, ex){
+        $.alert({
+              title: "Error",
+              type: "red",
+              content: err + ": " + obj.status + " " + ex
+        })
+      }
+    })
+  })
+
+  $('#cbo_cluster').on('change', function(){
+    
+    $.ajax({
+      url: 'get_cluster_precincts',
+      method: 'POST',
+      data: {barangay: $('#cbo_barangay').val(), cluster: $('#cbo_cluster').val()},
+      dataType: 'JSON',
+      success: function(result) {
+        var ctr=0;
+        $('#cbo_precinct').empty();
+        $('#cbo_precinct').append('<option value="">Select Precinct Number</option>');
+        $.each(result, function(index, arr) {
+          var newOption = new Option(arr, arr, false, false);
+          $('#cbo_precinct').append(newOption).trigger('change');
+        });
+      },
+      error: function(obj, err, ex){
+        $.alert({
+              title: "Error",
+              type: "red",
+              content: err + ": " + obj.status + " " + ex
+        })
+      }
+    })
+  })
 </script>
 </html>

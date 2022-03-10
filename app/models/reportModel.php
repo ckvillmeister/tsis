@@ -361,7 +361,7 @@ class reportModel extends model{
 		return $precincts;
 	}
 
-	public function get_search_list($barangay, $purok, $precinct, $name, $age){
+	public function get_search_list($barangay, $purok, $cluster, $precinct, $name, $age){
 		$year = $this->get_year();
 		$query = 'SELECT firstname, middlename, lastname, suffix, voters_no, 
 					precinct_no, purok_no, cluster_no, YEAR(CURDATE()) - YEAR(birthdate) AS age, YEAR(birthdate)
@@ -376,6 +376,10 @@ class reportModel extends model{
 			$query .= ' AND purok_no = '.$purok;
 		}
 
+		if ($cluster){
+			$query .= ' AND cluster_no = "'.$cluster.'"';
+		}
+
 		if ($precinct){
 			$query .= ' AND precinct_no = "'.$precinct.'"';
 		}
@@ -385,7 +389,7 @@ class reportModel extends model{
 		}
 
 		$query .= ' ORDER BY lastname ASC';
-
+		
 		$db = new database();
 		$connection = $db->connection();
 		$stmt = $connection->prepare($query);
@@ -558,6 +562,57 @@ class reportModel extends model{
 
 		$stmt->close();
 		return $summary;
+	}
+
+	public function get_barangay_clusters($barangay){
+		$year = $this->get_year();
+		$qryBarangayClusters = 'SELECT cluster_no 
+								FROM tbl_voters_list
+								WHERE barangay = ? 
+								AND record_year = ? 
+								GROUP BY cluster_no
+								ORDER BY cluster_no ASC';
+
+		$db = new database();
+		$connection = $db->connection();
+		$stmt = $connection->prepare($qryBarangayClusters);
+		$stmt->bind_param('ss', $barangay, $year);
+		$stmt->execute();
+		$stmt->bind_result($cluster);
+		$clusters = [];
+
+		while ($stmt->fetch()) {
+			$clusters[] = $cluster;
+		}
+
+		$stmt->close();
+		return $clusters;
+	}
+
+	public function get_cluster_precincts($barangay, $cluster){
+		$year = $this->get_year();
+		$qryBarangayClusters = 'SELECT precinct_no
+								FROM tbl_voters_list
+								WHERE barangay = ? 
+								AND cluster_no = ?
+								AND record_year = ? 
+								GROUP BY precinct_no
+								ORDER BY precinct_no ASC';
+
+		$db = new database();
+		$connection = $db->connection();
+		$stmt = $connection->prepare($qryBarangayClusters);
+		$stmt->bind_param('sss', $barangay, $cluster, $year);
+		$stmt->execute();
+		$stmt->bind_result($precinct);
+		$precincts = [];
+
+		while ($stmt->fetch()) {
+			$precincts[] = $precinct;
+		}
+
+		$stmt->close();
+		return $precincts;
 	}
 	
 }
