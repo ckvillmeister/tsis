@@ -53,7 +53,7 @@
                           <td class="text-center">Total Supporters</td>
                           <td class="text-center">Total Voters</td>
                           <td class="text-center">60% of Total Voters</td>
-                          <td class="text-center">Difference <br> (60% Voters - Total Supporters)</td>
+                          <td class="text-center">(Total Supporters / 60% of Total Voters) <br> * 100</td>
                         </tr>
                       </thead>
                       <tbody>
@@ -83,7 +83,7 @@
                           <td class='text-center data'><?php echo $sum['leaders'] + $sum['members']; ?></td>
                           <td class='text-center data'><?php echo $sum['voters']; ?></td>
                           <td class='text-center data'><?php echo round($sum['voters'] * .60, 0); ?></td>
-                          <td class='text-center data'><?php echo round($sum['voters'] * .60, 0) - ($sum['leaders'] + $sum['members']); ?></td>
+                          <td class='text-center data'><?php echo round((($sum['leaders'] + $sum['members']) / round($sum['voters'] * .60, 0)) * 100, 2); ?></td>
                         </tr>
                         <?php
                           }
