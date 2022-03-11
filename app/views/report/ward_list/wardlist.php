@@ -83,7 +83,10 @@
 			<?php
 				$ctr = 0;
 				$wardlist = $data['wardlist'];
+				$leader_count = 0;
+				$member_count = 0;
 				foreach ($wardlist as $key => $ward) {
+					$leader_count++;
 					$leader = $ward['leader'];
 					$leader_info = (object) $leader;
 					$imgurl = (file_exists($leader_info->imgurl)) ? ROOT.$leader_info->imgurl : ROOT."public/image/avatar130x160.png";
@@ -106,6 +109,7 @@
 			<?php
 					if(array_key_exists($leader['wardid'], $ward['members'])){
 						foreach ($ward['members'][$leader['wardid']] as $key => $member) {
+							$member_count++;
 							$member_info = (object) $member;
 			?>
 							<tr>
@@ -130,6 +134,23 @@
 			?>
 		</tbody>
 	</table>
+</div><br>
+<div class="row shadow-none m-3 rounded">
+	<div class="col-md-12">
+		Leaders: <strong><?php echo $leader_count; ?></strong>
+	</div>
+</div>
+
+<div class="row shadow-none m-3 rounded">
+	<div class="col-md-12">
+		Members: <strong><?php echo $member_count; ?></strong>
+	</div>
+</div>
+
+<div class="row shadow-none m-3 rounded">
+	<div class="col-md-12">
+		Total: <strong><?php echo $leader_count + $member_count; ?></strong>
+	</div>
 </div>
 <script type="text/javascript">
 	var barangay = $( "#cbo_barangay option:selected" ).text();

@@ -38,11 +38,12 @@ $('#btn_search_result').click(function() {
 	var barangay = $('#cbo_barangay').val();
 	var purok = $('#cbo_purok').val();
 	var name = $('#txt_name').val();
+	var cluster = $('#cbo_cluster').val();
 	var precinct = $('#cbo_precinct').val();
 	var age = $('#age_bracket').val();
 
 	if (barangay != 0) {
-		get_search_list(barangay, purok, precinct, name, age);
+		get_search_list(barangay, purok, cluster, precinct, name, age);
 		$('#btn_clear').removeClass('invisible');
 	}
 });
@@ -165,11 +166,11 @@ function get_supporters_list(supporter_type, barangay){
 	})
 }
 
-function get_search_list(barangay, purok, precinct, name, age){
+function get_search_list(barangay, purok, cluster, precinct, name, age){
 	$.ajax({
 		url: 'get_search_list',
 		method: 'POST',
-		data: {barangay: barangay, purok: purok, precinct: precinct, name: name, age: age},
+		data: {barangay: barangay, purok: purok, cluster: cluster, precinct: precinct, name: name, age: age},
 		dataType: 'html',
 		beforeSend: function() {
 		    $('.overlay-wrapper').html('<div class="overlay">' +
