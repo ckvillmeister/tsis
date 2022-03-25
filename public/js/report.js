@@ -29,9 +29,10 @@ $('#btn_display_supporters').click(function() {
 	var supporter_type = $('#cbo_supporter_type').val();
 	var barangay = $('#cbo_barangay').val();
 
-	if (supporter_type != 0) {
+	if (barangay != 0) {
 		get_supporters_list(supporter_type, barangay);
 	}
+	
 });
 
 $('#btn_search_result').click(function() {

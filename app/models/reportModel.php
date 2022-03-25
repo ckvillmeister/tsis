@@ -171,14 +171,14 @@ class reportModel extends model{
 		return $total_voters;
 	}
 
-	public function get_supporters_list($type, $barangay){
+	public function get_supporters_list($type, $barangay, $cluster = 0){
 		$query = '';
 		$year = $this->get_year();
 		
 		if ($type == 1){
 			$query = 'SELECT tvl.firstname, tvl.middlename, tvl.lastname, 
-								tvl.suffix, tvl.voters_no, tvl.precinct_no, 
-								tvl.cluster_no, tvl.purok_no, tb.barangay_name
+								tvl.suffix, tvl.voters_no, tvl.precinct_no,
+								tvl.cluster_no, tvl.purok_no, tb.barangay_name, "Barangay Leader"
 								FROM tbl_barangay_leader tbl
 								INNER JOIN tbl_voters_list tvl ON tvl.record_id = tbl.voter_id
 								INNER JOIN tbl_barangay tb ON tb.record_id = tbl.barangay_id
@@ -193,7 +193,7 @@ class reportModel extends model{
 		elseif ($type == 2){
 			$query = 'SELECT tvl.firstname, tvl.middlename, tvl.lastname, 
 								tvl.suffix, tvl.voters_no, tvl.precinct_no, 
-								tvl.cluster_no, tvl.purok_no, tb.barangay_name
+								tvl.cluster_no, tvl.purok_no, tb.barangay_name, "Purok Leader"
 								FROM tbl_purok_leader tpl
 								INNER JOIN tbl_voters_list tvl ON tvl.record_id = tpl.voter_id
 								INNER JOIN tbl_barangay tb ON tb.record_id = tpl.barangay_id
@@ -205,10 +205,10 @@ class reportModel extends model{
 
 			$query .= ' ORDER BY tpl.barangay_id ASC, tvl.purok_no ASC';
 		}
-		if ($type == 3){
+		elseif ($type == 3){
 			$query = 'SELECT tvl.firstname, tvl.middlename, tvl.lastname, 
 								tvl.suffix, tvl.voters_no, tvl.precinct_no, 
-								tvl.cluster_no, tvl.purok_no, tb.barangay_name
+								tvl.cluster_no, tvl.purok_no, tb.barangay_name, "Ward Leader"
 								FROM tbl_ward_leader twl
 								INNER JOIN tbl_voters_list tvl ON tvl.record_id = twl.voter_id
 								INNER JOIN tbl_barangay tb ON tb.record_id = twl.barangay_id
@@ -220,10 +220,10 @@ class reportModel extends model{
 
 			$query .= ' ORDER BY twl.barangay_id ASC, tvl.purok_no ASC, tvl.lastname ASC, tvl.firstname ASC, tvl.middlename';
 		}
-		if ($type == 4){
+		elseif ($type == 4){
 			$query = 'SELECT tvl.firstname, tvl.middlename, tvl.lastname, 
 								tvl.suffix, tvl.voters_no, tvl.precinct_no, 
-								tvl.cluster_no, tvl.purok_no, tb.barangay_name
+								tvl.cluster_no, tvl.purok_no, tb.barangay_name, "Ward Member"
 								FROM tbl_ward_member twm
 								INNER JOIN tbl_voters_list tvl ON tvl.record_id = twm.voter_id
 								INNER JOIN tbl_barangay tb ON tb.record_id = twm.barangay_id
@@ -235,12 +235,38 @@ class reportModel extends model{
 
 			$query .= ' ORDER BY twm.barangay_id ASC, tvl.purok_no ASC, tvl.lastname ASC, tvl.firstname ASC, tvl.middlename';
 		}
-
+		else{
+			if ($cluster){
+				$query = 'SELECT tvl.firstname, tvl.middlename, tvl.lastname, tvl.suffix, tvl.voters_no, tvl.precinct_no, tvl.cluster_no, tvl.purok_no, tb.barangay_name, "Ward Leader" FROM tbl_ward_leader twl
+						JOIN tbl_voters_list tvl ON tvl.record_id = twl.voter_id
+						JOIN tbl_barangay tb ON tb.record_id = twl.barangay_id
+						WHERE twl.barangay_id = '.$barangay.' AND twl.record_year = '.$year.' AND twl.status = 1 AND tvl.cluster_no '.$cluster.'
+						UNION
+						SELECT tvl.firstname, tvl.middlename, tvl.lastname, tvl.suffix, tvl.voters_no, tvl.precinct_no, tvl.cluster_no, tvl.purok_no, tb.barangay_name, "Ward Member" FROM tbl_ward_member twm
+						JOIN tbl_voters_list tvl ON tvl.record_id = twm.voter_id
+						JOIN tbl_barangay tb ON tb.record_id = twm.barangay_id
+						WHERE twm.barangay_id = '.$barangay.' AND twm.record_year = '.$year.' AND twm.status = 1 AND tvl.cluster_no '.$cluster.'
+						ORDER BY lastname ASC, firstname ASC, middlename ASC';
+			}
+			else{
+				$query = 'SELECT tvl.firstname, tvl.middlename, tvl.lastname, tvl.suffix, tvl.voters_no, tvl.precinct_no, tvl.cluster_no, tvl.purok_no, tb.barangay_name, "Ward Leader" FROM tbl_ward_leader twl
+						JOIN tbl_voters_list tvl ON tvl.record_id = twl.voter_id
+						JOIN tbl_barangay tb ON tb.record_id = twl.barangay_id
+						WHERE twl.barangay_id = '.$barangay.' AND twl.record_year = '.$year.' AND twl.status = 1
+						UNION
+						SELECT tvl.firstname, tvl.middlename, tvl.lastname, tvl.suffix, tvl.voters_no, tvl.precinct_no, tvl.cluster_no, tvl.purok_no, tb.barangay_name, "Ward Member" FROM tbl_ward_member twm
+						JOIN tbl_voters_list tvl ON tvl.record_id = twm.voter_id
+						JOIN tbl_barangay tb ON tb.record_id = twm.barangay_id
+						WHERE twm.barangay_id = '.$barangay.' AND twm.record_year = '.$year.' AND twm.status = 1
+						ORDER BY lastname ASC, firstname ASC, middlename ASC';
+			}
+		}
+		
 		$db = new database();
 		$connection = $db->connection();
 		$stmt = $connection->prepare($query);
 		$stmt->execute();
-		$stmt->bind_result($firstname, $middlename, $lastname, $suffix, $votersno, $precinctno, $clusterno, $purokno, $barangay);
+		$stmt->bind_result($firstname, $middlename, $lastname, $suffix, $votersno, $precinctno, $clusterno, $purokno, $barangay, $rank);
 		$supporters = array();
 		$ctr = 0;
 
@@ -253,7 +279,8 @@ class reportModel extends model{
 							'precinctno' => $precinctno,
 							'clusterno' => $clusterno,
 							'purokno' => $purokno,
-							'barangay' => $barangay);
+							'barangay' => $barangay,
+							'rank' => $rank);
 		}
 		
 		$stmt->close();
