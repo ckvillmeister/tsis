@@ -240,12 +240,12 @@ class reportModel extends model{
 				$query = 'SELECT tvl.firstname, tvl.middlename, tvl.lastname, tvl.suffix, tvl.voters_no, tvl.precinct_no, tvl.cluster_no, tvl.purok_no, tb.barangay_name, "Ward Leader" FROM tbl_ward_leader twl
 						JOIN tbl_voters_list tvl ON tvl.record_id = twl.voter_id
 						JOIN tbl_barangay tb ON tb.record_id = twl.barangay_id
-						WHERE twl.barangay_id = '.$barangay.' AND twl.record_year = '.$year.' AND twl.status = 1 AND tvl.cluster_no '.$cluster.'
+						WHERE twl.barangay_id = '.$barangay.' AND twl.record_year = '.$year.' AND twl.status = 1 AND tvl.cluster_no = '.$cluster.'
 						UNION
 						SELECT tvl.firstname, tvl.middlename, tvl.lastname, tvl.suffix, tvl.voters_no, tvl.precinct_no, tvl.cluster_no, tvl.purok_no, tb.barangay_name, "Ward Member" FROM tbl_ward_member twm
 						JOIN tbl_voters_list tvl ON tvl.record_id = twm.voter_id
 						JOIN tbl_barangay tb ON tb.record_id = twm.barangay_id
-						WHERE twm.barangay_id = '.$barangay.' AND twm.record_year = '.$year.' AND twm.status = 1 AND tvl.cluster_no '.$cluster.'
+						WHERE twm.barangay_id = '.$barangay.' AND twm.record_year = '.$year.' AND twm.status = 1 AND tvl.cluster_no = '.$cluster.'
 						ORDER BY lastname ASC, firstname ASC, middlename ASC';
 			}
 			else{
