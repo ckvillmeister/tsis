@@ -182,9 +182,10 @@ class reportController extends controller{
 	public function get_supporters_list(){
 		$type = $_POST['type'];
 		$barangay = $_POST['barangay'];
+		$cluster = $_POST['cluster'];
 
 		$reportObj = new reportModel();
-		$supporters = $reportObj->get_supporters_list($type, $barangay);
+		$supporters = $reportObj->get_supporters_list($type, $barangay, $cluster);
 		$this->view()->render('report/supporters/supporterslist.php', array('supporters' => $supporters));
 	}
 

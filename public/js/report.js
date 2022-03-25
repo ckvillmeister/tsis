@@ -26,11 +26,12 @@ $('#btn_display_comparison').click(function() {
 });
 
 $('#btn_display_supporters').click(function() {
-	var supporter_type = $('#cbo_supporter_type').val();
-	var barangay = $('#cbo_barangay').val();
+	var supporter_type = $('#cbo_supporter_type').val(),
+		barangay = $('#cbo_barangay').val(),
+		cluster = $('#cbo_cluster').val();
 
 	if (barangay != 0) {
-		get_supporters_list(supporter_type, barangay);
+		get_supporters_list(supporter_type, barangay, cluster);
 	}
 	
 });
@@ -139,11 +140,11 @@ function get_comparison(position){
 	})
 }
 
-function get_supporters_list(supporter_type, barangay){
+function get_supporters_list(supporter_type, barangay, cluster){
 	$.ajax({
 		url: 'get_supporters_list',
 		method: 'POST',
-		data: {type: supporter_type, barangay: barangay},
+		data: {type: supporter_type, barangay: barangay, cluster: cluster},
 		dataType: 'html',
 		beforeSend: function() {
 		    $('.overlay-wrapper').html('<div class="overlay">' +
