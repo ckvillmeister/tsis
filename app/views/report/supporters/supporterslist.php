@@ -8,12 +8,13 @@
 			<thead>
 				<tr>
 					<td class="text-center">No.</td>
-					<td>Supporter's Fullname</td>
-					<td>Barangay</td>
-					<td>Voter's No</td>
-					<td>Precinct No</td>
-					<td>Cluster No</td>
-					<td>Purok No</td>
+					<td class="text-center">Supporter's Fullname</td>
+					<td class="text-center">Barangay</td>
+					<td class="text-center">Voter's No</td>
+					<td class="text-center">Precinct No</td>
+					<td class="text-center">Cluster No</td>
+					<td class="text-center">Purok No</td>
+					<td class="text-center">Supporter Type</td>
 				</tr>
 			</thead>
 			<tbody>
@@ -29,6 +30,7 @@
 					<td class='text-center data'><?php echo $row['precinctno']; ?></td>
 					<td class='text-center data'><?php echo $row['clusterno']; ?></td>
 					<td class='text-center data'><?php echo $row['purokno']; ?></td>
+					<td class='text-center data'><?php echo $row['rank']; ?></td>
 				</tr>
 				<?php
 					}
@@ -43,6 +45,9 @@
 	$(document).ready(function() {
 
 		var supporter_type = $( "#cbo_supporter_type option:selected" ).text();
+		if (supporter_type.trim() == '[ Select Supporter Type]'){
+			supporter_type = 'Supporters';
+		}
 	$('.supporter_type').html(supporter_type);
 	/*
 		B - Buttons
