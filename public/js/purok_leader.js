@@ -26,13 +26,45 @@ $('body').on('click', '#btn_edit_leader', function(){
 	}
 });
 
-$('#btn_yes').click(function(){
-	var barangay_id = $('#cbo_barangay').val();
-  	if (barangay_id != '0'){
-  		set_purok_leader(voters_id, barangay_id, purok_no);
-    	$('#modal_confirm_purok_leader').modal('toggle');
-      	$('#modal_set_purok_leader').modal('toggle');
-  	}
+$('body').on('click', '#btn_select', function(){
+  voters_id = $(this).val();
+  var fullname = $(this).closest("tr").find('td:eq(2)').text() + ' ' + $(this).closest("tr").find('td:eq(3)').text() + ' ' + $(this).closest("tr").find('td:eq(1)').text();
+  
+  Swal.fire({
+    title: "Confirm",
+    text: "Are you sure you want to select " + fullname + " as purok leader?",
+    icon: "question",
+    showCancelButton: true, 
+    showConfirmButton: true,  
+    confirmButtonColor: "#17a2b8"
+  }).then((res) => {
+    if (res.value) {
+      var barangay_id = $('#cbo_barangay').val();
+      if (barangay_id != '0'){
+        set_purok_leader(voters_id, barangay_id, purok_no);
+        $('#modal_set_purok_leader').modal('toggle');
+      }
+    }
+  });
+});
+
+$('body').on('click', '#btn_remove_leader', function(){
+  var barangay_id = $('#cbo_barangay').val();
+  var purok = $(this).closest("tr").find('td:eq(0)').text();
+  var fullname = $(this).closest("tr").find('td:eq(1)').text();
+
+  Swal.fire({
+    title: "Confirm",
+    text: "Are you sure you want to remove " + fullname + " as a purok leader?",
+    icon: "question",
+    showCancelButton: true, 
+    showConfirmButton: true,  
+    confirmButtonColor: "#17a2b8"
+  }).then((res) => {
+    if (res.value) {
+      remove_purok_leader(barangay_id, purok);
+    }
+  });
 });
 
 function get_purok_leaders(barangay_id){
@@ -46,11 +78,12 @@ function get_purok_leaders(barangay_id){
   			$('#purok_leaders').html(result);
   		},
   		error: function(obj, err, ex){
-  		  $.alert({
-            title: "Error",
-            type: "red",
-            content: msg + ": " + obj.status + " " + exception
-          })
+  		  Swal.fire({
+          title: "Error",
+          text: err + ": " + obj.status + " " + ex,
+          icon: "error",
+          confirmButtonColor: "#b34045",
+        });
     	}
   	})
 }
@@ -74,11 +107,12 @@ function get_voters_list(barangay_id){
       $('#voters_list').html(result);
     },
     error: function(obj, err, ex){
-      $.alert({
-            title: "Error",
-            type: "red",
-            content: msg + ": " + obj.status + " " + exception
-          })
+      Swal.fire({
+          title: "Error",
+          text: err + ": " + obj.status + " " + ex,
+          icon: "error",
+          confirmButtonColor: "#b34045",
+        });
     }
   })
 }
@@ -93,11 +127,32 @@ function set_purok_leader(voters_id, barangay_id, purok_no){
       $('#purok_leaders').html(result);
     },
     error: function(obj, err, ex){
-      $.alert({
-            title: "Error",
-            type: "red",
-            content: msg + ": " + obj.status + " " + exception
-          })
+      Swal.fire({
+          title: "Error",
+          text: err + ": " + obj.status + " " + ex,
+          icon: "error",
+          confirmButtonColor: "#b34045",
+        });
+    }
+  })
+}
+
+function remove_purok_leader(barangay_id, purok){
+  $.ajax({
+    url: 'remove_purok_leader',
+    method: 'POST',
+    data: {barangay_id: barangay_id, purok: purok},
+    dataType: 'html',
+    success: function(result) {
+      $('#purok_leaders').html(result);
+    },
+    error: function(obj, err, ex){
+      Swal.fire({
+          title: "Error",
+          text: err + ": " + obj.status + " " + ex,
+          icon: "error",
+          confirmButtonColor: "#b34045",
+        });
     }
   })
 }

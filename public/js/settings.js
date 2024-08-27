@@ -11,26 +11,29 @@ function save_settings(systemname, electionyear){
       method: 'POST',
       success: function(result) {
         if (result == 1){
-          $.alert({
-            title: "Saved",
-            type: "green",
-            content: "Your new settings has been saved!"
-          })
+          Swal.fire({
+            title: "Success",
+            text: "New settings applied!",
+            icon: "success",
+            confirmButtonColor: "#00939D"
+          });
         }
         else{
-          $.alert({
+          Swal.fire({
             title: "Error",
-            type: "red",
-            content: "Error during saving!"
-          })
+            text: "Error during saving!",
+            icon: "error",
+            confirmButtonColor: "#b34045"
+          });
         }
       },
       error: function(obj, err, ex){
-        $.alert({
-                title: "Error",
-                type: "red",
-                content: msg + ": " + obj.status + " " + exception
-              })
+        Swal.fire({
+          title: "Error",
+          text: err + ": " + obj.status + " " + ex,
+          icon: "error",
+          confirmButtonColor: "#b34045",
+        });
     }
   })
 }
@@ -41,26 +44,29 @@ $('#btn_backup').click(function(e){
       method: 'POST',
       success: function(result) {
         if (result == 1){
-          $.alert({
-            title: "Successful",
-            type: "green",
-            content: "Your database has been backed-up!"
-          })
+          Swal.fire({
+            title: "Success",
+            text: "Database backup successfully created!",
+            icon: "success",
+            confirmButtonColor: "#00939D"
+          });
         }
         else{
-          $.alert({
+          Swal.fire({
             title: "Error",
-            type: "red",
-            content: "Error during processing!"
-          })
+            text: "Error during creating a backup!",
+            icon: "error",
+            confirmButtonColor: "#b34045"
+          });
         }
       },
       error: function(obj, err, ex){
-        $.alert({
-                title: "Error",
-                type: "red",
-                content: msg + ": " + obj.status + " " + exception
-              })
+        Swal.fire({
+          title: "Error",
+          text: err + ": " + obj.status + " " + ex,
+          icon: "error",
+          confirmButtonColor: "#b34045",
+        });
     }
   })
 });
@@ -82,26 +88,29 @@ $('#btn_save_logo').click(function(e){
       data: form_data,
       success: function(result) {
         if (result == 1){
-          $.alert({
-            title: "Saved",
-            type: "green",
-            content: "System logo has been set!"
-          })
+          Swal.fire({
+            title: "Success",
+            text: "System logo has been set!",
+            icon: "success",
+            confirmButtonColor: "#00939D"
+          });
         }
         else{
-          $.alert({
+          Swal.fire({
             title: "Error",
-            type: "red",
-            content: "Error during saving!"
-          })
+            text: "Error during saving!",
+            icon: "error",
+            confirmButtonColor: "#b34045"
+          });
         }
       },
       error: function(obj, err, ex){
-        $.alert({
-                title: "Error",
-                type: "red",
-                content: msg + ": " + obj.status + " " + exception
-              })
+        Swal.fire({
+					title: "Error",
+					text: err + ": " + obj.status + " " + ex,
+					icon: "error",
+					confirmButtonColor: "#b34045",
+				});
     }
   })
 });
@@ -123,26 +132,29 @@ $('#btn_save_bg_image').click(function(e){
       data: form_data,
       success: function(result) {
         if (result == 1){
-          $.alert({
-            title: "Saved",
-            type: "green",
-            content: "Login background image has been set!"
-          })
+          Swal.fire({
+            title: "Success",
+            text: "Login background image has been set!",
+            icon: "success",
+            confirmButtonColor: "#00939D"
+          });
         }
         else{
-          $.alert({
+          Swal.fire({
             title: "Error",
-            type: "red",
-            content: "Error during saving!"
-          })
+            text: "Error during saving!",
+            icon: "error",
+            confirmButtonColor: "#b34045"
+          });
         }
       },
       error: function(obj, err, ex){
-        $.alert({
-                title: "Error",
-                type: "red",
-                content: msg + ": " + obj.status + " " + exception
-              })
+        Swal.fire({
+          title: "Error",
+          text: err + ": " + obj.status + " " + ex,
+          icon: "error",
+          confirmButtonColor: "#b34045",
+        });
     }
   })
 });

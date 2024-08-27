@@ -59,7 +59,7 @@ class leaderController extends controller{
 		$barangay_id = $_POST['barangay'];
 		$level = $_POST['level'];
 		$voterObj = new voterModel();
-		$voters = $voterObj->get_voters_list(array('barangay' => $barangay_id));
+		$voters = $voterObj->get_voters_list(array('brgy' => $barangay_id));
 
 		if ($level=='purok'){
 			$this->view()->render('leader/purok_leader/voters_list.php', array('voters' => $voters));
@@ -80,6 +80,16 @@ class leaderController extends controller{
 		$this->view()->render('leader/barangay_leader/barangay_leader_list.php', array('leaders' => $leaders));
 	}
 
+	public function remove_barangay_leader(){
+		$barangay_id = $_POST['barangay_id'];
+		$leaderObj = new leaderModel();
+		$result = $leaderObj->remove_barangay_leader(array('barangay_id' => $barangay_id));
+
+		$leaderObj = new leaderModel();
+		$leaders = $leaderObj->get_barangay_leaders();
+		$this->view()->render('leader/barangay_leader/barangay_leader_list.php', array('leaders' => $leaders));
+	}
+
 	public function get_purok_leaders(){
 		$barangay_id = $_POST['barangay_id'];
 		$leaderObj = new leaderModel();
@@ -93,6 +103,17 @@ class leaderController extends controller{
 		$purok_no = $_POST['purok_no'];
 		$leaderObj = new leaderModel();
 		$result = $leaderObj->set_purok_leader(array('voters_id' => $voters_id, 'barangay_id' => $barangay_id, 'purok_no' => $purok_no));
+
+		$leaderObj = new leaderModel();
+		$leaders = $leaderObj->get_purok_leaders(array('barangay_id' => $barangay_id));
+		$this->view()->render('leader/purok_leader/purok_leader_list.php', array('leaders' => $leaders));
+	}
+
+	public function remove_purok_leader(){
+		$barangay_id = $_POST['barangay_id'];
+		$purok = $_POST['purok'];
+		$leaderObj = new leaderModel();
+		$result = $leaderObj->remove_purok_leader(array('barangay_id' => $barangay_id, 'purok' => $purok));
 
 		$leaderObj = new leaderModel();
 		$leaders = $leaderObj->get_purok_leaders(array('barangay_id' => $barangay_id));

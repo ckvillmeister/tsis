@@ -80,7 +80,7 @@
           <div class="row m-2">
             <div class="col-sm-12">
               <div class="float-right">
-                <button class="btn btn-lg btn-primary" id="btn_save_access_rights" value="<?php echo $_GET['id']; ?>">Save</button>
+                <button class="btn btn-md btn-primary" id="btn_save_access_rights" value="<?php echo $_GET['id']; ?>"><i class="fas fa-save mr-2"></i>Save</button>
               </div>
             </div>
           </div>    

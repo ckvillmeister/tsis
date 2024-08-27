@@ -9,7 +9,7 @@
 
 </style>
 
-<div class="row p-3 shadow-none ml-3 mr-3 mb-3 bg-light rounded">
+<div class="row shadow-none ml-3 mr-3 mb-3 rounded">
   <div class="col-lg-12 align-self-center">
     <table class="table table-sm table-bordered table-striped display bg-white" style="width: 100%" id="table_voter_list">
       <thead>
@@ -28,7 +28,7 @@
           <th class="text-center col-header">Cluster No.</th>
           
           
-          <th class="text-center col-header">Control</th>
+          <th class="text-center col-header" style="width: 10%">Control</th>
         </tr>
       </thead>
       <tbody id="table_body">
@@ -40,9 +40,9 @@
       ?>
         <tr>
           <td class="text-center"><?php echo ++$ctr; ?></td>
-          <td><?php echo ($data->suffix) ? utf8_decode($data->firstname).' '.$data->suffix : utf8_decode($data->firstname); ?></td>
-          <td><?php echo utf8_decode($data->middlename); ?></td>
-          <td><?php echo utf8_decode($data->lastname); ?></td>
+          <td><?php echo ($data->suffix) ? $data->firstname.' '.$data->suffix : $data->firstname; ?></td>
+          <td><?php echo $data->middlename; ?></td>
+          <td><?php echo $data->lastname; ?></td>
           <td><?php echo $data->gender; ?></td>
           <td><?php echo ucwords(strtolower($data->barangay)); ?></td>
           <td class="text-center"><?php echo $data->purokno; ?></td>

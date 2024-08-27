@@ -26,6 +26,7 @@ class voterModel extends model{
 		$settingsObj = new settingsModel();
 		$settings = $settingsObj->get_settings();
 		$year = $this->get_year();
+		$sk = isset($param['sk']) ? $param['sk'] : 0;
 
 		$query = 'SELECT tvl.record_id, tvl.firstname, tvl.middlename, tvl.lastname, tvl.suffix, 
 							tvl.vin, tvl.voters_no, tvl.precinct_no, tvl.cluster_no, tvl.purok_no, 
@@ -35,12 +36,20 @@ class voterModel extends model{
 							WHERE tvl.status = 1 AND tvl.record_year = '.$year;
 
 		if (count($param) >= 1){
-			$barangay = $param['barangay'];
-			$query .= ' AND tvl.barangay = '.$barangay;
+			if ($barangay = $param['brgy']){
+				$query .= ' AND tvl.barangay = '.$barangay;
+			}
+		}
+
+		if ($sk){
+			$query .= ' AND tvl.is_sk = 1';
+		}
+		else{
+			$query .= ' AND (is_sk IS NULL OR is_sk = 0)';
 		}
 
 		$query .= ' GROUP BY tvl.record_id';
-
+		
 		$stmt = $this->con->prepare($query);
 		$stmt->execute();
 		$stmt->bind_result($id, $firstname, $middlename, $lastname, $suffix, $vin, $votersno, $precinctno, $clusterno, $purokno, $barangay, $birthdate, $gender, $new_voter);
@@ -48,9 +57,9 @@ class voterModel extends model{
 		$voters = array();
 		while ($stmt->fetch()) {
 			$voters[$ctr++] = array('id' => $id, 
-							'firstname' => utf8_encode($firstname), 
-							'middlename' => utf8_encode($middlename),
-							'lastname' => utf8_encode($lastname),
+							'firstname' => $firstname, 
+							'middlename' => $middlename,
+							'lastname' => $lastname,
 							'suffix' => $suffix,
 							'vin' => $vin,
 							'votersno' => $votersno,
@@ -188,5 +197,25 @@ class voterModel extends model{
 		$this->con->close();
 		return $result;
 		
+	}
+
+	public function setVoterRemarks($voterid, $remarks){
+		$query = '';
+
+		if (ucwords($remarks) == 'New Affiliation'){
+			$query = 'UPDATE tbl_voters_list SET is_new_affiliation = 1 WHERE record_id = '.$voterid;
+		}
+		else{
+			$query = 'UPDATE tbl_voters_list SET remarks = "'.$remarks.'" WHERE record_id = '.$voterid;
+		}
+		
+		$db = new database();	
+		$this->con = $db->connection();
+		$stmt = $this->con->prepare($query);
+		$stmt->execute();
+		
+		$stmt->close();
+		$this->con->close();
+		return 1;
 	}
 }

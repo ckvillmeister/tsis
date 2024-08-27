@@ -10,7 +10,7 @@
 					<td>Candidate Fullname</td>
 					<td>Position</td>
 					<td>Total Voters</td>
-					<td>Total Straw Votes</td>
+					<td>Total Supporters</td>
 					<td>Actual Votes Received</td>
 				</tr>
 			</thead>
@@ -30,7 +30,7 @@
 					<td><?php echo mb_strtoupper(trim($row['firstname'])." ".trim($row['middlename'])." ".trim($row['lastname'])); ?></td>
 					<td><?php echo $row['position']; ?></td>
 					<td class='text-center data'><?php echo number_format($row['total_voters']); ?></td>
-					<td class='text-center data'><?php echo number_format($row['total_supporters']); ?></td>
+					<td class='text-center data'><?php echo ($row['allied']['id'] == $row['partyid']) ? number_format($row['total_supporters']) : ''; ?></td>
 					<td class='text-center data'><?php echo number_format($row['votes']); ?></td>
 				</tr>
 				<?php
@@ -57,14 +57,14 @@
 		p - pagination control
 	*/
   var table = $('#tbl_result').DataTable({
-    "dom": 'Brt',
+    "dom": 'Blrtp',
     "initComplete": function() {
       $("#tbl_result").show();
     },
     "buttons": ['copy', 'csv', 'excel', 'pdf', 'print', 'colvis'],
     "scrollX": true,
     "ordering": false,
-    paging: false
+    paging: true
   });
   table.buttons().container().appendTo('#reminders_wrapper .col-md-6:eq(0)');
 });

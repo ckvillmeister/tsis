@@ -102,6 +102,10 @@
                 <div class="card-header border-0">
                   <div class="d-flex justify-content-between">
                     <h3 class="card-title">Supporters Per Barangay</h3>
+
+                    <div class="float-right">
+                      <button class="btn btn-sm btn-success" id="btn-send-sms"><i class="fas fa-comments mr-2"></i>Send SMS</button>
+                    </div>
                   </div>
                 </div>
                 <div class="card-body">
@@ -158,6 +162,40 @@
 $(function() {
 
   per_barangay_supporters();
+
+  $('#btn-send-sms').on('click', function(){
+    $.ajax({
+        url: '<?php echo ROOT ?>sms/sendMsg',
+        method: 'POST',
+        dataType: 'html',
+      success: function(result) {
+        if (result == 1){
+          Swal.fire({
+            title: "Success",
+            text: "SMS has been sent!",
+            icon: "success",
+            confirmButtonColor: "#00939D"
+          });
+        }
+        else{
+          Swal.fire({
+            title: "Error",
+            text: "Error during sending!",
+            icon: "error",
+            confirmButtonColor: "#b34045"
+          });
+        }
+      },
+      error: function(obj, err, ex){
+        Swal.fire({
+          title: "Error",
+          text: err + ": " + obj.status + " " + ex,
+          icon: "error",
+          confirmButtonColor: "#b34045",
+        });
+    }
+  })
+  });
 
   function per_barangay_supporters(){
     'use strict'

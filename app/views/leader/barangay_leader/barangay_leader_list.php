@@ -36,7 +36,7 @@
               <td class="text-center"><?php echo ++$ctr; ?></td>
               <td><?php echo $record_info->barangay_name; ?></td>
               <td><?php echo $record_info->fullname; ?></td>
-              <td class="text-center">
+              <td class="text-center" style="width: 20%">
                 <?php 
                   if (trim($record_info->voter_id) == ''){
                 ?>
@@ -45,7 +45,8 @@
                   }
                   else{
                 ?>
-                  <button class="btn btn-sm btn-warning" id="btn_edit_leader" value="<?php echo $record_info->barangay_id; ?>"><icon class="fas fa-edit mr-2"></icon>Edit Leader</button>
+                  <button class="btn btn-sm btn-warning" id="btn_edit_leader" value="<?php echo $record_info->barangay_id; ?>"><icon class="fas fa-edit mr-2"></icon>Change</button>
+                  <button class="btn btn-sm btn-danger" id="btn_remove_leader" value="<?php echo $record_info->barangay_id; ?>"><icon class="fas fa-trash mr-2"></icon>Remove</button>
                 <?php
                   }
                 ?>

@@ -13,7 +13,12 @@ var dt_voterslist = $('#table_voter_list').DataTable({
         "ordering": false,
         "pageLength": 5,
         "deferRender": true,
-        "responsive": true
+        "responsive": true,
+		columnDefs: [
+			{ className: 'text-center', targets: [0] },
+			{ className: 'text-center', targets: [4] },
+			{ className: 'text-center', targets: [5] }
+		]
     });
 //Datatable ward leaders list 
 var dt_leaderslist = $('#table_leader_list').DataTable({
@@ -21,7 +26,12 @@ var dt_leaderslist = $('#table_leader_list').DataTable({
         "ordering": false,
         "pageLength": 5,
         "deferRender": true,
-        "responsive": true
+        "responsive": true,
+		columnDefs: [
+			{ className: 'text-center', targets: [0] },
+			{ className: 'text-center', targets: [4] },
+			{ className: 'text-center', targets: [5] }
+		]
     });
 
 //Select Barangay and Retrieve Voters
@@ -60,29 +70,33 @@ $('body').on('click', '#btn_select_leader', function(){
 	var id = $(this).val();
 
 	if (isMemberExist(id)){
-		$.alert({
-            title: "Warning",
-            type: "red",
-            content: fullname + ' is already added in the member list!'
-        })
+		Swal.fire({
+			title: "Warning",
+			text: fullname + ' is already added in the member list!',
+			icon: "warning",
+			confirmButtonColor: "#fecf6d",
+		});
 	}
 	else{
 		if (isSupporter(id, fullname, 'leader')){
-			$.alert({
-	            title: "Warning",
-	            type: "red",
-	            content: fullname + ' is already a ward leader!'
-	        })
+			Swal.fire({
+				title: "Warning",
+				text: fullname + ' is already a ward leader!',
+				icon: "warning",
+				confirmButtonColor: "#fecf6d",
+			});
 			return;
 		}
 
 		if (isSupporter(id, fullname, 'member')){
 			var name = get_wardleader(id);
-			$.alert({
-	            title: "Warning",
-	            type: "red",
-	            content: fullname + ' is already member of '+name+'!'
-	        })
+			Swal.fire({
+				title: "Warning",
+				text: fullname + ' is already a member of '+name+'!',
+				icon: "warning",
+				confirmButtonColor: "#fecf6d",
+			});
+
 			return;
 		}
 		
@@ -104,45 +118,49 @@ $('body').on('click', '#btn_add_member', function(){
 		fullname = firstname + ' ' + middlename + ' ' + lastname;
 
 	if (leader_id == id){
-		$.alert({
-            title: "Warning",
-            type: "red",
-            content: fullname + ' is already selected as ward leader!'
-        })
+		Swal.fire({
+			title: "Warning",
+			text: fullname + ' is already selected as ward leader!',
+			icon: "warning",
+			confirmButtonColor: "#fecf6d",
+		});
 	}
 	else if (isMemberExist(id)){
-		$.alert({
-            title: "Warning",
-            type: "red",
-            content: fullname + ' is already in the list!'
-        })
+		Swal.fire({
+			title: "Warning",
+			text: fullname + ' is already in the list!',
+			icon: "warning",
+			confirmButtonColor: "#fecf6d",
+		});
 	}
 	else{
 		if (isSupporter(id, fullname, 'leader')){
-			$.alert({
-	            title: "Warning",
-	            type: "red",
-	            content: fullname + ' is already a ward leader!'
-	        })
+			Swal.fire({
+				title: "Warning",
+				text: fullname + ' is already a ward leader!',
+				icon: "warning",
+				confirmButtonColor: "#fecf6d",
+			});
 			return;
 		}
 
 		if (isSupporter(id, fullname, 'member')){
 			var name = get_wardleader(id);
-			$.alert({
-	            title: "Warning",
-	            type: "red",
-	            content: fullname + ' is already member of '+name+'!'
-	        })
+			Swal.fire({
+				title: "Warning",
+				text: fullname + ' is already a member of '+name+'!',
+				icon: "warning",
+				confirmButtonColor: "#fecf6d",
+			});
 			return;
 		}
 
 		$('#table_member_list tbody').append('<tr><td style="display:none">'+id+'</td>' + 
-										'<td>'+ ++member_counter +'</td>'+
+										'<td class="text-center">'+ ++member_counter +'</td>'+
 										'<td>'+firstname+'</td>'+
 										'<td>'+middlename+'</td>'+
 										'<td>'+lastname+'</td>'+
-										'<td><button type="button" value="' + id + '" class="btn btn-sm btn-danger" id="btn_remove_member" data-toggle="tooltip" data-placement="top" title="Remove Member"><i class="fas fa-trash mr-2"></i>Remove</button></td></tr>');
+										'<td class="text-center"><button type="button" value="' + id + '" class="btn btn-sm btn-danger" id="btn_remove_member" data-toggle="tooltip" data-placement="top" title="Remove Member"><i class="fas fa-trash"></i></button></td></tr>');
 	}
 	
 });
@@ -156,32 +174,30 @@ $('body').on('click', '#btn_remove_member', function(){
 		fullname = firstname + ' ' + middlename + ' ' + lastname;
 
 	if (isSupporter(member_id, fullname, 'member')){
-		$.confirm({
-			title: 'Confirm',
-			type: 'blue',
-			content: "This is an irreversible action. Are you sure you want to remove " + fullname + " as a member?",
-			buttons: {
-				ok: function () {
-					removeMember();
-				},
-				cancel: function () {
-				  
-				}
+		Swal.fire({
+			title: "Confirm",
+			text: "This is an irreversible action. Are you sure you want to remove " + fullname + " as a member?",
+			icon: "question",
+			showCancelButton: true,	
+			showConfirmButton: true,	
+			confirmButtonColor: "#17a2b8"
+		}).then((res) => {
+			if (res.value) {
+				removeMember();
 			}
 		});
 	}
 	else{
-		$.confirm({
-			title: 'Confirm',
-			type: 'blue',
-			content: "Are you sure you want to remove " + fullname + " as a member?",
-			buttons: {
-				ok: function () {
-					removeMember();
-				},
-				cancel: function () {
-				  
-				}
+		Swal.fire({
+			title: "Confirm",
+			text: "Are you sure you want to remove " + fullname + " as a member?",
+			icon: "question",
+			showCancelButton: true,	
+			showConfirmButton: true,	
+			confirmButtonColor: "#17a2b8"
+		}).then((res) => {
+			if (res.value) {
+				removeMember();
 			}
 		});
 	}
@@ -223,18 +239,20 @@ $('#btn_submit').click(function(){
     var wardid = $('#text_ward_id').val();
 
     if (leader == ''){
-    	$.alert({
-            title: "Error",
-            type: "red",
-            content: "Please select a ward leader first!"
-        })
+		Swal.fire({
+			title: "Error",
+			text: "Please select a ward leader first!",
+			icon: "error",
+			confirmButtonColor: "#b34045",
+		});
     }
     else if (rows == 0){
-    	$.alert({
-            title: "Error",
-            type: "red",
-            content: "Please select at least one member!"
-        })
+		Swal.fire({
+			title: "Error",
+			text: "Please select at least one member!",
+			icon: "error",
+			confirmButtonColor: "#b34045",
+		});
     }
     else{
 	    $('#table_member_list tbody').find('tr').each(function(){
@@ -275,28 +293,28 @@ $('body').on('click', '#btn_view_ward', function(){
 $('#btn_delete_ward').click(function(){
 	var wardid = $('#text_ward_id').val();
 	if (wardid == ''){
-		$.alert({
-            title: "Warning!",
-            type: "red",
-            content: "Nothing to remove. Please select and view a ward to remove!"
-        })
+		Swal.fire({
+			title: "Warning",
+			text: "Nothing to remove. Please select and view a ward to remove!",
+			icon: "warning",
+			confirmButtonColor: "#fecf6d",
+		});
 	}
 	else{
-		$.confirm({
-			title: 'Confirm',
-			type: 'blue',
-			content: "This is an irreversible action. Are you sure you want to delete this ward?",
-			buttons: {
-				ok: function () {
-					var wardid = $('#text_ward_id').val();
-					var barangay = $('#cbo_barangay').val();
-					delete_ward(wardid);
-					get_ward_leaders(barangay);
-					clear();
-				},
-				cancel: function () {
-				  
-				}
+		Swal.fire({
+			title: "Confirm",
+			text: "This is an irreversible action. Are you sure you want to delete this ward?",
+			icon: "question",
+			showCancelButton: true,	
+			showConfirmButton: true,	
+			confirmButtonColor: "#17a2b8"
+		}).then((res) => {
+			if (res.value) {
+				var wardid = $('#text_ward_id').val();
+				var barangay = $('#cbo_barangay').val();
+				delete_ward(wardid);
+				get_ward_leaders(barangay);
+				clear();
 			}
 		});
 	}
@@ -305,7 +323,7 @@ $('#btn_delete_ward').click(function(){
 //Function: Retrieve Voters By Barangay
 function get_voters(barangay){
 	$.ajax({
-		url: 'ward/get_voters_list',
+		url: 'get_voters_list',
 		method: 'POST',
 		data: {barangay: barangay},
 		dataType: 'html',
@@ -332,11 +350,12 @@ function get_voters(barangay){
 
 		},
 		error: function(obj, err, ex){
-			$.alert({
-	            title: "Error",
-	            type: "red",
-	            content: msg + ": " + obj.status + " " + exception
-	          })
+			Swal.fire({
+				title: "Error",
+				text: err + ": " + obj.status + " " + ex,
+				icon: "error",
+				confirmButtonColor: "#b34045",
+			});
 		}
 	})
 }
@@ -344,7 +363,7 @@ function get_voters(barangay){
 //Function: Retrieve Ward Leaders By Barangay
 function get_ward_leaders(barangay){
 	$.ajax({
-		url: 'ward/get_ward_leaders_list',
+		url: 'get_ward_leaders_list',
 		method: 'POST',
 		data: {barangay: barangay},
 		dataType: 'html',
@@ -380,11 +399,12 @@ function get_ward_leaders(barangay){
 
 		},
 		error: function(obj, err, ex){
-			$.alert({
-	            title: "Error",
-	            type: "red",
-	            content: msg + ": " + obj.status + " " + exception
-	        })
+			Swal.fire({
+				title: "Error",
+				text: err + ": " + obj.status + " " + ex,
+				icon: "error",
+				confirmButtonColor: "#b34045",
+			});
 		}
 	})
 }
@@ -413,7 +433,7 @@ function isSupporter(id, name, position){
 	var flag = false;
 
 	$.ajax({
-		url: 'ward/check_if_supporter',
+		url: 'check_if_supporter',
 		method: 'POST',
 		data: {id: id, position: position},
 		async: false,
@@ -422,11 +442,12 @@ function isSupporter(id, name, position){
 			flag = result;
 		},
 		error: function(obj, err, ex){
-			$.alert({
-	            title: "Error",
-	            type: "red",
-	            content: msg + ": " + obj.status + " " + exception
-	        })
+			Swal.fire({
+				title: "Error",
+				text: err + ": " + obj.status + " " + ex,
+				icon: "error",
+				confirmButtonColor: "#b34045",
+			});
 		}
 	})
 
@@ -436,32 +457,35 @@ function isSupporter(id, name, position){
 //Function: Save Ward
 function save_ward(leader, members, barangay){
 	$.ajax({
-		url: 'ward/save_ward',
+		url: 'save_ward',
 		method: 'POST',
 		data: {leader: leader, members: members, barangay: barangay},
 		dataType: 'html',
 		success: function(result) {
 			if (result == 1){
-				$.alert({
-		            title: "Saved",
-		            type: "green",
-		            content: "Ward sucessfully saved!"
-		        })
+				Swal.fire({
+					title: "Success",
+					text: "Supporters list sucessfully saved!",
+					icon: "success",
+					confirmButtonColor: "#00939D",
+				});
 			}
 			else {
-				$.alert({
-		            title: "Error",
-		            type: "red",
-		            content: "Error during saving!"
-		        })
+				Swal.fire({
+					title: "Error",
+					text: "Error during saving!",
+					icon: "error",
+					confirmButtonColor: "#b34045",
+				});
 			}
 		},
 		error: function(obj, err, ex){
-			$.alert({
-	            title: "Error",
-	            type: "red",
-	            content: msg + ": " + obj.status + " " + exception
-	        })
+			Swal.fire({
+				title: "Error",
+				text: err + ": " + obj.status + " " + ex,
+				icon: "error",
+				confirmButtonColor: "#b34045",
+			});
 		}
 	})
 }
@@ -469,32 +493,35 @@ function save_ward(leader, members, barangay){
 //Function: Update Ward
 function update_ward(wardid, leader, members, barangay){
 	$.ajax({
-		url: 'ward/update_ward',
+		url: 'update_ward',
 		method: 'POST',
 		data: {wardid: wardid, leader: leader, members: members, barangay: barangay},
 		dataType: 'html',
 		success: function(result) {
 			if (result == 1){
-				$.alert({
-		            title: "Updated",
-		            type: "green",
-		            content: "Ward sucessfully updated!"
-		        })
+				Swal.fire({
+					title: "Success",
+					text: "Supporters list sucessfully updated!",
+					icon: "success",
+					confirmButtonColor: "#00939D",
+				});
 			}
 			else {
-				$.alert({
-		            title: "Error",
-		            type: "red",
-		            content: "Error during updating!"
-		        })
+				Swal.fire({
+					title: "Error",
+					text: "Error during updating!",
+					icon: "error",
+					confirmButtonColor: "#b34045",
+				});
 			}
 		},
 		error: function(obj, err, ex){
-			$.alert({
-	            title: "Error",
-	            type: "red",
-	            content: msg + ": " + obj.status + " " + exception
-	        })
+			Swal.fire({
+				title: "Error",
+				text: err + ": " + obj.status + " " + ex,
+				icon: "error",
+				confirmButtonColor: "#b34045",
+			});
 		}
 	})
 }
@@ -503,7 +530,7 @@ function update_ward(wardid, leader, members, barangay){
 function get_wardleader(id){
 	var name;
 	$.ajax({
-		url: 'ward/get_wardleader',
+		url: 'get_wardleader',
 		method: 'POST',
 		data: {id: id},
 		async: false,
@@ -512,11 +539,12 @@ function get_wardleader(id){
 			name = result['firstname']+' '+result['middlename']+' '+result['lastname']+' '+result['suffix'];
 		},
 		error: function(obj, err, ex){
-			$.alert({
-	            title: "Error",
-	            type: "red",
-	            content: msg + ": " + obj.status + " " + exception
-	        })
+			Swal.fire({
+				title: "Error",
+				text: err + ": " + obj.status + " " + ex,
+				icon: "error",
+				confirmButtonColor: "#b34045",
+			});
 		}
 	})
 	return name;
@@ -525,7 +553,7 @@ function get_wardleader(id){
 //Function: Get Members
 function get_wardmembers(wardid){
 	$.ajax({
-		url: 'ward/get_wardmembers',
+		url: 'get_wardmembers',
 		method: 'POST',
 		data: {wardid: wardid},
 		dataType: 'html',																																	
@@ -535,19 +563,20 @@ function get_wardmembers(wardid){
 			$('#table_member_list tbody').html('');
 	        $.each(data, function(index, arr) {
 	        	$('#table_member_list tbody').append('<tr><td style="display:none">'+arr['id']+'</td>' + 
-										'<td>'+ ++member_counter +'</td>'+
+										'<td class="text-center">'+ ++member_counter +'</td>'+
 										'<td>'+arr['firstname']+' '+arr['suffix']+'</td>'+
 										'<td>'+arr['middlename']+'</td>'+
 										'<td>'+arr['lastname']+'</td>'+
-										'<td><button type="button" value="' + arr['id'] + '" class="btn btn-sm btn-danger" id="btn_remove_member" data-toggle="tooltip" data-placement="top" title="Remove Member"><i class="fas fa-trash mr-2"></i>Remove</button></td></tr>');
+										'<td class="text-center"><button type="button" value="' + arr['id'] + '" class="btn btn-sm btn-danger" id="btn_remove_member" data-toggle="tooltip" data-placement="top" title="Remove Member"><i class="fas fa-trash"></i></button></td></tr>');
 	        });
 		},
 		error: function(obj, err, ex){
-			$.alert({
-	            title: "Error",
-	            type: "red",
-	            content: msg + ": " + obj.status + " " + exception
-	        })
+			Swal.fire({
+				title: "Error",
+				text: err + ": " + obj.status + " " + ex,
+				icon: "error",
+				confirmButtonColor: "#b34045",
+			});
 		}
 	})
 }
@@ -555,7 +584,7 @@ function get_wardmembers(wardid){
 //Function: Remove Member
 function remove_ward_member(id){
 	$.ajax({
-		url: 'ward/remove_ward_member',
+		url: 'remove_ward_member',
 		method: 'POST',
 		data: {id: id},
 		dataType: 'html',																																	
@@ -563,11 +592,12 @@ function remove_ward_member(id){
 			
 		},
 		error: function(obj, err, ex){
-			$.alert({
-	            title: "Error",
-	            type: "red",
-	            content: msg + ": " + obj.status + " " + exception
-	        })
+			Swal.fire({
+				title: "Error",
+				text: err + ": " + obj.status + " " + ex,
+				icon: "error",
+				confirmButtonColor: "#b34045",
+			});
 		}
 	})
 }
@@ -586,32 +616,35 @@ function clear(){
 //Function: Delete Ward
 function delete_ward(wardid){
 	$.ajax({
-		url: 'ward/delete_ward',
+		url: 'delete_ward',
 		method: 'POST',
 		data: {wardid: wardid},
 		dataType: 'html',
 		success: function(result) {
 			if (result == 1){
-				$.alert({
-		            title: "Success",
-		            type: "green",
-		            content: "Ward successfully removed!"
-		        })
+				Swal.fire({
+					title: "Success",
+					text: "Supporters list sucessfully deleted!",
+					icon: "success",
+					confirmButtonColor: "#00939D",
+				});
 			}
 			else {
-				$.alert({
-		            title: "Error",
-		            type: "red",
-		            content: "Error during deleting!"
-		        })
+				Swal.fire({
+					title: "Error",
+					text: "Error during deleting!",
+					icon: "error",
+					confirmButtonColor: "#b34045",
+				});
 			}
 		},
 		error: function(obj, err, ex){
-			$.alert({
-	            title: "Error",
-	            type: "red",
-	            content: msg + ": " + obj.status + " " + exception
-	        })
+			Swal.fire({
+				title: "Error",
+				text: err + ": " + obj.status + " " + ex,
+				icon: "error",
+				confirmButtonColor: "#b34045",
+			});
 		}
 	})
 }

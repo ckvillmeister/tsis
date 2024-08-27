@@ -95,10 +95,16 @@
                       <br>
     			          	<div class="card-footer">
     			          		<div class="row">
+                          <?php 
+                              if ($supporter['rank'] != 'Special Ops'){
+                            ?>
                           <div class="col-sm-6">
                             <a class="btn btn-sm btn-success form form-control" style="padding-top: 7px" href="<?php echo ROOT ?>ward/view_ward?wardid=<?php echo $supporter['wardid']; ?>">View Ward</a>
                           </div>
-    			          			<div class="col-sm-6">
+                          <?php 
+                              }
+                            ?>
+    			          			<div class="<?php echo (($supporter['rank'] == 'Special Ops')) ? 'col-sm-12 text-center' : 'col-sm-6' ?>">
                             <?php if ($accessrole_model->check_access($role, 'viewsupporterprofile')): ?>
                               <a class="btn btn-sm btn-primary form form-control" style="padding-top: 7px" href="<?php echo ROOT ?>voter/profile?voterid=<?php echo $supporter['voter_sys_id']; ?>">Profile
                               </a>

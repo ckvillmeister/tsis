@@ -68,8 +68,10 @@ class voterController extends controller{
 	public function get_voters_list(){
 		//$content = file_get_contents(PATH_VIEW.'/voter/table.php');
 		//echo $content;
+		$brgy = isset($_POST['brgy']) ? $_POST['brgy'] : '';
+
 		$this->voterObj = new voterModel();
-		$voters = $this->voterObj->get_voters_list();
+		$voters = $this->voterObj->get_voters_list(['brgy' => $brgy]);
 		$this->view()->render('voter/list.php', array('voters' => $voters));
 	}
 
@@ -121,6 +123,14 @@ class voterController extends controller{
 		move_uploaded_file($file, $dist);
 
 		echo $voter_model->update_image($path, $voterid);
+	}
+
+	public function setVoterRemarks(){
+		$voterid = $_POST['voterid'];
+		$remarks = $_POST['remarks'];
+		$voterObj = new voterModel();
+		$res = $voterObj->setVoterRemarks($voterid, $remarks);
+		echo $res;
 	}
 }
 ?>

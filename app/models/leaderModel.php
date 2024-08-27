@@ -54,7 +54,7 @@ class leaderModel extends model{
 		$result = $stmt->get_result();
 		
 		if ($result->num_rows >= 1){
-			$stmt = $this->con->prepare("UPDATE tbl_barangay_leader SET voter_id = ? WHERE barangay_id = ? AND record_year = ?");
+			$stmt = $this->con->prepare("UPDATE tbl_barangay_leader SET status = 1, voter_id = ? WHERE barangay_id = ? AND record_year = ?");
 			$stmt->bind_param("sss", $voters_id, $barangay_id, $year);
 			$stmt->execute();
 		}
@@ -69,12 +69,26 @@ class leaderModel extends model{
 		return 1;		
 	}
 
+	public function remove_barangay_leader($param = array()){
+		$year = $this->get_year();
+		$barangay_id = $param['barangay_id'];
+
+		
+		$stmt = $this->con->prepare("UPDATE tbl_barangay_leader SET status = 0 WHERE barangay_id = ? AND record_year = ?");
+		$stmt->bind_param("ss", $barangay_id, $year);
+		$stmt->execute();
+
+		$stmt->close();
+		$this->con->close();
+		return 1;		
+	}
+
 	public function get_purok_leaders($params = array()){
 		$year = $this->get_year();
 		$barangay_id = $params['barangay_id'];
-		$query = 'SELECT purok_no, voter_id FROM tbl_purok_leader WHERE status = 1 AND barangay_id = ?';
+		$query = 'SELECT purok_no, voter_id FROM tbl_purok_leader WHERE status = 1 AND barangay_id = ? AND record_year = ?';
 		$stmt = $this->con->prepare($query);
-		$stmt->bind_param("s", $barangay_id);
+		$stmt->bind_param("ss", $barangay_id, $year);
 		$stmt->execute();
 		$stmt->bind_result($purok_no, $voter_id);
 		$leader_list = array();
@@ -105,7 +119,7 @@ class leaderModel extends model{
 		$result = $stmt->get_result();
 		
 		if ($result->num_rows >= 1){
-			$stmt = $this->con->prepare("UPDATE tbl_purok_leader SET voter_id = ? WHERE barangay_id = ? AND purok_no = ? AND record_year = ?");
+			$stmt = $this->con->prepare("UPDATE tbl_purok_leader SET status = 1, voter_id = ? WHERE barangay_id = ? AND purok_no = ? AND record_year = ?");
 			$stmt->bind_param("ssss", $voters_id, $barangay_id, $purok_no, $year);
 			$stmt->execute();
 		}
@@ -115,6 +129,20 @@ class leaderModel extends model{
 			$stmt->execute();
 		}
 		
+		$stmt->close();
+		$this->con->close();
+		return 1;		
+	}
+
+	public function remove_purok_leader($param = array()){
+		$year = $this->get_year();
+		$barangay_id = $param['barangay_id'];
+		$purok = $param['purok'];
+		
+		$stmt = $this->con->prepare("UPDATE tbl_purok_leader SET status = 0 WHERE barangay_id = ? AND purok_no = ? AND record_year = ?");
+		$stmt->bind_param("sss", $barangay_id, $purok, $year);
+		$stmt->execute();
+
 		$stmt->close();
 		$this->con->close();
 		return 1;		
@@ -130,7 +158,7 @@ class leaderModel extends model{
 			$query_voter = 'SELECT tvl.record_id, tvl.firstname, tvl.middlename, tvl.lastname, tvl.suffix	
 					FROM tbl_barangay_leader AS tbl
 					INNER JOIN tbl_voters_list AS tvl ON tvl.record_id = tbl.voter_id
-					WHERE tbl.record_year = ? AND tbl.barangay_id = ?';
+					WHERE tbl.record_year = ? AND tbl.barangay_id = ? AND tbl.status = 1';
 					$st = $connection->prepare($query_voter);
 					$st->bind_param("ss", $year, $barangay_id);
 		}
@@ -138,7 +166,7 @@ class leaderModel extends model{
 			$query_voter = 'SELECT tvl.record_id, tvl.firstname, tvl.middlename, tvl.lastname, tvl.suffix	
 					FROM tbl_purok_leader AS tpl
 					INNER JOIN tbl_voters_list AS tvl ON tvl.record_id = tpl.voter_id
-					WHERE tpl.record_year = ? AND tpl.barangay_id = ? AND tpl.purok_no = ?
+					WHERE tpl.record_year = ? AND tpl.barangay_id = ? AND tpl.purok_no = ? AND tpl.status = 1
 					ORDER BY tpl.purok_no ASC';
 					$st = $connection->prepare($query_voter);
 					$st->bind_param("sss", $year, $barangay_id, $purok_no);

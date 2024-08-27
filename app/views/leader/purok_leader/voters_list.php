@@ -1,4 +1,4 @@
-<table class="table table-bordered table-striped" id="table_voter_list" style="width:100%">
+<table class="table table-sm table-bordered table-striped" id="table_voter_list" style="width:100%">
   	<thead>
 	    <tr>
 			<th>#</th>
@@ -32,12 +32,5 @@
 	
 	var dt_voterslist = $('#table_voter_list').DataTable({
 		 "pageLength": 5
-	});
-
-	$('body').on('click', '#btn_select', function(){
-		voters_id = $(this).val();
-		var fullname = $(this).closest("tr").find('td:eq(3)').text() + ', ' + $(this).closest("tr").find('td:eq(1)').text() + ' ' + $(this).closest("tr").find('td:eq(2)').text();
-		$('#voter_name').html(fullname);
-	  	$('#modal_confirm_purok_leader').modal('show');
 	});
 </script>

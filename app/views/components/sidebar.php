@@ -11,7 +11,7 @@
 
 ?>
 
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-info elevation-4">
   <!-- Brand Logo -->
   <a href="<?php echo ROOT; ?>main" class="brand-link"> 
     <!-- <div class="text-center"> -->
@@ -59,23 +59,21 @@
 
         <?php if ($accessrole_model->check_access($role, 'warding')): ?>
         <li class="nav-item">
-          <a href="<?php echo ROOT; ?>ward" class="nav-link <?php echo ($link == 'ward') ? 'active' : ''; ?>">
+          <a href="<?php echo ROOT; ?>ward" class="nav-link <?php echo ($link == 'ward' || $link == 'ward' && ($link_2 == 'regular' || $link_2 == 'sk')) ? 'active' : ''; ?>">
             <i class="nav-icon fas fas fa-users"></i>
             <p>
-              Warding
+              Manage Supporters
             </p>
           </a>
         </li>
-        <li class="nav-item">
         <?php endif; ?>
           
         <?php if ($accessrole_model->check_access($role, 'report')): ?>
-        </li>
         <li class="nav-item has-treeview <?php if ($link=='report' & $link_2 != 'search'){ echo 'menu-open'; } ?>">
           <a href="#" class="nav-link <?php if ($link=='report' & $link_2 != 'search'){ echo 'active'; } ?>">
             <i class="nav-icon fas fa-file-alt"></i>
             <p>
-              Report
+              Generate Reports
               <i class="right fas fa-angle-left"></i>
             </p>
           </a>
@@ -163,9 +161,38 @@
         </li>
         <?php endif; ?>
 
+        <li class="nav-item has-treeview <?php if ($link == 'politics' & ($link_2 == '' | $link_2 == 'profile' | $link_2 == 'party' | $link_2 == 'manage')) { echo 'menu-open'; } ?>">
+          <a href="#" class="nav-link <?php if ($link == 'politics' & ($link_2 == '' | $link_2 == 'profile' | $link_2 == 'party' | $link_2 == 'manage')){ echo 'active'; } ?>">
+            <i class="nav-icon fas fa-vote-yea"></i>
+            <p>
+              Political Candidates
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+
+            <?php if ($accessrole_model->check_access($role, 'politician')): ?>
+            <li class="nav-item">
+              <a href="<?php echo ROOT; ?>politics" class="nav-link <?php echo ($link == 'politics' & ($link_2 == '' | $link_2 == 'profile')) ? 'active' : ''; ?>">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Politician Info</p>
+              </a>
+            </li>
+            <?php endif; ?>
+
+            <li class="nav-item">
+              <a href="<?php echo ROOT; ?>politics/party" class="nav-link <?php echo ($link == 'politics' & ($link_2 == 'party' | $link_2 == 'manage')) ? 'active' : ''; ?>">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Political Party</p>
+              </a>
+            </li>
+
+          </ul>
+        </li>
+
         <?php if ($accessrole_model->check_access($role, 'maintenance')): ?>
-        <li class="nav-item has-treeview <?php if (($link == 'candidates' & ($link_2 == '' | $link_2 == 'profile')) | ($link == 'voter' & $link_2 == '') | ($link == 'settings' & $link_2 == 'barangay') | $link=='accessrole' | $link=='accounts' | $link=='settings'){ echo 'menu-open'; } ?>">
-          <a href="#" class="nav-link <?php if (($link == 'candidates' & ($link_2 == '' | $link_2 == 'profile')) | ($link == 'voter' & $link_2 == '') | ($link == 'settings' & $link_2 == 'barangay') | $link=='accessrole' | $link=='accounts' | $link=='settings'){ echo 'active'; } ?>">
+        <li class="nav-item has-treeview <?php if (($link == 'voter' & $link_2 == '') | ($link == 'settings' & $link_2 == 'barangay') | $link=='accessrole' | $link=='accounts' | $link=='settings'){ echo 'menu-open'; } ?>">
+          <a href="#" class="nav-link <?php if (($link == 'voter' & $link_2 == '') | ($link == 'settings' & $link_2 == 'barangay') | $link=='accessrole' | $link=='accounts' | $link=='settings'){ echo 'active'; } ?>">
             <i class="nav-icon fas fa-wrench"></i>
             <p>
               Maintenance
@@ -178,7 +205,7 @@
             <li class="nav-item">
               <a href="<?php echo ROOT; ?>settings/barangay" class="nav-link <?php echo ($link == 'settings' & $link_2 == 'barangay') ? 'active' : ''; ?>">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Manage Barangay</p>
+                <p>Barangays</p>
               </a>
             </li>
             <?php endif; ?>
@@ -187,16 +214,7 @@
             <li class="nav-item">
               <a href="<?php echo ROOT; ?>voter" class="nav-link <?php echo ($link == 'voter' & $link_2 == '') ? 'active' : ''; ?>">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Manage Voter's Info</p>
-              </a>
-            </li>
-            <?php endif; ?>
-
-            <?php if ($accessrole_model->check_access($role, 'candidates')): ?>
-            <li class="nav-item">
-              <a href="<?php echo ROOT; ?>candidates" class="nav-link <?php echo ($link == 'candidates' & ($link_2 == '' | $link_2 == 'profile')) ? 'active' : ''; ?>">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Manage Candidates</p>
+                <p>Voters Information</p>
               </a>
             </li>
             <?php endif; ?>

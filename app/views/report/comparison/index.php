@@ -40,20 +40,35 @@
               <div class="col-lg-2 align-self-center" style="vertical-align: middle;">
                 Position:
               </div>
-              <div class="col-lg-3">
+              <div class="col-lg-2">
                 <select class="form-control form-control-sm" id="cbo_positions">
                   <option value="0"> [ Select Position ] </option>
                     <?php 
                       $positions = $data['positions'];
                       foreach ($positions as $key => $position) {
                     ?>
-                    <option value="<?php echo $position['position']; ?>"><?php echo $position['position']; ?></option>
+                    <option value="<?php echo $key; ?>"><?php echo $position; ?></option>
                     <?php
                       }
                     ?>
                 </select>
               </div>
-              <div class="col-lg-7">
+              <div class="col-lg-2">
+                <select class="form-control form-control-sm" id="cbo_election_years">
+                  <option value="0"> [ Select Year ] </option>
+                    <?php                   
+                      $year_start = 2007;
+                      $year_end =  date('Y');
+
+                      for($year_start; $year_start <= $year_end; $year_start += 3){
+                    ?>
+                    <option value="<?php echo $year_start; ?>"><?php echo $year_start; ?></option>
+                    <?php
+                      }
+                    ?>
+                </select>
+              </div>
+              <div class="col-lg-6">
                 <button class="btn btn-sm btn-primary" id="btn_display_comparison"><icon class="fas fa-thumbs-up mr-2"></icon>Submit</button>
               </div>
               <!--<div class="col-lg-2">

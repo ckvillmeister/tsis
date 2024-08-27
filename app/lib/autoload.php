@@ -2,6 +2,7 @@
 	spl_autoload_register('autoload_lib');
 	spl_autoload_register('autoload_controllers');
 	spl_autoload_register('autoload_models');
+	require $_SERVER['DOCUMENT_ROOT'] . '/tsis/vendor/autoload.php';
 
 	function autoload_lib($filename) {
 		$path = 'app/lib/';

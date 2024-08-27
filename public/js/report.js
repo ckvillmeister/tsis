@@ -6,8 +6,11 @@ var params = [
 
 $('#btn_view_ward_list').click(function() {
 	var barangay = $('#cbo_barangay').val();
+	var sort = $('#cbo_sort').val();
+	var filter = $('#cbo_filter').val();
+
 	if (barangay != 0) {
-		get_ward_list(barangay);
+		get_ward_list(barangay, sort, filter);
 	}
 });
 
@@ -20,8 +23,9 @@ $('#btn_election_results').click(function() {
 
 $('#btn_display_comparison').click(function() {
 	var position = $('#cbo_positions').val();
+	var year = $('#cbo_election_years').val();
 	if (position != 0) {
-		get_comparison(position);
+		get_comparison(position, year);
 	}
 });
 
@@ -52,15 +56,15 @@ $('#btn_search_result').click(function() {
 
 $('#btn_print').click(function(){
 	var mywindow = window.open("", '_blank', params);
-        mywindow.document.write($('#report').html());
-        mywindow.print();
+        setTimeout(function(){ mywindow.document.write($('#report').html())}, 500);
+        setTimeout(function(){ mywindow.print();}, 1500);
 });
 
-function get_ward_list(barangay){
+function get_ward_list(barangay, sort, filter){
 	$.ajax({
 		url: 'get_ward_list',
 		method: 'POST',
-		data: {barangay: barangay},
+		data: {barangay: barangay, sort: sort, filter: filter},
 		dataType: 'html',
 		beforeSend: function() {
 		    $('.overlay-wrapper').html('<div class="overlay">' +
@@ -112,11 +116,11 @@ function get_election_result(year){
 	})
 }
 
-function get_comparison(position){
+function get_comparison(position, year){
 	$.ajax({
 		url: 'get_comparison',
 		method: 'POST',
-		data: {position: position},
+		data: {position: position, year: year},
 		dataType: 'html',
 		beforeSend: function() {
 		    $('.overlay-wrapper').html('<div class="overlay">' +

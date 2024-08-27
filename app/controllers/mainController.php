@@ -32,7 +32,7 @@ class mainController extends controller{
 			
 				$supporter = isset($_POST['text_search_supporter']) ? $_POST['text_search_supporter'] : "";
 				$ward_obj = new wardModel();
-				$search_result = $ward_obj->retrieve_matched_supporter_names($supporter);
+				$search_result = ($supporter) ? $ward_obj->retrieve_matched_supporter_names($supporter) : [];
 
 				$this->view()->render('main/search_result.php', array('search_result' => $search_result, 'system_name' => $system_name));
 			}

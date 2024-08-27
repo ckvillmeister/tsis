@@ -36,7 +36,7 @@
             
             </div>
 
-            <div class="row p-3 shadow-none m-3 bg-light rounded">
+            <div class="row p-3 shadow-none m-3">
               <div class="col-lg-2 align-self-center" style="vertical-align: middle;">
                 Election Year:
               </div>

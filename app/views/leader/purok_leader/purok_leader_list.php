@@ -19,7 +19,6 @@
     <table class="table table-sm table-bordered table-striped" id="purok_leader_list">
         <thead>
           <tr>
-            <th class="col-header text-center" width="20px">#</th>
             <th class="col-header text-center" width="100px">Purok Number</th>
             <th class="col-header text-center" width="400px">Leader</th>
             <th class="col-header text-center" width="120px">Control</th>
@@ -33,7 +32,6 @@
           ?>
             <tr>
               <td class="center_text"><?php echo ++$purok; ?></td>
-              <td class="center_text"><?php echo $purok; ?></td>
               <td>
                 <?php
                   $voter = 0;
@@ -57,7 +55,8 @@
                   }
                   else{
                 ?>
-                  <button class="btn btn-sm btn-warning" id="btn_edit_leader" value="<?php echo $purok; ?>"><icon class="fas fa-edit mr-2"></icon>Edit Leader</button>
+                  <button class="btn btn-sm btn-warning" id="btn_edit_leader" value="<?php echo $purok; ?>"><icon class="fas fa-edit mr-2"></icon>Edit</button>
+                  <button class="btn btn-sm btn-danger" id="btn_remove_leader" value="<?php echo $purok; ?>"><icon class="fas fa-trash mr-2"></icon>Remove</button>
                 <?php
                   }
                 ?>

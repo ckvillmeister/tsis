@@ -29,37 +29,35 @@ $('body').on('click', '#btn_edit_brgy', function(e){
 
 $('body').on('click', '#btn_delete_brgy', function(e){
   barangay_id = $(this).val();
-  $.confirm({
-      title: 'Confirm',
-      type: 'blue',
-      content: "Are you sure you want to delete this barangay?",
-      buttons: {
-          ok: function () {
-            toggle_barangay(barangay_id, 0);
-            get_barangays(1);
-          },
-          cancel: function () {
-              
-          }
-      }
+  Swal.fire({
+      title: "Confirm",
+      text: "Are you sure you want to delete this barangay?",
+      icon: "question",
+      showCancelButton: true, 
+      showConfirmButton: true,  
+      confirmButtonColor: "#17a2b8"
+  }).then((res) => {
+    if (res.value) {
+      toggle_barangay(barangay_id, 0);
+      get_barangays(1);
+    }
   });
 });
 
 $('body').on('click', '#btn_activate_brgy', function(e){
   barangay_id = $(this).val();
-  $.confirm({
-      title: 'Confirm',
-      type: 'blue',
-      content: "Are you sure you want to re-activate this barangay?",
-      buttons: {
-          ok: function () {
-            toggle_barangay(barangay_id, 1);
-            get_barangays(0);
-          },
-          cancel: function () {
-              
-          }
-      }
+  Swal.fire({
+      title: "Confirm",
+      text: "Are you sure you want to re-activate this barangay?",
+      icon: "question",
+      showCancelButton: true, 
+      showConfirmButton: true,  
+      confirmButtonColor: "#17a2b8"
+  }).then((res) => {
+    if (res.value) {
+      toggle_barangay(barangay_id, 1);
+      get_barangays(0);
+    }
   });
 });
 
@@ -72,33 +70,49 @@ function process_barangay(id){
         },
       success: function(result) {
         if (result == 1){
-          $.alert({
-            title: "Saved",
-            type: "green",
-            content: "New barangay successfully saved!"
-          })
+          Swal.fire({
+            title: "Success",
+            text: "New barangay successfully created!",
+            icon: "success",
+            confirmButtonColor: "#00939D"
+          }).then((res) => {
+            if (res.value) {
+              $('#modal_barangay_form').modal('toggle');
+            }
+          });
         }
         else if (result == 2){
-          $.alert({
-            title: "Updated",
-            type: "green",
-            content: "Barangay info successfully updated!"
-          })
+          Swal.fire({
+            title: "Success",
+            text: "Barangay successfully updated!",
+            icon: "success",
+            confirmButtonColor: "#00939D"
+          }).then((res) => {
+            if (res.value) {
+              $('#modal_barangay_form').modal('toggle');
+            }
+          });
         }
         else{
-          $.alert({
+          Swal.fire({
             title: "Error",
-            type: "blue",
-            content: "Error during processing!"
-          })
+            text: "Error during saving!",
+            icon: "error",
+            confirmButtonColor: "#b34045"
+          }).then((res) => {
+            if (res.value) {
+              $('#modal_barangay_form').modal('toggle');
+            }
+          });
         }
       },
       error: function(obj, err, ex){
-        $.alert({
-            title: "Error",
-            type: "red",
-            content: msg + ": " + obj.status + " " + exception
-          })
+        Swal.fire({
+          title: "Error",
+          text: err + ": " + obj.status + " " + ex,
+          icon: "error",
+          confirmButtonColor: "#b34045",
+        });
     }
   })
 }
@@ -113,11 +127,12 @@ function get_barangays(status){
         $('#barangay_list').html(result);
       },
       error: function(obj, err, ex){
-        $.alert({
-            title: "Error",
-            type: "red",
-            content: msg + ": " + obj.status + " " + exception
-          })
+        Swal.fire({
+          title: "Error",
+          text: err + ": " + obj.status + " " + ex,
+          icon: "error",
+          confirmButtonColor: "#b34045",
+        });
     }
   })
 }
@@ -132,11 +147,12 @@ function get_barangay_info(id){
         $('#text_barangay').val(result['name']);
       },
       error: function(obj, err, ex){
-        $.alert({
-            title: "Error",
-            type: "red",
-            content: msg + ": " + obj.status + " " + exception
-          })
+        Swal.fire({
+          title: "Error",
+          text: err + ": " + obj.status + " " + ex,
+          icon: "error",
+          confirmButtonColor: "#b34045",
+        });
     }
   })
 }
@@ -151,11 +167,12 @@ function toggle_barangay(id, status){
         
       },
       error: function(obj, err, ex){
-        $.alert({
-            title: "Error",
-            type: "red",
-            content: msg + ": " + obj.status + " " + exception
-          })
+        Swal.fire({
+          title: "Error",
+          text: err + ": " + obj.status + " " + ex,
+          icon: "error",
+          confirmButtonColor: "#b34045",
+        });
     }
   })
 }

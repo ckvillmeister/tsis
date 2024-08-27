@@ -24,17 +24,42 @@ class reportModel extends model{
 	public function get_ward_list($param = array()){
 		$year = $this->get_year();
 		$barangay = $param['barangay'];
+		$sort = $param['sort'];
+		$filter = $param['filter'];
 		
 		$query = 'SELECT twl.record_id, tvl.firstname, tvl.middlename, tvl.lastname, tvl.suffix, tvl.voters_no, 
-					tvl.precinct_no, tvl.purok_no, tvl.cluster_no, tvl.image_url, tvl.is_new_voter, tvl.remarks, tvl.is_new_affiliation
+					tvl.precinct_no, tvl.purok_no, tvl.cluster_no, tvl.image_url, tvl.is_new_voter, tvl.remarks, tvl.is_new_affiliation, twl.voter_id
 					FROM tbl_ward_leader AS twl
 					INNER JOIN tbl_voters_list AS tvl ON tvl.record_id = twl.voter_id
 					WHERE twl.barangay_id = ? AND twl.record_year = ? AND twl.status = 1';
 
+		if ($filter){
+			$query .= ' AND tvl.purok_no = '.$filter;
+		}
+
+		if ($sort){
+			if ($sort == 'purok'){
+				$query .= ' ORDER BY tvl.purok_no ASC,';
+			}
+			elseif ($sort == 'precinct'){
+				$query .= ' ORDER BY tvl.precinct_no ASC,';
+			}
+			elseif ($sort == 'cluster'){
+				$query .= ' ORDER BY tvl.cluster_no ASC,';
+			}
+
+			$query .= ' tvl.lastname ASC, tvl.firstname ASC, tvl.middlename ASC';
+		}
+		else{
+			$query .= ' ORDER BY tvl.lastname ASC, tvl.firstname ASC, tvl.middlename ASC';
+		}
+
+		
+
 		$stmt = $this->con->prepare($query);
 		$stmt->bind_param('ss', $barangay, $year);
 		$stmt->execute();
-		$stmt->bind_result($wardid, $firstname, $middlename, $lastname, $suffix, $votersno, $precinctno, $purokno, $clusterno, $imgurl, $new_voter, $remarks, $new_affiliation);
+		$stmt->bind_result($wardid, $firstname, $middlename, $lastname, $suffix, $votersno, $precinctno, $purokno, $clusterno, $imgurl, $new_voter, $remarks, $new_affiliation, $voterid);
 		$ward = array();
 		$wardlist = array();
 		$ctr = 0;
@@ -52,6 +77,7 @@ class reportModel extends model{
 							'imgurl' => $imgurl,
 							'new_voter' => $new_voter,
 							'remarks' => $remarks,
+							'voterid' => $voterid,
 							'new_affiliation' => $new_affiliation);
 			$ward['members'] = $this->get_ward_members($wardid, $year);
 			$wardlist[$ctr++] = $ward;		
@@ -64,17 +90,17 @@ class reportModel extends model{
 
 	public function get_ward_members($wardid, $year){
 		$query = 'SELECT tvl.firstname, tvl.middlename, tvl.lastname, tvl.suffix, tvl.voters_no, 
-					tvl.precinct_no, tvl.purok_no, tvl.cluster_no, tvl.is_new_voter, tvl.remarks, tvl.is_new_affiliation
+					tvl.precinct_no, tvl.purok_no, tvl.cluster_no, tvl.is_new_voter, tvl.remarks, tvl.is_new_affiliation, twm.voter_id
 					FROM tbl_ward_member AS twm
 					INNER JOIN tbl_voters_list AS tvl ON tvl.record_id = twm.voter_id
-					WHERE twm.ward_id = ? AND twm.record_year = ? AND twm.status = 1 ORDER BY tvl.lastname ASC';
+					WHERE twm.ward_id = ? AND twm.record_year = ? AND twm.status = 1 ORDER BY tvl.lastname ASC, tvl.firstname ASC, tvl.middlename ASC';
 		
 		$db = new database();
 		$connection = $db->connection();
 		$stmt = $connection->prepare($query);
 		$stmt->bind_param('ss', $wardid, $year);
 		$stmt->execute();
-		$stmt->bind_result($firstname, $middlename, $lastname, $suffix, $votersno, $precinctno, $purokno, $clusterno, $new_voter, $remarks, $new_affiliation);
+		$stmt->bind_result($firstname, $middlename, $lastname, $suffix, $votersno, $precinctno, $purokno, $clusterno, $new_voter, $remarks, $new_affiliation, $voterid);
 		$member = array();
 		$ward_members = array();
 		$ctr = 0;
@@ -85,10 +111,12 @@ class reportModel extends model{
 							'lastname' => $lastname,
 							'suffix' => $suffix,
 							'votersno' => $votersno,
+							'clusterno' => $clusterno,
 							'precinctno' => $precinctno,
 							'purokno' => $purokno,
 							'new_voter' => $new_voter,
 							'remarks' => $remarks,
+							'voterid' => $voterid,
 							'new_affiliation' => $new_affiliation);
 			$ward_members[$wardid] = $member;
 
@@ -98,32 +126,38 @@ class reportModel extends model{
 	}
 
 	public function get_election_result($year){
-		$query = 'SELECT tc.firstname, tc.middlename, tc.lastname, SUM(number_of_votes) AS total_votes, ter.position
+		$politics = new politicsModel();
+
+		$query = 'SELECT tc.firstname, tc.middlename, tc.lastname, SUM(number_of_votes) AS total_votes, tcpp.position, tcpp.party_id
 					FROM tbl_election_results ter
 					INNER JOIN tbl_candidates tc ON tc.record_id = ter.candidate_id
+					JOIN tbl_candidates_per_party tcpp ON tcpp.candidate_id = ter.candidate_id AND tcpp.year = ?
 					WHERE ter.year = ?
 					GROUP BY ter.candidate_id
-					ORDER BY ter.level ASC, total_votes DESC';
+					ORDER BY tcpp.position ASC, total_votes DESC';
 		
 		$db = new database();
 		$connection = $db->connection();
 		$stmt = $connection->prepare($query);
-		$stmt->bind_param('s', $year);
+		$stmt->bind_param('ss', $year, $year);
 		$stmt->execute();
-		$stmt->bind_result($firstname, $middlename, $lastname, $votes, $position);
+		$stmt->bind_result($firstname, $middlename, $lastname, $votes, $position, $partyid);
 		$candidates = array();
 		$ctr = 0;
 
 		$total_voters = $this->total_voters($year);
 		$total_supporters = $this->total_supporters($year);
+		$allied = $politics->allied_party();
 
 		while ($stmt->fetch()) {
 			$candidates[$ctr++] = array('firstname' => $firstname, 
 							'middlename' => $middlename,
 							'lastname' => $lastname,
-							'position' => $position,
+							'position' => $politics->positions[$position],
 							'total_voters' => $total_voters,
 							'total_supporters' => $total_supporters,
+							'partyid' => $partyid,
+							'allied' => $allied,
 							'votes' => $votes);
 
 		}
@@ -246,7 +280,7 @@ class reportModel extends model{
 						JOIN tbl_voters_list tvl ON tvl.record_id = twm.voter_id
 						JOIN tbl_barangay tb ON tb.record_id = twm.barangay_id
 						WHERE twm.barangay_id = '.$barangay.' AND twm.record_year = '.$year.' AND twm.status = 1 AND tvl.cluster_no = '.$cluster.'
-						ORDER BY lastname ASC, firstname ASC, middlename ASC';
+						ORDER BY purok_no ASC, lastname ASC, firstname ASC, middlename ASC';
 			}
 			else{
 				$query = 'SELECT tvl.firstname, tvl.middlename, tvl.lastname, tvl.suffix, tvl.voters_no, tvl.precinct_no, tvl.cluster_no, tvl.purok_no, tb.barangay_name, "Ward Leader" FROM tbl_ward_leader twl
@@ -258,7 +292,7 @@ class reportModel extends model{
 						JOIN tbl_voters_list tvl ON tvl.record_id = twm.voter_id
 						JOIN tbl_barangay tb ON tb.record_id = twm.barangay_id
 						WHERE twm.barangay_id = '.$barangay.' AND twm.record_year = '.$year.' AND twm.status = 1
-						ORDER BY lastname ASC, firstname ASC, middlename ASC';
+						ORDER BY purok_no ASC, lastname ASC, firstname ASC, middlename ASC';
 			}
 		}
 		
@@ -308,20 +342,24 @@ class reportModel extends model{
 		return $positions;
 	}
 
-	public function get_comparison($position){
-		$year = $this->get_year();
+	public function get_comparison($position, $year){
+		$year = ($year) ? $year : $this->get_year();
 		$query = 'SELECT ter.candidate_id, tc.firstname, tc.middlename, tc.lastname, SUM(ter.number_of_votes) AS total_votes
 					FROM tbl_election_results ter 
 					INNER JOIN tbl_candidates tc ON tc.record_id = ter.candidate_id
-					WHERE ter.position = ? 
-					AND ter.year = ?
-					GROUP BY ter.candidate_id
-					ORDER BY total_votes DESC';
+					JOIN tbl_candidates_per_party tcpp ON tcpp.candidate_id = ter.candidate_id
+					WHERE tcpp.position = ?';
+
+		if ($year){
+			$query .= ' AND ter.year = '.$year;
+		}
+
+		$query .= ' GROUP BY ter.candidate_id ORDER BY total_votes DESC';
 		
 		$db = new database();
 		$conn = $db->connection();
 		$stmt = $conn->prepare($query);
-		$stmt->bind_param('ss', $position, $year);
+		$stmt->bind_param('s', $position);
 		$stmt->execute();
 		$stmt->bind_result($candidate_id, $firstname, $middlename, $lastname, $total_votes);
 		$candidates = array();
@@ -332,7 +370,7 @@ class reportModel extends model{
 			$candidates[] = array('firstname' => $firstname, 
 									'middlename' => $middlename,
 									'lastname' => $lastname,
-									'votes' => $this->get_votes_per_candidate($candidate_id));
+									'votes' => $this->get_votes_per_candidate($candidate_id, $year));
 
 		}
 
@@ -340,8 +378,8 @@ class reportModel extends model{
 		return $candidates;
 	}
 
-	public function get_votes_per_candidate($candidate_id){
-		$year = $this->get_year();
+	public function get_votes_per_candidate($candidate_id, $year = 0){
+		$year = ($year) ? $year : $this->get_year();
 		$qryVotesPerBarangay = 'SELECT ter.number_of_votes, tb.barangay_name 
 								FROM tbl_election_results ter 
 								INNER JOIN tbl_barangay tb ON tb.record_id = ter.barangay
@@ -388,7 +426,7 @@ class reportModel extends model{
 		return $precincts;
 	}
 
-	public function get_search_list($barangay, $purok, $cluster, $precinct, $name, $age){
+	public function get_search_list($barangay, $purok, $cluster, $precinct, $name, $age, $sk = 0){
 		$year = $this->get_year();
 		$query = 'SELECT firstname, middlename, lastname, suffix, voters_no, 
 					precinct_no, purok_no, cluster_no, YEAR(CURDATE()) - YEAR(birthdate) AS age, YEAR(birthdate)
@@ -413,6 +451,13 @@ class reportModel extends model{
 
 		if ($name){
 			$query .= ' AND (firstname LIKE "%'.$name.'%" OR middlename LIKE "%'.$name.'%" OR lastname LIKE "%'.$name.'%")';
+		}
+
+		if ($sk){
+			$query .= ' AND is_sk = 1';
+		}
+		else{
+			$query .= ' AND (is_sk IS NULL OR is_sk = 0)';
 		}
 
 		$query .= ' ORDER BY lastname ASC';
@@ -485,11 +530,11 @@ class reportModel extends model{
 		return $search_list;
 	}
 
-	public function get_total_supporters(){
+	public function get_total_supporters($record_year = null){
 		$settings_model = new settingsModel();
 		$barangays = $settings_model->get_barangays(1);
 
-		$year = $this->get_year();
+		$year = ($record_year) ? $record_year : $this->get_year();
 		$sup_per_brgy = array();
 		$db = new database();
 		$connection = $db->connection();
@@ -518,23 +563,24 @@ class reportModel extends model{
 		return $sup_per_brgy;
 	}
 
-	public function get_total_voters(){
+	public function get_total_voters($record_year = null){
 		$settings_model = new settingsModel();
 		$barangays = $settings_model->get_barangays(1);
 
-		$year = $this->get_year();
+		$year = ($record_year) ? $record_year : $this->get_year();
 		$voters_per_brgy = array();
 		$db = new database();
 		$connection = $db->connection();
 
 		foreach ($barangays as $key => $barangay) {
 
-			$query = 'SELECT COUNT(*) AS total FROM tbl_voters_list WHERE record_year = ? AND barangay = ? AND status = 1';
+			$query = 'SELECT COUNT(*) AS total, is_sk FROM tbl_voters_list WHERE record_year = ? AND barangay = ? AND status = 1 AND (is_sk IS NULL OR is_sk = 0)';
 			
 			$stmt = $connection->prepare($query);
 			$stmt->bind_param('ss', $year, $barangay['id']);
 			$stmt->execute();
 			$data = $stmt->get_result()->fetch_assoc();
+
 			$total = ($data['total']) ? $data['total'] : 0 ;
 			
 			$voters_per_brgy[] = $total;
@@ -575,7 +621,7 @@ class reportModel extends model{
 
 			$info['members'] = $members;
 
-			$query = 'SELECT COUNT(*) AS total_voters FROM tbl_voters_list WHERE status = 1 AND record_year = ? AND barangay = ?';
+			$query = 'SELECT COUNT(*) AS total_voters FROM tbl_voters_list WHERE status = 1 AND record_year = ? AND barangay = ? AND (is_sk IS NULL OR is_sk = 0)';
 			$stmt = $connection->prepare($query);
 			$stmt->bind_param('ss', $year, $barangay['id']);
 			$stmt->execute();

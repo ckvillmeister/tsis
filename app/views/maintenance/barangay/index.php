@@ -32,15 +32,17 @@
         <div class="container-fluid">
           <div class="card">
 
-            <div class="row p-3 shadow-none m-3 bg-light rounded">
+            <div class="row shadow-none m-3 rounded">
               <div class="col-lg-12 align-self-center">
-                <button class="btn btn-sm btn-primary" id="btn_new_barangay"><icon class="fas fa-plus mr-2"></icon>New Barangay</button>
-                <button class="btn btn-sm btn-secondary" id="btn_active"><icon class="fas fa-check mr-2"></icon>Active</button>
-                <button class="btn btn-sm btn-danger" id="btn_trash"><icon class="fas fa-trash mr-2"></icon>Trash</button>
+                <div class="btn-group">
+                  <button class="btn btn-sm btn-primary" id="btn_new_barangay"><icon class="fas fa-plus mr-3"></icon>New </button>
+                  <button class="btn btn-sm btn-secondary" id="btn_active"><icon class="fas fa-check mr-2"></icon>Active</button>
+                  <button class="btn btn-sm btn-danger" id="btn_trash"><icon class="fas fa-trash mr-2"></icon>Trash</button>
+                </div>
               </div>
             </div>
 
-            <div class="row p-3 shadow-none ml-3 mr-3 mb-3 bg-light rounded">
+            <div class="row shadow-none ml-3 mr-3 mb-3 rounded">
               <div class="col-lg-12 align-self-center">
                 
                 <div id="barangay_list">

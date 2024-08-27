@@ -62,12 +62,13 @@ $(document).ready(function() {
 		p - pagination control
 	*/
   var table = $('#tbl_comparison').DataTable({
-    "dom": 'Brt',
+    "dom": 'Blrtp',
     "initComplete": function() {
       $("#tbl_comparison").show();
     },
     "buttons": ['copy', 'csv', 'excel', 'pdf', 'print', 'colvis'],
     "scrollX": true,
+    paging: true
   });
   table.buttons().container().appendTo('#reminders_wrapper .col-md-6:eq(0)');
 });

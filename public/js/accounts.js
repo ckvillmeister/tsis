@@ -30,18 +30,20 @@ $('#btn_submit').click(function(e){
     | $('#text_firstname').val().trim() == '' | $('#text_lastname').val().trim() == ''
     | $('#cbo_role').val().trim() == ''){
 
-    $.alert({
-        title: "Error",
-        type: "red",
-        content: "Please provided all required fields!"
-      })
+    Swal.fire({
+      title: "Error",
+      text: "Please provide all required fields!",
+      icon: "error",
+      confirmButtonColor: "#b34045"
+    });
   }
   else if ($('#text_password').val().trim() != $('#text_cpassword').val().trim()){
-    $.alert({
-        title: "Error",
-        type: "red",
-        content: "Password does not match!"
-      })
+    Swal.fire({
+      title: "Error",
+      text: "Password does not match!",
+      icon: "error",
+      confirmButtonColor: "#b34045"
+    });
   }
   else{
     process_user_account(userid);
@@ -74,29 +76,31 @@ $('#btn_trash').click(function(e){
 });
 
 $('body').on('click', '#btn_reset_password', function(e){
-  $("#text_newpassword").val('');
-  $("#text_cnewpassword").val('');
+  $("#newpassword").val('');
+  $("#cnewpassword").val('');
   $('.btn_submit_reset_password').val($(this).val());
   $('#modal_reset_password').modal('show');
 });
 
 $('.btn_submit_reset_password').click(function(e){
-  if ($('#text_newpassword').val().trim() == '' | $('#text_cnewpassword').val().trim() == ''){
-    $.alert({
-        title: "Error",
-        type: "red",
-        content: "Please provided new password!"
-      })
+  if ($('#newpassword').val().trim() == '' && $('#cnewpassword').val().trim() == ''){
+    Swal.fire({
+      title: "Error",
+      text: "Please provide a new password!",
+      icon: "error",
+      confirmButtonColor: "#b34045"
+    });
   }
-  else if ($('#text_newpassword').val().trim() != $('#text_cnewpassword').val().trim()){
-    $.alert({
-        title: "Error",
-        type: "red",
-        content: "Password does not match!"
-      })
+  else if ($('#newpassword').val().trim() != $('#cnewpassword').val().trim()){
+    Swal.fire({
+      title: "Error",
+      text: "Password does not match!",
+      icon: "error",
+      confirmButtonColor: "#b34045"
+    });
   }
   else{
-    reset_password($(this).val(), $('#text_newpassword').val().trim());
+    reset_password($(this).val(), $('#newpassword').val().trim());
   }
 });
 
@@ -112,38 +116,36 @@ $('body').on('click', '#btn_edit_user', function(e){
 $('body').on('click', '#btn_delete_user', function(e){
   userid = $(this).val();
 
-  $.confirm({
-      title: 'Confirm',
-      type: 'blue',
-      content: "Are you sure you want to delete this user?",
-      buttons: {
-          ok: function () {
-            toggle_user(userid, 0);
-            get_user_accounts(1);
-          },
-          cancel: function () {
-              
-          }
-      }
+  Swal.fire({
+      title: "Confirm",
+      text: "Are you sure you want to delete this user?",
+      icon: "question",
+      showCancelButton: true, 
+      showConfirmButton: true,  
+      confirmButtonColor: "#17a2b8"
+  }).then((res) => {
+    if (res.value) {
+      toggle_user(userid, 0);
+      get_user_accounts(1);
+    }
   });
 });
 
 $('body').on('click', '#btn_activate_user', function(e){
   userid = $(this).val();
 
-  $.confirm({
-      title: 'Confirm',
-      type: 'blue',
-      content: "Are you sure you want to re-activate this user?",
-      buttons: {
-          ok: function () {
-            toggle_user(userid, 1);
-            get_user_accounts(0);
-          },
-          cancel: function () {
-              
-          }
-      }
+  Swal.fire({
+      title: "Confirm",
+      text: "Are you sure you want to re-activate this user?",
+      icon: "question",
+      showCancelButton: true, 
+      showConfirmButton: true,  
+      confirmButtonColor: "#17a2b8"
+  }).then((res) => {
+    if (res.value) {
+      toggle_user(userid, 1);
+      get_user_accounts(0);
+    }
   });
 });
 
@@ -162,33 +164,49 @@ function process_user_account(id){
         },
       success: function(result) {
         if (result == 1){
-          $.alert({
-            title: "Saved",
-            type: "green",
-            content: "New user account created!"
-          })
+          Swal.fire({
+            title: "Success",
+            text: "New user account successfully created!",
+            icon: "success",
+            confirmButtonColor: "#00939D"
+          }).then((res) => {
+            if (res.value) {
+              $('#modal_user_account_form').modal('toggle');
+            }
+          });
         }
         else if (result == 2){
-          $.alert({
-            title: "Updated",
-            type: "green",
-            content: "User account updated!"
-          })
+          Swal.fire({
+            title: "Success",
+            text: "User account successfully updated!",
+            icon: "success",
+            confirmButtonColor: "#00939D"
+          }).then((res) => {
+            if (res.value) {
+              $('#modal_user_account_form').modal('toggle');
+            }
+          });
         }
         else{
-          $.alert({
+          Swal.fire({
             title: "Error",
-            type: "red",
-            content: "Error during processing!"
-          })
+            text: "Error during saving!",
+            icon: "error",
+            confirmButtonColor: "#b34045"
+          }).then((res) => {
+            if (res.value) {
+              $('#modal_user_account_form').modal('toggle');
+            }
+          });
         }
       },
       error: function(obj, err, ex){
-        $.alert({
-            title: "Error",
-            type: "red",
-            content: msg + ": " + obj.status + " " + exception
-          })
+        Swal.fire({
+          title: "Error",
+          text: err + ": " + obj.status + " " + ex,
+          icon: "error",
+          confirmButtonColor: "#b34045",
+        });
     }
   })
 }
@@ -203,11 +221,12 @@ function get_user_accounts(status){
         $('#user_list').html(result);
       },
       error: function(obj, err, ex){
-        $.alert({
-            title: "Error",
-            type: "red",
-            content: msg + ": " + obj.status + " " + exception
-          })
+        Swal.fire({
+          title: "Error",
+          text: err + ": " + obj.status + " " + ex,
+          icon: "error",
+          confirmButtonColor: "#b34045",
+        });
     }
   })
 }
@@ -229,11 +248,12 @@ function get_user_account_info(id){
         $('#cbo_role').val(result['role']);
       },
       error: function(obj, err, ex){
-        $.alert({
-            title: "Error",
-            type: "red",
-            content: msg + ": " + obj.status + " " + exception
-          })
+        Swal.fire({
+          title: "Error",
+          text: err + ": " + obj.status + " " + ex,
+          icon: "error",
+          confirmButtonColor: "#b34045",
+        });
     }
   })
 }
@@ -248,11 +268,12 @@ function toggle_user(id, status){
         
       },
       error: function(obj, err, ex){
-        $.alert({
-            title: "Error",
-            type: "red",
-            content: msg + ": " + obj.status + " " + exception
-          })
+        Swal.fire({
+          title: "Error",
+          text: err + ": " + obj.status + " " + ex,
+          icon: "error",
+          confirmButtonColor: "#b34045",
+        });
     }
   })
 }
@@ -265,26 +286,37 @@ function reset_password(id, password){
         dataType: 'html',
       success: function(result) {
         if (result == 1){
-          $.alert({
-            title: "Reset Password",
-            type: "green",
-            content: "Password reset!"
-          })
+          Swal.fire({
+            title: "Success",
+            text: "Password successfully changed!",
+            icon: "success",
+            confirmButtonColor: "#00939D"
+          }).then((res) => {
+            if (res.value) {
+              $('#modal_reset_password').modal('toggle');
+            }
+          });
         }
         else{
-          $.alert({
+          Swal.fire({
             title: "Error",
-            type: "red",
-            content: "Error while resetting password!"
-          })
+            text: "Error while changing password!",
+            icon: "error",
+            confirmButtonColor: "#b34045"
+          }).then((res) => {
+            if (res.value) {
+              $('#modal_reset_password').modal('toggle');
+            }
+          });
         }
       },
       error: function(obj, err, ex){
-        $.alert({
-            title: "Error",
-            type: "red",
-            content: msg + ": " + obj.status + " " + exception
-          })
+        Swal.fire({
+          title: "Error",
+          text: err + ": " + obj.status + " " + ex,
+          icon: "error",
+          confirmButtonColor: "#b34045",
+        });
     }
   })
 }

@@ -137,7 +137,7 @@ class settingsModel extends model{
 		$stmt->bind_param("ss", $status, $id);
 		$stmt->execute();
 		$result = 1;		
-
+		
 		$stmt->close();
 		$this->con->close();
 		return $result;

@@ -64,8 +64,8 @@ class reportController extends controller{
    			$role = $userinfo['role'];
 			
 			if ($accessrole_model->check_access($role, 'comparison')){
-				$reportObj = new reportModel();
-				$positions = $reportObj->get_positions();
+				$politics = new politicsModel();
+				$positions = $politics->positions;
 				$this->view()->render('report/comparison/index.php', array('system_name' => $system_name, 'positions' => $positions));
 			}
 			else{
@@ -156,9 +156,12 @@ class reportController extends controller{
 
 	public function get_ward_list(){
 		$barangay = $_POST['barangay'];
+		$sort = ($_POST['sort']) ? $_POST['sort'] : 0;
+		$filter = ($_POST['filter']) ? $_POST['filter'] : 0;
+
 		$reportObj = new reportModel();
-		$wardlist = $reportObj->get_ward_list(array('barangay' => $barangay));
-		$this->view()->render('report/ward_list/wardlist.php', array('wardlist' => $wardlist));
+		$wardlist = $reportObj->get_ward_list(array('barangay' => $barangay, 'sort' => $sort, 'filter' => $filter));
+		$this->view()->render('report/ward_list/wardlist.php', array('wardlist' => $wardlist, 'purok' => $filter));
 	}
 
 	public function get_election_result(){
@@ -170,12 +173,13 @@ class reportController extends controller{
 
 	public function get_comparison(){
 		$position = $_POST['position'];
+		$year = ($_POST['year']) ? $_POST['year'] : 0;
 
 		$settingsObj = new settingsModel();
 		$barangay = $settingsObj->get_barangays(1);
 
 		$reportObj = new reportModel();
-		$comparison = $reportObj->get_comparison($position);
+		$comparison = $reportObj->get_comparison($position, $year);
 		$this->view()->render('report/comparison/comparison.php', array('comparison' => $comparison, 'barangay' => $barangay));
 	}
 

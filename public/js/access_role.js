@@ -29,38 +29,36 @@ $('body').on('click', '#btn_edit_role', function(e){
 $('body').on('click', '#btn_delete_role', function(e){
   role_id = $(this).val();
 
-  $.confirm({
-      title: 'Confirm',
-      type: 'blue',
-      content: "Are you sure you want to delete this role?",
-      buttons: {
-          ok: function () {
-              toggle_role(role_id, 0);
-              get_access_roles(1);
-          },
-          cancel: function () {
-              
-          }
-      }
+  Swal.fire({
+      title: "Confirm",
+      text: "Are you sure you want to delete this role?",
+      icon: "question",
+      showCancelButton: true, 
+      showConfirmButton: true,  
+      confirmButtonColor: "#17a2b8"
+  }).then((res) => {
+    if (res.value) {
+      toggle_role(role_id, 0);
+      get_access_roles(1);
+    }
   });
 });
 
 $('body').on('click', '#btn_activate_role', function(e){
   role_id = $(this).val();
 
-  $.confirm({
-      title: 'Confirm',
-      type: 'blue',
-      content: "Are you sure you want to re-activate this role?",
-      buttons: {
-          ok: function () {
-              toggle_role(role_id, 1);
-              get_access_roles(0);
-          },
-          cancel: function () {
-              
-          }
-      }
+  Swal.fire({
+      title: "Confirm",
+      text: "Are you sure you want to re-activate this role?",
+      icon: "question",
+      showCancelButton: true, 
+      showConfirmButton: true,  
+      confirmButtonColor: "#17a2b8"
+  }).then((res) => {
+    if (res.value) {
+      toggle_role(role_id, 1);
+      get_access_roles(0);
+    }
   });
 });
 
@@ -74,33 +72,49 @@ function process_access_role(id){
         },
       success: function(result) {
         if (result == 1){
-          $.alert({
-            title: "Saved",
-            type: "green",
-            content: "New role created!"
-          })
+          Swal.fire({
+            title: "Success",
+            text: "New role successfully created!",
+            icon: "success",
+            confirmButtonColor: "#00939D"
+          }).then((res) => {
+            if (res.value) {
+              $('#modal_role_form').modal('toggle');
+            }
+          });
         }
         else if (result == 2){
-          $.alert({
-            title: "Updated",
-            type: "green",
-            content: "Access role updated!"
-          })
+          Swal.fire({
+            title: "Success",
+            text: "Role successfully updated!",
+            icon: "success",
+            confirmButtonColor: "#00939D"
+          }).then((res) => {
+            if (res.value) {
+              $('#modal_role_form').modal('toggle');
+            }
+          });
         }
         else{
-          $.alert({
+          Swal.fire({
             title: "Error",
-            type: "blue",
-            content: "Error during processing!"
-          })
+            text: "Error during saving!",
+            icon: "error",
+            confirmButtonColor: "#b34045"
+          }).then((res) => {
+            if (res.value) {
+              $('#modal_role_form').modal('toggle');
+            }
+          });
         }
       },
       error: function(obj, err, ex){
-        $.alert({
-            title: "Error",
-            type: "red",
-            content: msg + ": " + obj.status + " " + exception
-          })
+        Swal.fire({
+          title: "Error",
+          text: err + ": " + obj.status + " " + ex,
+          icon: "error",
+          confirmButtonColor: "#b34045",
+        });
     }
   })
 }
@@ -115,11 +129,12 @@ function get_access_roles(status){
         $('#role_list').html(result);
       },
       error: function(obj, err, ex){
-        $.alert({
-            title: "Error",
-            type: "red",
-            content: msg + ": " + obj.status + " " + exception
-          })
+        Swal.fire({
+          title: "Error",
+          text: err + ": " + obj.status + " " + ex,
+          icon: "error",
+          confirmButtonColor: "#b34045",
+        });
     }
   })
 }
@@ -135,11 +150,12 @@ function get_access_role_info(id){
         $('#text_description').val(result['description']);
       },
       error: function(obj, err, ex){
-        $.alert({
-            title: "Error",
-            type: "red",
-            content: msg + ": " + obj.status + " " + exception
-          })
+        Swal.fire({
+          title: "Error",
+          text: err + ": " + obj.status + " " + ex,
+          icon: "error",
+          confirmButtonColor: "#b34045",
+        });
     }
   })
 }
@@ -154,11 +170,12 @@ function toggle_role(id, status){
         
       },
       error: function(obj, err, ex){
-        $.alert({
-            title: "Error",
-            type: "red",
-            content: msg + ": " + obj.status + " " + exception
-          })
+        Swal.fire({
+          title: "Error",
+          text: err + ": " + obj.status + " " + ex,
+          icon: "error",
+          confirmButtonColor: "#b34045",
+        });
     }
   })
 }
@@ -187,26 +204,29 @@ function save_access_rights(id, accs_rights){
         dataType: 'html',
       success: function(result) {
         if (result == 1){
-          $.alert({
+          Swal.fire({
             title: "Success",
-            type: "green",
-            content: "Access rights has been updated!"
-          })
+            text: "Access rights has been updated!",
+            icon: "success",
+            confirmButtonColor: "#00939D"
+          });
         }
         else{
-          $.alert({
+          Swal.fire({
             title: "Error",
-            type: "red",
-            content: "Error during processing!"
-          })
+            text: "Error during saving!",
+            icon: "error",
+            confirmButtonColor: "#b34045"
+          });
         }
       },
       error: function(obj, err, ex){
-        $.alert({
-            title: "Error",
-            type: "red",
-            content: msg + ": " + obj.status + " " + exception
-          })
+        Swal.fire({
+          title: "Error",
+          text: err + ": " + obj.status + " " + ex,
+          icon: "error",
+          confirmButtonColor: "#b34045",
+        });
     }
   })
 }

@@ -32,15 +32,17 @@
         <div class="container-fluid">
           <div class="card">
 
-            <div class="row p-3 shadow-none m-3 bg-light rounded">
+            <div class="row shadow-none m-3 rounded">
               <div class="col-lg-12 align-self-center">
-                <button class="btn btn-sm btn-primary" id="btn_new_user" data-toggle="modal" data-target="#modal_user_account_form"><icon class="fas fa-plus mr-2"></icon>New</button>
-                <button class="btn btn-sm btn-secondary" id="btn_active"><icon class="fas fa-check mr-2"></icon>Active</button>
-                <button class="btn btn-sm btn-danger" id="btn_trash"><icon class="fas fa-trash mr-2"></icon>Trash</button>
+                <div class="btn-group">
+                  <button class="btn btn-sm btn-primary" id="btn_new_user" data-toggle="modal" data-target="#modal_user_account_form"><icon class="fas fa-plus mr-3"></icon>New</button>
+                  <button class="btn btn-sm btn-secondary" id="btn_active"><icon class="fas fa-check mr-2"></icon>Active</button>
+                  <button class="btn btn-sm btn-danger" id="btn_trash"><icon class="fas fa-trash mr-2"></icon>Trash</button>
+                </div>
               </div>
             </div>
 
-            <div class="row p-3 shadow-none ml-3 mr-3 mb-3 bg-light rounded">
+            <div class="row shadow-none ml-3 mr-3 mb-3 rounded">
               <div class="col-lg-12 align-self-center">
                 <div id="user_list">
                 </div>
@@ -175,7 +177,7 @@
               New Password:
           </div>
           <div class="col-lg-8">
-              <input type="password" class="form-control form-control-sm" id="text_newpassword">
+              <input type="password" class="form-control form-control-sm" id="newpassword">
           </div>
         </div>
 
@@ -184,7 +186,7 @@
               Confirm New Password:
           </div>
           <div class="col-lg-8">
-              <input type="password" class="form-control form-control-sm" id="text_cnewpassword">
+              <input type="password" class="form-control form-control-sm" id="cnewpassword">
           </div>
         </div>
       </div>
@@ -193,43 +195,6 @@
         <div class="float-right">
           <button class="btn btn-sm btn-primary btn_submit_reset_password">Submit</button>
           <button class="btn btn-sm btn-secondary" data-dismiss="modal">Cancel</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="modal_message_box" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modal_title"></h5>
-      </div>
-
-      <div class="modal-body">
-        <h5 class="modal-body" id="modal_body"></h5>
-      </div>
-
-      <div class="modal-footer">
-      
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="modal_confirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modal_title"></h5>
-      </div>
-      <div class="modal-body">
-        <h5 class="modal-body" id="modal_body"></h5>
-      </div>
-      <div class="modal-footer">
-        <div class="float-right">
-          <button class="btn btn-sm btn-primary btn_yes">Yes</button>
-          <button class="btn btn-sm btn-secondary" data-dismiss="modal">No</button>
         </div>
       </div>
     </div>

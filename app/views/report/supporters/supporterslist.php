@@ -24,7 +24,7 @@
 				?>
 				<tr>
 					<td><?php echo $ctr++; ?></td>
-					<td><?php echo mb_strtoupper(trim($row['firstname'])." ".trim($row['middlename'])." ".trim($row['lastname'])." ".trim($row['suffix'])); ?></td>
+					<td><?php echo mb_strtoupper(trim($row['lastname']).", ".trim($row['firstname'])." ".trim($row['middlename'])." ".trim($row['suffix'])); ?></td>
 					<td><?php echo $row['barangay']; ?></td>
 					<td class='text-center data'><?php echo $row['votersno']; ?></td>
 					<td class='text-center data'><?php echo $row['precinctno']; ?></td>

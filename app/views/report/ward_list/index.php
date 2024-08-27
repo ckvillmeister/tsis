@@ -36,11 +36,11 @@
             
             </div>
 
-            <div class="row p-3 shadow-none m-3 bg-light rounded">
-              <div class="col-lg-2 align-self-center" style="vertical-align: middle;">
+            <div class="row p-3 shadow-none m-3 rounded">
+             <!--  <div class="col-lg-2 align-self-center" style="vertical-align: middle;">
                 Barangay
-              </div>
-              <div class="col-lg-3">
+              </div> -->
+              <div class="col-lg-2">
                 <select class="form-control form-control-sm" id="cbo_barangay">
                   <option value="0"> [ Select Barangay ] </option>
                     <?php 
@@ -53,9 +53,30 @@
                     ?>
                 </select>
               </div>
-              <div class="col-lg-5">
+              <div class="col-lg-2">
+                <select class="form-control form-control-sm" id="cbo_filter">
+                  <option value="0"> [ Filter By Purok ] </option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                </select>
+              </div>
+              <div class="col-lg-2">
+                <select class="form-control form-control-sm" id="cbo_sort">
+                  <option value="0"> [ Sort By ] </option>
+                  <option value="purok">Purok</option>
+                  <option value="precinct">Precinct</option>
+                  <option value="cluster">Cluster</option>
+                </select>
+              </div>
+              <div class="col-lg-2">
                 <button class="btn btn-sm btn-primary" id="btn_view_ward_list"><icon class="fas fa-thumbs-up mr-2"></icon>Submit</button>
               </div>
+              <div class="col-lg-2"></div>
               <div class="col-lg-2">
                 <div class="float-right">
                   <button class="btn btn-sm btn-primary" id="btn_print"><icon class="fas fa-print mr-2"></icon>Print</button>

@@ -3,6 +3,10 @@ $('#btn_show_all').click(function(){
   get_voters_list();
 });
 
+$('#btn_filter').click(function(){
+  get_voters_list();
+});
+
 $('#btn_save').click(function(){
     $.ajax({
       url: 'save_voter_profile',
@@ -191,6 +195,7 @@ function get_voters_list(){
 	$.ajax({
 		url: 'voter/get_voters_list',
 		method: 'POST',
+    data: {'brgy': $('#brgy').val()},
 		dataType: 'html',
 		beforeSend: function() {
 		    $('.overlay-wrapper').html('<div class="overlay">' +

@@ -31,7 +31,7 @@
       <section class="content">
         <div class="container-fluid">
           <div class="card">
-            <div class="row p-3 shadow-none m-3 bg-light rounded">
+            <div class="row p-3 shadow-none m-3 rounded">
               <div class="col-lg-2 align-self-center" style="vertical-align: middle;">
                 Barangay
               </div>
@@ -76,26 +76,6 @@
             </div>
           </div>
           <div class="modal-footer">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal Confirm Barangay Leader -->
-    <div class="modal fade" id="modal_confirm_purok_leader" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modal_title">Confirmation</h5>
-          </div>
-          <div class="modal-body">
-            <span>Are you sure you want to select <span id="voter_name"></span> as purok leader?</span>
-          </div>
-          <div class="modal-footer">
-            <div class="float-right">
-              <button class="btn btn-primary" id="btn_yes" style="width:120px">Yes</button>&nbsp;&nbsp;
-              <button class="btn btn-secondary" id="btn_no" style="width:120px">No</button>
-            </div>
           </div>
         </div>
       </div>

@@ -32,10 +32,25 @@
         <div class="container-fluid">
           <div class="card">
 
-            <div class="row p-3 shadow-none m-3 bg-light rounded">
-              <div class="col-lg-12 align-self-center">
-                <button class="btn btn-sm btn-primary" id="btn_show_all"><icon class="fas fa-list mr-2"></icon>Show All</button>
-                <button class="btn btn-sm btn-success" id="add"><icon class="fas fa-plus mr-2"></icon>New Voter</button>
+            <div class="row shadow-none m-3 rounded">
+              <div class="col-lg-2">
+                  <select class="form-control form-control-sm" id="brgy" name="brgy">
+                    <option value="0">[ Select Barangay ]</option>
+                    <?php
+                      foreach ($data['barangays'] as $key => $barangay) {
+                    ?>
+                    <option value="<?php echo $barangay['id']; ?>"><?php echo ucwords(strtolower($barangay['name'])); ?></option>
+                    <?php
+                      }
+                    ?>
+                  </select>
+              </div>
+              <div class="col-lg-10 align-self-center">
+                <div class="btn-group">
+                  <button class="btn btn-sm btn-primary" id="btn_filter"><icon class="fas fa-filter mr-4"></icon>Filter</button>
+                  <button class="btn btn-sm btn-secondary" id="btn_show_all"><icon class="fas fa-list mr-2"></icon>Show All</button>
+                  <button class="btn btn-sm btn-success" id="add"><icon class="fas fa-plus mr-2"></icon>New Voter</button>
+                </div>
               </div>
             </div>
           

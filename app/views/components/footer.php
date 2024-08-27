@@ -12,7 +12,7 @@
 <script src="<?php echo ROOT.BOOTSTRAP; ?>plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="<?php echo ROOT.BOOTSTRAP; ?>plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <script src="<?php echo ROOT.BOOTSTRAP; ?>plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="<?php echo ROOT.BOOTSTRAP; ?>plugins/jquery-confirm/js/jquery-confirm.min.js"></script>
+<script src="<?php echo ROOT.BOOTSTRAP; ?>plugins/sweetalert2/sweetalert2.all.min.js"></script>
 <script type="text/javascript">
 	$('.btn_submit_change_pass').click(function(){
 		if ($('#text_newpassword').val() == ''){

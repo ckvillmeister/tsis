@@ -7,19 +7,21 @@ $(document).ready(function(){
 			password = $('#text_password').val();
 
 		if (username == ''){
-			$.alert({
-	            title: "Error",
-	            type: "red",
-	            content: "Please enter username!"
-	        })
+			Swal.fire({
+				title: "Error",
+				text: "Please enter a username!",
+				icon: "error",
+				confirmButtonColor: "#b34045",
+			});
 			error = true;
 		}
 		else if(password == ''){
-			$.alert({
-	            title: "Error",
-	            type: "red",
-	            content: "Please enter password!"
-	        })
+			Swal.fire({
+				title: "Error",
+				text: "Please enter a password!",
+				icon: "error",
+				confirmButtonColor: "#b34045",
+			});
 		}
 		else{
 			login();
@@ -47,28 +49,39 @@ $(document).ready(function(){
 	        data: {username: $('#text_username').val(), password: $('#text_password').val()},
 	        success: function(result) {
 	        	if (result == 1){
-	        		$.alert({
-			            title: "Success",
-			            type: "green",
-			            content: "Login successful!"
-			        })
-					setTimeout(function(){ window.location = 'dashboard';}, 4000);
+	        		Swal.fire({
+						title: "Authentication Success",
+						text: "You will be now redirected to dashboard!",
+						icon: "success",
+						//showCancelButton: true,	
+        				showConfirmButton: true,	
+						confirmButtonColor: "#00939D"
+					}).then((isConfirm) => {
+						if (isConfirm) {
+							window.location.href = 'dashboard';
+						}
+						else{
+							setTimeout(function(){ window.location = 'dashboard';}, 4000);
+						}
+					});
+					
 	        	}
 	        	else{
-	        		$.alert({
-			            title: "Error",
-			            type: "red",
-			            content: "Login error!"
-			        })
-					$('#text_username').focus();
+					Swal.fire({
+						title: "Error",
+						text: "Invalid credentials!",
+						icon: "error",
+						confirmButtonColor: "#b34045",
+					});
 	        	}
 		    },
 		    error: function(obj, err, ex){
-		        $.alert({
-		            title: "Error",
-		            type: "red",
-		            content: msg + ": " + obj.status + " " + exception
-		          })
+				Swal.fire({
+					title: "Error",
+					text: err + ": " + obj.status + " " + ex,
+					icon: "error",
+					confirmButtonColor: "#b34045",
+				});
 		    }
 		})
 	}
