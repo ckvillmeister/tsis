@@ -252,6 +252,20 @@ class wardController extends controller{
 		echo $result;
 	}
 
+	function uploadLeadersList(){
+		$wardModel = new wardModel();
+		$year = $wardModel->get_year();
+		$list = $wardModel->getAllLeaders($year);
+		
+		echo json_encode(['list' => $list, 'year' => $year]);
+	}
 
+	function uploadMembersList(){
+		$wardModel = new wardModel();
+		$year = $wardModel->get_year();
+		$list = $wardModel->getAllMembers($year);
+		
+		echo json_encode(['list' => $list, 'year' => $year]);
+	}
 }
 ?>

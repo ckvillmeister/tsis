@@ -50,6 +50,7 @@
                   <button class="btn btn-sm btn-primary" id="btn_filter"><icon class="fas fa-filter mr-4"></icon>Filter</button>
                   <button class="btn btn-sm btn-secondary" id="btn_show_all"><icon class="fas fa-list mr-2"></icon>Show All</button>
                   <button class="btn btn-sm btn-success" id="add"><icon class="fas fa-plus mr-2"></icon>New Voter</button>
+                  <button class="btn btn-sm btn-primary" id="upload"><icon class="fas fa-upload mr-2"></icon>Upload Voters</button>
                 </div>
               </div>
             </div>
@@ -390,5 +391,91 @@
   $("input[data-bootstrap-switch]").each(function(){
       $(this).bootstrapSwitch('state', $(this).prop('checked'));
     })
+</script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
+  import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBbvtZeC07sZWvVsIvF78nMcy4Lvtt8PbU",
+    authDomain: "tsis-4b084.firebaseapp.com",
+    databaseURL: "https://tsis-4b084-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "tsis-4b084",
+    storageBucket: "tsis-4b084.appspot.com",
+    messagingSenderId: "703707119922",
+    appId: "1:703707119922:web:1ef29666317342b0a2972b",
+    measurementId: "G-PZ44WFJQEZ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const db = getDatabase(app);
+
+  $('#upload').on('click', function(){
+    Swal.fire({
+			title: "Confirm",
+			text: "Are you sure you want to upload the list of voters to the cloud?",
+			icon: "question",
+			showCancelButton: true,	
+			showConfirmButton: true,	
+			confirmButtonColor: "#17a2b8"
+		}).then((res) => {
+			if (res.value) {
+
+        $.ajax({
+          url: 'voter/uploadVoters',
+          method: 'POST',
+          dataType: 'JSON',
+          success: function(result) {
+            const year = result['year'];
+            const list = result['list'];
+            const baseRef = ref(db, `tsis/voterslist/${year}`);
+
+            $('.overlay-wrapper').html('<div class="overlay">' +
+                        '<i class="fas fa-3x fa-sync-alt fa-spin"></i>' +
+                        '<div class="text-bold pt-2">Loading...</div>' +
+                            '</div>');
+
+            get(baseRef).then(snapshot => {
+              const deletions = [];
+              const insertions = [];
+
+              list.forEach(record => {
+                const id = record.id;
+                const recordRef = ref(db, `tsis/voterslist/${year}/${id}`);
+
+                  if (snapshot.exists()) {
+                    console.log(`Record with ID ${id} already exists.`);
+                  } else {
+                    set(recordRef, record)
+                      .catch(err => console.error(`Error uploading ID ${id}:`, err));
+                  }
+              });
+
+              return Promise.all([...deletions, ...insertions]);
+
+            }).then(() => {
+              $('.overlay-wrapper').html('');
+            }).catch(err => {
+              console.error("Error syncing data:", err);
+              $('.overlay-wrapper').html('<div class="text-danger">Failed to sync records.</div>');
+            });
+
+            
+          },
+          error: function(obj, err, ex){
+            Swal.fire({
+              title: "Error",
+              text: err + ": " + obj.status + " " + ex,
+              icon: "error",
+            });
+          }
+        })
+        //End Ajax
+
+			}
+		});
+  });
 </script>
 </html>

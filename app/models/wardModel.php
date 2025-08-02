@@ -657,4 +657,40 @@ class wardModel extends model{
 		$con->close();
 		return $leader;
 	}
+
+	function getAllLeaders($year){
+		$db = new database();
+		$con = $db->connection();
+		$stmt = $con->prepare("SELECT record_id, voter_id, barangay_id FROM tbl_ward_leader WHERE status = 1 AND record_year = ?");
+		$stmt->bind_param("s", $year);
+		$stmt->execute();
+		$stmt->bind_result($id, $voterid, $barangayid);
+		$leaders = [];
+
+		while ($stmt->fetch()) {
+			$leaders[] = ['id' => $id, 'voterid' => $voterid, 'barangayid' => $barangayid];
+		}
+		
+		$stmt->close();
+		$con->close();
+		return $leaders;
+	}
+
+	function getAllMembers($year){
+		$db = new database();
+		$con = $db->connection();
+		$stmt = $con->prepare("SELECT record_id, ward_id, voter_id, barangay_id FROM tbl_ward_member WHERE status = 1 AND record_year = ?");
+		$stmt->bind_param("s", $year);
+		$stmt->execute();
+		$stmt->bind_result($id, $wardid, $voterid, $barangayid);
+		$members = [];
+
+		while ($stmt->fetch()) {
+			$members[] = ['id' => $id, 'wardid' => $wardid, 'voterid' => $voterid, 'barangayid' => $barangayid];
+		}
+		
+		$stmt->close();
+		$con->close();
+		return $members;
+	}
 }

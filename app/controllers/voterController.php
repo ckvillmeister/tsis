@@ -132,5 +132,29 @@ class voterController extends controller{
 		$res = $voterObj->setVoterRemarks($voterid, $remarks);
 		echo $res;
 	}
+
+	public function uploadVoters(){
+		$voter_model = new voterModel();
+		$list = $voter_model->get_voters_list();
+		$year = $voter_model->get_year();
+		$new_list = [];
+
+		foreach ($list as $voter){
+			$new_list[] = [
+							'id' => $voter['id'],	
+							'firstname' => $voter['firstname'],
+							'middlename' => $voter['middlename'],
+							'lastname' => $voter['lastname'],
+							'suffix' => $voter['suffix'],
+							'votersno' => $voter['votersno'],
+							'precinctno' => $voter['precinctno'],
+							'clusterno' => $voter['clusterno'],
+							'purokno' => $voter['purokno'],
+							'barangay' => $voter['barangay']
+							];
+		}
+
+		echo json_encode(['list' => $list, 'year' => $year]);
+	}
 }
 ?>
